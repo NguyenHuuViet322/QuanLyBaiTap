@@ -1,0 +1,78 @@
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace QuanLyNhanKhau.Models
+{
+    [Table("NhanKhau")]
+    public class NhanKhau
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int? IdNhanKhau { get; set; }
+
+        [Display(Name = "Họ và tên", Prompt = "Họ và tên")]
+        [Required(ErrorMessage = "Thiếu họ tên")]
+        [StringLength(25, MinimumLength = 3, ErrorMessage = "Độ dài họ tên phải trong khoảng 3 đến 25 kí tự")]
+        public string HoTen { get; set; }
+
+        [Display(Name = "Bí danh", Prompt = "Bí danh")]
+        [StringLength(25, MinimumLength = 3, ErrorMessage = "Độ dài họ tên phải trong khoảng 3 đến 25 kí tự")]
+        public string BiDanh { get; set; }
+
+        [Display(Name = "Ngày sinh", Prompt = "Ngày sinh")]
+        [Required(ErrorMessage = "Thiếu họ tên")]
+        public DateTime NgaySinh { get; set; }
+
+        [Display(Name = "Nơi sinh", Prompt = "Nơi sinh")]
+        [Required(ErrorMessage = "Thiếu nơi sinh")]
+        public string NoiSinh { get; set; }
+
+        [Display(Name = "Nguyên quán", Prompt = "Nguyên quán")]
+        [Required(ErrorMessage = "Thiếu nguyên quán")]
+        public string NguyenQuan { get; set; }
+
+        [Display(Name = "Dân tộc", Prompt = "Dân tộc")]
+        [Required(ErrorMessage = "Thiếu dân tộc")]
+        public string DanToc { get; set; }
+
+        [Display(Name = "Nghề nghiệp", Prompt = "Nghề nghiệp")]
+        [Required(ErrorMessage = "Thiếu nghề nghiệp")]
+        [StringLength(25, MinimumLength = 3, ErrorMessage = "Độ dài nghề nghiệp phải trong khoảng 3 đến 25 kí tự")]
+        public string NgheNghiep { get; set; }
+
+        [Display(Name = "Nơi làm việc", Prompt = "Nơi làm việc")]
+        [Required(ErrorMessage = "Thiếu nơi làm việc")]
+        [StringLength(25, MinimumLength = 3, ErrorMessage = "Độ dài nơi làm việc phải trong khoảng 3 đến 50 kí tự")]
+        public string NoiLamViec { get; set; }
+
+        [Display(Name = "Số CMND/CCCD (Ghi số 0 nếu nhân khẩu chưa có CMND/CCCD)", Prompt = "Số CMND/CCCD")]
+        [Required(ErrorMessage = "Thiếu số CMND/CCCD")]
+        [StringLength(13, MinimumLength = 9, ErrorMessage = "Độ dài nơi làm việc phải trong khoảng 9 đến 13 kí tự")]
+        public string CMND { get; set; }
+
+        [Display(Name = "Ngày cấp CMND", Prompt = "Nơi cấp CMND")]
+        public DateTime NgayCapCMND { get; set; }
+
+        [Display(Name = "Nơi cấp CMND/CCCD", Prompt = "Nơi cấp CMND/CCCD")]
+        [StringLength(25, MinimumLength = 3, ErrorMessage = "Độ dài nơi làm việc phải trong khoảng 3 đến 25 kí tự")]
+        public string NoiCapCMND { get; set; }
+
+        [Display(Name = "Ngày tháng năm đăng kí thường trú", Prompt = "Ngày tháng năm đăng kí thường trú")]
+        [Required(ErrorMessage = "Thiếu số thông tin")]
+        public DateTime NgayDangKi { get; set; }
+
+        [Display(Name = "Địa chỉ thường trú trước khi chuyển đến", Prompt = "Địa chỉ thường chú trước khi chuyển đến")]
+        [StringLength(13, MinimumLength = 9, ErrorMessage = "Độ dài nơi làm việc phải trong khoảng 9 đến 13 kí tự")]
+        public string DiaChiTruoc { get; set; }
+
+        [Display(Name = "Quan hệ với chủ hộ", Prompt = "Quan hệ với chủ hộ")]
+        [Required(ErrorMessage = "Thiếu thông tin")]
+        public string QuanHe { get; set;}
+
+        public string soHoKhau { get; set; }
+
+        [ForeignKey("soHoKhau")]
+        public HoKhau hoKhau { get; set; }
+
+    }
+}

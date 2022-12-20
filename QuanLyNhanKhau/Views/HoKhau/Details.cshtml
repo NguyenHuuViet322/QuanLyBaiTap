@@ -1,0 +1,111 @@
+﻿@model QuanLyNhanKhau.Models.HoKhau
+
+@{
+    ViewData["Title"] = "Chi tiết hộ khẩu";
+    ViewData["Desc"] = "Xem chi tiết hộ và thay đổi thông tin nhân khẩu";
+    Layout = "~/Views/Shared/_InnerLayout.cshtml";
+}
+
+@{
+    bool check = true;
+    NhanKhau chuHo = null;
+    if (Model.nhanKhaus == null)
+    {
+        check = false;
+    } else
+    {
+        chuHo = Model.nhanKhaus.Where(p => p.QuanHe == "Chủ hộ").FirstOrDefault();
+    }
+}
+
+<div class="col-md-4">
+    <div class="row" style="margin-left:0px;margin-right:0px;">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <strong>Thông tin hộ</strong>
+            </div>
+
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <tbody>
+                            <tr class="info">
+                                <td><strong>Chủ hộ:</strong></td>
+                                @if (check)
+                                {
+                                    <td>@chuHo.HoTen</td>
+                                }
+                                else
+                                {
+                                    <td>Chưa có thông tin</td>
+                                }
+                            </tr>
+                            <tr class="info">
+                                <td><strong>Số hộ khẩu:</strong></td>
+                                <td>@Model.SoHoKhau</td>
+                            </tr>
+                            <tr class="info">
+                                <td><strong>Số nhà:</strong></td>
+                                <td>@Model.SoNha</td>
+                            </tr>
+                            <tr class="info">
+                                <td><strong>Đường:</strong></td>
+                                <td>@Model.Duong</td>
+                            </tr>
+                            <tr class="info">
+                                <td><strong>Phường:</strong></td>
+                                <td>@Model.Phuong</td>
+                            </tr>
+                            <tr class="info">
+                                <td><strong>Quận:</strong></td>
+                                <td>@Model.Quan</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="margin-left:0px;margin-right:0px;">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <strong>Thành viên hộ</strong>
+            </div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr class="info">
+                                <th>Họ tên</th>
+                                <th>CMND</th>
+                                <th>Ngày sinh</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                if (check)
+                                {
+                                    foreach (var member in Model.nhanKhaus)
+                                    {
+                                        <tr class="info">
+                                            <td>@member.HoTen</td>
+                                            <td>@member.CMND</td>
+                                            <td>@member.NgaySinh</td>
+                                        </tr>
+                                    }
+                                } else
+                                {
+                                    <tr class="info">
+                                        <td>N/A</td>
+                                        <td>N/A</td>
+                                        <td>N/A</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

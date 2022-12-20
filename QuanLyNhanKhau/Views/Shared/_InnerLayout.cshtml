@@ -1,0 +1,16 @@
+﻿@{
+    Layout = "_Layout.cshtml";
+}
+
+    <div id="page-inner">
+        <div class="row" style="margin-left:0px;margin-right:0px;">
+            <div class="col-md-12">
+                <h1 class="page-head-line">@ViewData["Title"]</h1>
+                <h1 class="page-subhead-line">@ViewData["Desc"]</h1>
+            </div>
+            <div class="col-md-12">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+
