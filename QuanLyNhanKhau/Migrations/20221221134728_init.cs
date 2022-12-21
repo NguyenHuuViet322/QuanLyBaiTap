@@ -33,6 +33,7 @@ namespace QuanLyNhanKhau.Migrations
                     IdNhanKhau = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     HoTen = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
+                    GioiTinh = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BiDanh = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
                     NgaySinh = table.Column<DateTime>(type: "datetime2", nullable: false),
                     NoiSinh = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -46,7 +47,10 @@ namespace QuanLyNhanKhau.Migrations
                     NgayDangKi = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DiaChiTruoc = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
                     QuanHe = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    soHoKhau = table.Column<string>(type: "nvarchar(15)", nullable: false)
+                    soHoKhau = table.Column<string>(type: "nvarchar(15)", nullable: false),
+                    NgayChuyen = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    NoiChuyen = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    GhiChu = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {

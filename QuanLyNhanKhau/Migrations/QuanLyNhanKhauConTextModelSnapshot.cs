@@ -112,11 +112,11 @@ namespace QuanLyNhanKhau.Migrations
 
             modelBuilder.Entity("QuanLyNhanKhau.Models.NhanKhau", b =>
                 {
-                    b.Property<int>("IdNhanKhau")
+                    b.Property<int?>("IdNhanKhau")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdNhanKhau"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("IdNhanKhau"));
 
                     b.Property<string>("BiDanh")
                         .IsRequired()
@@ -137,12 +137,23 @@ namespace QuanLyNhanKhau.Migrations
                         .HasMaxLength(13)
                         .HasColumnType("nvarchar(13)");
 
+                    b.Property<string>("GhiChu")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GioiTinh")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("HoTen")
                         .IsRequired()
                         .HasMaxLength(25)
                         .HasColumnType("nvarchar(25)");
 
                     b.Property<DateTime>("NgayCapCMND")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("NgayChuyen")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("NgayDangKi")
@@ -164,6 +175,10 @@ namespace QuanLyNhanKhau.Migrations
                         .IsRequired()
                         .HasMaxLength(25)
                         .HasColumnType("nvarchar(25)");
+
+                    b.Property<string>("NoiChuyen")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NoiLamViec")
                         .IsRequired()

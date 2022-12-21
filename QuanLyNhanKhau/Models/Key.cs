@@ -12,5 +12,9 @@ namespace QuanLyNhanKhau.Models
 
         public static List<string> ListQuan = new List<string>() { "Ngô Quyền", "Hải An", "An Lão",
                                                                     "Hồng Bàng"};
+
+        public static List<string> ListTP = new List<string>() { "Hải Phòng", "Hà Nội", "Thái Bình",
+                                                                    "Huế"};
+        public static List<string> ListGioiTinh = new List<string>() { "Nam", "Nữ", "Gay"};
     }
 }

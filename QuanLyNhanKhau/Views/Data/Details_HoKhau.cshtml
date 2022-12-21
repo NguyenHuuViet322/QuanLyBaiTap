@@ -9,7 +9,8 @@
 @{
     bool check = true;
     NhanKhau chuHo = null;
-    if (Model.nhanKhaus == null)
+    ViewBag.SoHoKhau = Model.SoHoKhau;
+    if (Model.nhanKhaus.Count() == 0)
     {
         check = false;
     } else
@@ -66,10 +67,14 @@
             </div>
         </div>
     </div>
+</div>
+<div class="col-md-8">
     <div class="row" style="margin-left:0px;margin-right:0px;">
         <div class="panel panel-info">
             <div class="panel-heading">
                 <strong>Thành viên hộ</strong>
+                <a style="float:right"><i data-toggle="modal" data-target="#Create_NhanKhau" class="fa fa-plus fa-2x" style="color:green" aria-hidden="true"></i></a>
+                @Html.Partial("Create_NhanKhau.cshtml", new QuanLyNhanKhau.Models.NhanKhau())
             </div>
             <div class="panel-body">
                 <div class="table-responsive">
@@ -78,7 +83,8 @@
                             <tr class="info">
                                 <th>Họ tên</th>
                                 <th>CMND</th>
-                                <th>Ngày sinh</th>
+                                <th>Quan hệ với chủ hộ</th>
+                                <th>Thao tác</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -90,7 +96,13 @@
                                         <tr class="info">
                                             <td>@member.HoTen</td>
                                             <td>@member.CMND</td>
-                                            <td>@member.NgaySinh</td>
+                                            <td>@member.QuanHe</td>
+                                            <td>
+                                                <a data-toggle="modal" data-target="#Edit_@member.IdNhanKhau"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                                <a data-toggle="modal" data-target="#Leave_@member.IdNhanKhau"><i class="fa fa-minus-square" aria-hidden="true"></i></a>
+                                                <a data-toggle="modal" data-target="#Leave_@member.IdNhanKhau"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                                                <a data-toggle="modal" data-target="#Delete_@member.IdNhanKhau"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                            </td>
                                         </tr>
                                     }
                                 } else
@@ -99,6 +111,12 @@
                                         <td>N/A</td>
                                         <td>N/A</td>
                                         <td>N/A</td>
+                                        <td>
+                                            <a><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                            <a><i class="fa fa-minus-square" aria-hidden="true"></i></a>
+                                            <a><i class="fa fa-eye" aria-hidden="true"></i></a>
+                                            <a><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                        </td>
                                     </tr>
                                 }
                             }

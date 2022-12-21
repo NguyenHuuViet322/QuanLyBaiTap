@@ -1,0 +1,48 @@
+﻿@model QuanLyNhanKhau.Models.HoKhau
+
+    <div class="modal fade" id="Delete_@Model.SoHoKhau" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel"><strong>Bạn có chắc muốn xóa hộ khẩu này</strong></h4>
+                </div>
+                <div class="modal-body m-2" style="background:aliceblue;">
+                            <dl class="dl-horizontal">
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.SoNha)
+                                </dt>
+                                <dd>
+                                    @Html.DisplayFor(model => model.SoNha)
+                                </dd>
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.Duong)
+                                </dt>
+                                <dd>
+                                    @Html.DisplayFor(model => model.Duong)
+                                </dd>
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.Phuong)
+                                </dt>
+                                <dd>
+                                    @Html.DisplayFor(model => model.Phuong)
+                                </dd>
+                                <dt>
+                                    @Html.DisplayNameFor(model => model.Quan)
+                                </dt>
+                                <dd>
+                                    @Html.DisplayFor(model => model.Quan)
+                                </dd>
+                            </dl>
+    
+                            <form asp-action="Delete">
+                                <input type="hidden" asp-for="SoHoKhau" />
+                                <input type="submit" value="Delete" class="btn btn-default" /> 
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+

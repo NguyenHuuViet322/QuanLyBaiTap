@@ -3,18 +3,25 @@
 @{
     ViewData["Title"] = "Danh sách hộ khẩu";
     ViewData["Desc"] = "Tìm kiếm và thao tác với các hộ khẩu";
-    Layout = "~/Views/Shared/_InnerLayout.cshtml";
+    Layout = "~/Views/Shared/_InnerLayout.cshtml";  
 }
-<button class="btn btn-primary" data-toggle="modal" data-target="#createFormModal">
-    Tạo mới
-</button>
-<button class="btn btn-warning" data-toggle="modal" data-target="#searchFormModal">
-    Tìm kiếm
-</button>
 
-<table class="table">
+<div class="panel">
+        <button class="btn btn-primary" data-toggle="modal" data-target="#createFormModal">
+            Tạo mới
+        </button>
+        <button class="btn btn-warning" data-toggle="modal" data-target="#searchFormModal">
+            Tìm kiếm
+        </button>
+</div>
+
+<table class="table table-bordered">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.SoHoKhau)
+            </th>
+            <th>Chủ hộ</th>
             <th>
                 @Html.DisplayNameFor(model => model.SoNha)
             </th>
@@ -27,12 +34,29 @@
             <th>
                 @Html.DisplayNameFor(model => model.Quan)
             </th>
-            <th></th>
+            <th>
+                Thao tác
+            </th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.SoHoKhau)
+            </td>
+                @if (item.nhanKhaus != null)
+                {
+                    <td>
+                        @item.nhanKhaus.Where(p => p.QuanHe == "Chủ hộ").FirstOrDefault().HoTen
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        Chưa thiết lập
+                    </td>
+                }
             <td>
                 @Html.DisplayFor(modelItem => item.SoNha)
             </td>
@@ -46,10 +70,14 @@
                 @Html.DisplayFor(modelItem => item.Quan)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.SoHoKhau">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.SoHoKhau">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.SoHoKhau">Delete</a>
+                <a data-toggle="modal" data-target="#Edit_@item.SoHoKhau"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                <a asp-action="Details_HoKhau" asp-route-id="@item.SoHoKhau"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                <a data-toggle="modal" data-target="#Delete_@item.SoHoKhau"><i class="fa fa-trash" aria-hidden="true"></i></a>
             </td>
+
+            @Html.Partial("Edit_HoKhau.cshtml", @item)
+
+            @Html.Partial("Delete_HoKhau.cshtml", @item)
         </tr>
 }
     </tbody>
@@ -64,7 +92,7 @@
                     <h4 class="modal-title" id="myModalLabel"><strong>Thêm hộ khẩu mới</strong></h4>
                 </div>
                 <div class="modal-body m-2" style="background:aliceblue;">
-                    @Html.Partial("Create.cshtml", new QuanLyNhanKhau.Models.HoKhau())
+                    @Html.Partial("Create_HoKhau.cshtml", new QuanLyNhanKhau.Models.HoKhau())
                 </div>
             </div>
         </div>

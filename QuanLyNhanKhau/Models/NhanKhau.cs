@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace QuanLyNhanKhau.Models
@@ -14,6 +15,10 @@ namespace QuanLyNhanKhau.Models
         [Required(ErrorMessage = "Thiếu họ tên")]
         [StringLength(25, MinimumLength = 3, ErrorMessage = "Độ dài họ tên phải trong khoảng 3 đến 25 kí tự")]
         public string HoTen { get; set; }
+
+        [Display(Name = "Giới tính", Prompt = "Giới tính")]
+        [Required(ErrorMessage = "Thiếu giới tính")]
+        public string GioiTinh { get; set; }
 
         [Display(Name = "Bí danh", Prompt = "Bí danh")]
         [StringLength(25, MinimumLength = 3, ErrorMessage = "Độ dài họ tên phải trong khoảng 3 đến 25 kí tự")]
@@ -62,17 +67,27 @@ namespace QuanLyNhanKhau.Models
         public DateTime NgayDangKi { get; set; }
 
         [Display(Name = "Địa chỉ thường trú trước khi chuyển đến", Prompt = "Địa chỉ thường chú trước khi chuyển đến")]
-        [StringLength(13, MinimumLength = 9, ErrorMessage = "Độ dài nơi làm việc phải trong khoảng 9 đến 13 kí tự")]
+        [StringLength(25, ErrorMessage = "Độ dài nơi làm việc phải trong khoảng 9 đến 13 kí tự")]
         public string DiaChiTruoc { get; set; }
 
-        [Display(Name = "Quan hệ với chủ hộ", Prompt = "Quan hệ với chủ hộ")]
+        [Display(Name = "Quan hệ với chủ hộ (Nếu là chủ hộ nhập '0')", Prompt = "Quan hệ với chủ hộ")]
         [Required(ErrorMessage = "Thiếu thông tin")]
         public string QuanHe { get; set;}
 
+        [Display(Name = "Số hộ khẩu")]
         public string soHoKhau { get; set; }
 
+        [Display(Name = "Ngày chuyển đi", Prompt = "Ngày chuyển tới")]
+        public DateTime? NgayChuyen { get; set; }
+
+        [Display(Name = "Nơi chuyển tới", Prompt = "Nơi chuyển tới")]
+        public string? NoiChuyen { get; set; }
+
+        [Display(Name = "Ghi chú", Prompt = "Ghi chú")]
+        public string? GhiChu { get; set; }
+
         [ForeignKey("soHoKhau")]
-        public HoKhau hoKhau { get; set; }
+        public HoKhau? hoKhau { get; set; }
 
     }
 }

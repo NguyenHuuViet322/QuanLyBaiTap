@@ -1,0 +1,109 @@
+﻿@model QuanLyNhanKhau.Models.NhanKhau
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_InnerLayout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>NhanKhau</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.HoTen)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.HoTen)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.BiDanh)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.BiDanh)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.NgaySinh)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.NgaySinh)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.NoiSinh)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.NoiSinh)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.NguyenQuan)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.NguyenQuan)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DanToc)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DanToc)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.NgheNghiep)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.NgheNghiep)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.NoiLamViec)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.NoiLamViec)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CMND)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CMND)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.NgayCapCMND)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.NgayCapCMND)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.NoiCapCMND)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.NoiCapCMND)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.NgayDangKi)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.NgayDangKi)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DiaChiTruoc)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DiaChiTruoc)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.QuanHe)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.QuanHe)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.hoKhau)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.hoKhau.SoHoKhau)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.IdNhanKhau">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

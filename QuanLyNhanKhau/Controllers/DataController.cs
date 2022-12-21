@@ -10,11 +10,11 @@ using QuanLyNhanKhau.Models;
 
 namespace QuanLyNhanKhau.Controllers
 {
-    public class HoKhauController : Controller
+    public class DataController : Controller
     {
         private readonly QuanLyNhanKhauConText _context;
 
-        public HoKhauController(QuanLyNhanKhauConText context)
+        public DataController(QuanLyNhanKhauConText context)
         {
             _context = context;
         }
@@ -25,8 +25,7 @@ namespace QuanLyNhanKhau.Controllers
               return View(await _context.hoKhaus.ToListAsync());
         }
 
-        // GET: HoKhau/Details/5
-        public async Task<IActionResult> Details(string id)
+        public async Task<IActionResult> Details_HoKhau(string id)
         {
             if (id == null || _context.hoKhaus == null)
             {
@@ -35,6 +34,8 @@ namespace QuanLyNhanKhau.Controllers
 
             var hoKhau = await _context.hoKhaus
                 .FirstOrDefaultAsync(m => m.SoHoKhau == id);
+            hoKhau.nhanKhaus =  _context.nhanKhaus.Where(p => p.soHoKhau == hoKhau.SoHoKhau)
+                .ToList();
             if (hoKhau == null)
             {
                 return NotFound();
@@ -43,18 +44,12 @@ namespace QuanLyNhanKhau.Controllers
             return View(hoKhau);
         }
 
-        // GET: HoKhau/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
         // POST: HoKhau/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("SoHoKhau,SoNha,Duong,Phuong,Quan")] HoKhau hoKhau)
+        public async Task<IActionResult> Create_HoKhau([Bind("SoHoKhau,SoNha,Duong,Phuong,Quan")] HoKhau hoKhau)
         {
    
             if (ModelState.IsValid)
@@ -66,20 +61,18 @@ namespace QuanLyNhanKhau.Controllers
             return View(hoKhau);
         }
 
-        // GET: HoKhau/Edit/5
-        public async Task<IActionResult> Edit(string id)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create_NhanKhau([Bind("IdNhanKhau,HoTen,BiDanh,GioiTinh,NgaySinh,NoiSinh,NguyenQuan,DanToc,NgheNghiep,NoiLamViec,CMND,NgayCapCMND,NoiCapCMND,NgayDangKi,DiaChiTruoc,QuanHe,soHoKhau")] NhanKhau nhanKhau)
         {
-            if (id == null || _context.hoKhaus == null)
+            if (ModelState.IsValid)
             {
-                return NotFound();
+                _context.Add(nhanKhau);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
             }
-
-            var hoKhau = await _context.hoKhaus.FindAsync(id);
-            if (hoKhau == null)
-            {
-                return NotFound();
-            }
-            return View(hoKhau);
+            ViewData["soHoKhau"] = new SelectList(_context.hoKhaus, "SoHoKhau", "SoHoKhau", nhanKhau.soHoKhau);
+            return View(nhanKhau);
         }
 
         // POST: HoKhau/Edit/5
@@ -87,7 +80,7 @@ namespace QuanLyNhanKhau.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("SoHoKhau,SoNha,Duong,Phuong,Quan")] HoKhau hoKhau)
+        public async Task<IActionResult> Edit_HoKhau(string id, [Bind("SoHoKhau,SoNha,Duong,Phuong,Quan")] HoKhau hoKhau)
         {
             if (id != hoKhau.SoHoKhau)
             {
@@ -117,34 +110,16 @@ namespace QuanLyNhanKhau.Controllers
             return View(hoKhau);
         }
 
-        // GET: HoKhau/Delete/5
-        public async Task<IActionResult> Delete(string id)
-        {
-            if (id == null || _context.hoKhaus == null)
-            {
-                return NotFound();
-            }
-
-            var hoKhau = await _context.hoKhaus
-                .FirstOrDefaultAsync(m => m.SoHoKhau == id);
-            if (hoKhau == null)
-            {
-                return NotFound();
-            }
-
-            return View(hoKhau);
-        }
-
         // POST: HoKhau/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
+        public async Task<IActionResult> DeleteConfirmed(string SoHoKhau)
         {
             if (_context.hoKhaus == null)
             {
                 return Problem("Entity set 'QuanLyNhanKhauConText.hoKhaus'  is null.");
             }
-            var hoKhau = await _context.hoKhaus.FindAsync(id);
+            var hoKhau = await _context.hoKhaus.FindAsync(SoHoKhau);
             if (hoKhau != null)
             {
                 _context.hoKhaus.Remove(hoKhau);
