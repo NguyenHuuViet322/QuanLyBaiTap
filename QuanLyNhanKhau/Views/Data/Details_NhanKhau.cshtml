@@ -1,0 +1,91 @@
+﻿@model QuanLyNhanKhau.Models.NhanKhau
+    <style>
+        td {
+            padding-left: 0.5em;
+            padding-right:0.4em;
+            padding-top:0.2em;
+        }
+    </style>
+    
+    <div class="modal fade" id="Details_@Model.IdNhanKhau" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel"><strong>Thông tin chi tiết nhân khẩu</strong></h4>
+                </div>
+                <div class="modal-body m-2" style="background:aliceblue;">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table style="padding:1em">
+                                <tr>
+                                    <td style="font-weight:bold;">Họ tên</td>
+                                    <td>@Model.HoTen</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight:bold;">Bí danh</td>
+                                    <td>@Model.BiDanh</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight:bold;">Ngày sinh</td>
+                                    <td>@Model.NgaySinh</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight:bold;">Nơi sinh</td>
+                                    <td>@Model.NoiSinh</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight:bold;">Nguyên Quán</td>
+                                    <td>@Model.NguyenQuan</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight:bold;">Dân tộc</td>
+                                    <td>@Model.DanToc</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight:bold;">Nghề nghiệp</td>
+                                    <td>@Model.NgheNghiep</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight:bold;">Nơi làm việc</td>
+                                    <td>@Model.NoiLamViec</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight:bold;">CMND/CCCD</td>
+                                    <td>@Model.CMND</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight:bold;">Ngày cấp CMND</td>
+                                    <td>@Model.NgayCapCMND</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight:bold;">Nơi cấp CMND</td>
+                                    <td>@Model.NoiCapCMND</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight:bold;">Ngày đăng kí thường trú</td>
+                                    <td>@Model.NgayDangKi</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight:bold;">Địa chỉ trước</td>
+                                    <td>@Model.DiaChiTruoc</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight:bold;">Quan hệ với chủ hộ</td>
+                                    <td>@Model.QuanHe</td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight:bold;">Số hộ khẩu</td>
+                                    <td>@Model.soHoKhau</td>
+                                </tr>
+                            </table>                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+

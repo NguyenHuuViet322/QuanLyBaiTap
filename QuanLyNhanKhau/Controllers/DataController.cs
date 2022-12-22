@@ -63,10 +63,12 @@ namespace QuanLyNhanKhau.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create_NhanKhau([Bind("IdNhanKhau,HoTen,BiDanh,GioiTinh,NgaySinh,NoiSinh,NguyenQuan,DanToc,NgheNghiep,NoiLamViec,CMND,NgayCapCMND,NoiCapCMND,NgayDangKi,DiaChiTruoc,QuanHe,soHoKhau")] NhanKhau nhanKhau)
+        public async Task<IActionResult> Create_NhanKhau([Bind("IdNhanKhau,HoTen,BiDanh,GioiTinh,NgaySinh,NoiSinh,NguyenQuan,DanToc,NgheNghiep,NoiLamViec,CMND,NgayCapCMND,NoiCapCMND,NgayDangKi,DiaChiTruoc,QuanHe,soHoKhau,NguyenChuyen,NoiChuyen,GhiChu")] NhanKhau nhanKhau)
         {
             if (ModelState.IsValid)
             {
+                nhanKhau.NgayChuyen = DateTime.Now;
+                nhanKhau.NoiChuyen = "";
                 _context.Add(nhanKhau);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

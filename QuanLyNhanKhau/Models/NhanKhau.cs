@@ -77,6 +77,9 @@ namespace QuanLyNhanKhau.Models
         [Display(Name = "Số hộ khẩu")]
         public string soHoKhau { get; set; }
 
+        [Display(Name = "Nguyên nhân thêm")]
+        public string? NguyenNhan { get; set; }
+
         [Display(Name = "Ngày chuyển đi", Prompt = "Ngày chuyển tới")]
         public DateTime? NgayChuyen { get; set; }
 

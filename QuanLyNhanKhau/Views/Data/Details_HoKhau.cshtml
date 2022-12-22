@@ -1,4 +1,5 @@
 ﻿@model QuanLyNhanKhau.Models.HoKhau
+@inject QuanLyNhanKhauConText _context
 
 @{
     ViewData["Title"] = "Chi tiết hộ khẩu";
@@ -7,10 +8,12 @@
 }
 
 @{
+    Model.nhanKhaus = _context.nhanKhaus.Where(p => p.soHoKhau == Model.SoHoKhau)
+                .ToList();
     bool check = true;
     NhanKhau chuHo = null;
     ViewBag.SoHoKhau = Model.SoHoKhau;
-    if (Model.nhanKhaus.Count() == 0)
+    if (chuHo == null)
     {
         check = false;
     } else
@@ -34,12 +37,17 @@
                                 <td><strong>Chủ hộ:</strong></td>
                                 @if (check)
                                 {
-                                    <td>@chuHo.HoTen</td>
+                                    <td>@chuHo.HoTen
+                                        <a data-toggle="modal" data-target="#EditMasterModel" style="float:right;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                    </td>
                                 }
                                 else
                                 {
-                                    <td>Chưa có thông tin</td>
+                                    <td>Chưa có thông tin
+                                        <a data-toggle="modal" data-target="#EditMasterModel" style="float:right"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                    </td>
                                 }
+                                
                             </tr>
                             <tr class="info">
                                 <td><strong>Số hộ khẩu:</strong></td>
@@ -89,7 +97,7 @@
                         </thead>
                         <tbody>
                             @{
-                                if (check)
+                                if (Model.nhanKhaus.Count() != 0)
                                 {
                                     foreach (var member in Model.nhanKhaus)
                                     {
@@ -100,8 +108,9 @@
                                             <td>
                                                 <a data-toggle="modal" data-target="#Edit_@member.IdNhanKhau"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
                                                 <a data-toggle="modal" data-target="#Leave_@member.IdNhanKhau"><i class="fa fa-minus-square" aria-hidden="true"></i></a>
-                                                <a data-toggle="modal" data-target="#Leave_@member.IdNhanKhau"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                                                <a data-toggle="modal" data-target="#Details_@member.IdNhanKhau"><i class="fa fa-eye" aria-hidden="true"></i></a>
                                                 <a data-toggle="modal" data-target="#Delete_@member.IdNhanKhau"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                                @Html.Partial("Details_NhanKhau.cshtml", @member)
                                             </td>
                                         </tr>
                                     }
@@ -127,3 +136,5 @@
         </div>
     </div>
 </div>
+
+@Html.Partial("MasterChange_HoKhau.cshtml", Model)

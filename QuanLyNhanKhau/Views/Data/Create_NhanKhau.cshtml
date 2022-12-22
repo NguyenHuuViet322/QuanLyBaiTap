@@ -32,6 +32,17 @@
                                         }
                                 </select>
                                 <span asp-validation-for="NoiSinh" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="NguyenNhan" class="control-label"></label>
+                                <select asp-for="NguyenNhan" class="form-control">
+                                    <option value="none">Mới sinh/Chuyển tới/Tạm trú</option>
+                                    <option value="Mới sinh">Mới sinh</option>
+                                    <option value="Chuyển tới">Chuyển tới</option>
+                                    <option value="Tạm trú">Tạm trú</option>
+                                </select>
+                                <span asp-validation-for="NoiSinh" class="text-danger"></span>
+                            </div>
                             <div class="form-group">
                                 <label asp-for="NgaySinh" class="control-label"></label>
                                 <input asp-for="NgaySinh" class="form-control"  value="@DateTime.Now"/>
@@ -112,7 +123,6 @@
                             </div>
                             <div class="form-group">
                                 <input type="submit" value="Create" class="btn btn-default" />
-                            </div>
                             </div>
                             </div>
                         </form>

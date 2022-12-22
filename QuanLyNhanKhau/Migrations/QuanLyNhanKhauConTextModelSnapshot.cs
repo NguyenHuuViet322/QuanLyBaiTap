@@ -134,11 +134,10 @@ namespace QuanLyNhanKhau.Migrations
 
                     b.Property<string>("DiaChiTruoc")
                         .IsRequired()
-                        .HasMaxLength(13)
-                        .HasColumnType("nvarchar(13)");
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
 
                     b.Property<string>("GhiChu")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("GioiTinh")
@@ -153,7 +152,7 @@ namespace QuanLyNhanKhau.Migrations
                     b.Property<DateTime>("NgayCapCMND")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("NgayChuyen")
+                    b.Property<DateTime?>("NgayChuyen")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("NgayDangKi")
@@ -167,6 +166,9 @@ namespace QuanLyNhanKhau.Migrations
                         .HasMaxLength(25)
                         .HasColumnType("nvarchar(25)");
 
+                    b.Property<string>("NguyenNhan")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("NguyenQuan")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -177,7 +179,6 @@ namespace QuanLyNhanKhau.Migrations
                         .HasColumnType("nvarchar(25)");
 
                     b.Property<string>("NoiChuyen")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NoiLamViec")

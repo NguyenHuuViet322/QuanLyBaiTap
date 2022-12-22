@@ -45,12 +45,13 @@ namespace QuanLyNhanKhau.Migrations
                     NgayCapCMND = table.Column<DateTime>(type: "datetime2", nullable: false),
                     NoiCapCMND = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
                     NgayDangKi = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DiaChiTruoc = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
+                    DiaChiTruoc = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
                     QuanHe = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     soHoKhau = table.Column<string>(type: "nvarchar(15)", nullable: false),
-                    NgayChuyen = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    NoiChuyen = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    GhiChu = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    NguyenNhan = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NgayChuyen = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    NoiChuyen = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    GhiChu = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
