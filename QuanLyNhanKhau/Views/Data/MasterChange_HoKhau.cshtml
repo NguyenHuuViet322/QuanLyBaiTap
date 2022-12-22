@@ -22,24 +22,29 @@
                 <div class="row">
                     <div class="alert alert-warning" style="margin-left: 1em;margin-right:1 em;"><strong>Chú ý</strong>: Nhập để nhập 0 vào phần điền của chủ hộ mới</div>
                     <div class="col-md-12">
-                        <form asp-action="EditMaster_NhanKhau" >
+                        <form asp-action="EditMaster_NhanKhau">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             <input type="hidden" name="id" value="@Model.SoHoKhau" />
-                            <input type="hidden" asp-for="SoHoKhau" value="@Model.SoHoKhau" />
+                            <input type="hidden" name="count" value="@Model.nhanKhaus.Count()" />
                             <label class="form-label">Chủ hộ mới</label>
-                            <select class="form-control" name="newMaster">
-                                @foreach(var member in Model.nhanKhaus)
+                            <select class="form-control" style="margin-bottom:0.5em" name="newMaster">
+                                @foreach (var member in Model.nhanKhaus)
                                 {
                                     <option value="@member.IdNhanKhau">@member.HoTen (@member.CMND)</option>
                                 }
                             </select>
-                            @foreach(var member in Model.nhanKhaus)
+                            @foreach (var member in Model.nhanKhaus)
                             {
                                 <div class="form-group">
-                                    <label for="nk@dem" class="control-label">Quan hệ với chủ hộ của <strong>@member.HoTen</strong></label>
-                                    <input name="nk@dem" type="text" class="form-control"/>
+                                    <label for=@("nk"+dem) class="control-label">Quan hệ với chủ hộ của <strong>@member.HoTen</strong></label>
+                                    <input name=@("nk"+dem) type="text" class="form-control" />
+                                    <input name=@("nkid"+dem) value="@member.IdNhanKhau" type="hidden" class="form-control" />
                                 </div>
+                                dem++;
                             }
+                            <div class="form-group">
+                                <input type="submit" value="Save" class="btn btn-default" />
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -47,5 +52,3 @@
         </div>
     </div>
 </div>
-
-

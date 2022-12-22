@@ -92,5 +92,12 @@ namespace QuanLyNhanKhau.Models
         [ForeignKey("soHoKhau")]
         public HoKhau? hoKhau { get; set; }
 
+        public string GetStatus() {
+            if(NguyenNhan == "Chuyển tới")
+            {
+                return "Hoạt động";
+            }
+            return NguyenNhan;
+        }
     }
 }

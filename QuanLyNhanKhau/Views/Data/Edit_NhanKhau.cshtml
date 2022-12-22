@@ -1,0 +1,114 @@
+﻿@model QuanLyNhanKhau.Models.NhanKhau
+
+<div class="modal fade" id="EditNK_@Model.IdNhanKhau" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel"><strong>Chỉnh sửa hộ khẩu</strong></h4>
+            </div>
+            <div class="modal-body m-2" style="background:aliceblue;">
+                <div class="row">
+                    <div class="col-md-12">
+                                <form asp-action="Edit_NhanKhau">
+                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                    <input type="hidden" asp-for="IdNhanKhau" />
+                                    <div class="form-group">
+                                        <label asp-for="HoTen" class="control-label"></label>
+                                        <input asp-for="HoTen" class="form-control" />
+                                        <span asp-validation-for="HoTen" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="BiDanh" class="control-label"></label>
+                                        <input asp-for="BiDanh" class="form-control" />
+                                        <span asp-validation-for="BiDanh" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="GioiTinh" class="control-label"></label>
+                                        <select asp-for="GioiTinh" class="form-control">
+                                            <option value="none">Chọn giới tính</option>
+                                            @foreach (var item in QuanLyNhanKhau.Models.Key.ListGioiTinh)
+                                            {
+                                                <option value="@item">@item</option>
+                                            }
+                                        </select>
+                                        <span asp-validation-for="GioiTinh" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="NgaySinh" class="control-label"></label>
+                                        <input asp-for="NgaySinh" class="form-control" />
+                                        <span asp-validation-for="NgaySinh" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="NoiSinh" class="control-label"></label>
+                                        <input asp-for="NoiSinh" class="form-control" />
+                                        <span asp-validation-for="NoiSinh" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="NguyenQuan" class="control-label"></label>
+                                        <input asp-for="NguyenQuan" class="form-control" />
+                                        <span asp-validation-for="NguyenQuan" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="DanToc" class="control-label"></label>
+                                        <input asp-for="DanToc" class="form-control" />
+                                        <span asp-validation-for="DanToc" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="NgheNghiep" class="control-label"></label>
+                                        <input asp-for="NgheNghiep" class="form-control" />
+                                        <span asp-validation-for="NgheNghiep" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="NoiLamViec" class="control-label"></label>
+                                        <input asp-for="NoiLamViec" class="form-control" />
+                                        <span asp-validation-for="NoiLamViec" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="CMND" class="control-label"></label>
+                                        <input asp-for="CMND" class="form-control" />
+                                        <span asp-validation-for="CMND" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="NgayCapCMND" class="control-label"></label>
+                                        <input asp-for="NgayCapCMND" class="form-control" />
+                                        <span asp-validation-for="NgayCapCMND" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="NoiCapCMND" class="control-label"></label>
+                                        <input asp-for="NoiCapCMND" class="form-control" />
+                                        <span asp-validation-for="NoiCapCMND" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="NgayDangKi" class="control-label"></label>
+                                        <input asp-for="NgayDangKi" class="form-control" />
+                                        <span asp-validation-for="NgayDangKi" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="DiaChiTruoc" class="control-label"></label>
+                                        <input asp-for="DiaChiTruoc" class="form-control" />
+                                        <span asp-validation-for="DiaChiTruoc" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="QuanHe" class="control-label"></label>
+                                        <input asp-for="QuanHe" class="form-control" />
+                                        <span asp-validation-for="QuanHe" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="GhiChu" class="control-label"></label>
+                                        <input asp-for="GhiChu" class="form-control" />
+                                        <span asp-validation-for="GhiChu" class="text-danger"></span>
+                                    </div>
+                                    <input asp-for="NguyenNhan" type="hidden" value="@Model.NguyenNhan">
+                                    <input asp-for="soHoKhau" type="hidden" value="ViewBag.soHoKhau">
+                                    <div class="form-group">
+                                        <input type="submit" value="Save" class="btn btn-default" />
+                                    </div>
+                                </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

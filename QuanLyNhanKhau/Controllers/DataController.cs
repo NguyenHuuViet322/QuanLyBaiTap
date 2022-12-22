@@ -77,6 +77,65 @@ namespace QuanLyNhanKhau.Controllers
             return View(nhanKhau);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit_NhanKhau(int? id, [Bind("IdNhanKhau,HoTen,BiDanh,GioiTinh,NgaySinh,NoiSinh,NguyenQuan,DanToc,NgheNghiep,NoiLamViec,CMND,NgayCapCMND,NoiCapCMND,NgayDangKi,DiaChiTruoc,QuanHe,soHoKhau")] NhanKhau nhanKhau)
+        {
+            if (id != nhanKhau.IdNhanKhau)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(nhanKhau);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    return NotFound();
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            ViewData["soHoKhau"] = new SelectList(_context.hoKhaus, "SoHoKhau", "SoHoKhau", nhanKhau.soHoKhau);
+            return View(nhanKhau);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditMaster_NhanKhau()
+        {
+            if (ModelState.IsValid)
+                for(int i=1; i <= Int32.Parse(Request.Form["count"]); i++)
+                {
+                    try
+                    {
+                        var mem = _context.nhanKhaus.Where(p => p.IdNhanKhau == Int32.Parse(Request.Form["nkid"+i])).FirstOrDefault();
+                        mem.QuanHe = Request.Form["nk"+i];
+                        _context.Update(mem);
+                        await _context.SaveChangesAsync();
+                    }
+                    catch (DbUpdateConcurrencyException)
+                    {
+                        return NotFound();
+                    }
+                }
+                try
+                {
+                    var chuHo = _context.nhanKhaus.Where(p => p.IdNhanKhau == Int32.Parse(Request.Form["newMaster"]))
+                            .FirstOrDefault();
+                    chuHo.QuanHe = "Chủ hộ";
+                    _context.Update(chuHo);
+                    await _context.SaveChangesAsync();
+                } catch (DbUpdateConcurrencyException)
+                {
+                    return NotFound();
+                }
+                return RedirectToAction(nameof(Index));
+        }
+
         // POST: HoKhau/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.

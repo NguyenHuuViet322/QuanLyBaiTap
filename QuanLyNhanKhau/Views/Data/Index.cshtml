@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<QuanLyNhanKhau.Models.HoKhau>
+@inject QuanLyNhanKhauConText _context
 
 @{
     ViewData["Title"] = "Danh sách hộ khẩu";
@@ -45,6 +46,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.SoHoKhau)
             </td>
+                @{
+                    item.nhanKhaus = _context.nhanKhaus.Where(p => (p.soHoKhau == item.SoHoKhau)).ToList();
+                }
                 @if (item.nhanKhaus != null)
                 {
                     <td>

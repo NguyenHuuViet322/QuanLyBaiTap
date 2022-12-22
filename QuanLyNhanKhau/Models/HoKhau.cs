@@ -33,8 +33,6 @@ namespace QuanLyNhanKhau.Models
         [StringLength(30, MinimumLength = 3, ErrorMessage = "Độ dài số hộ khẩu không hợp lệ")]
         public string Quan { get; set; }
 
-        public ICollection<NhanKhau>? nhanKhaus { get; set; }
-
-        
+        public ICollection<NhanKhau>? nhanKhaus { get; set; }   
     }
 }
