@@ -1,0 +1,47 @@
+﻿@model QuanLyNhanKhau.Models.HoKhau
+@inject QuanLyNhanKhauConText _context
+
+<div class="modal fade" id="HistoryModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel"><strong>Lịch sử thay đổi</strong></h4>
+            </div>
+            <div class="modal-body m-2" style="background:aliceblue;">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row" style="margin-left:0px;margin-right:0px;">
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Hoạt động</th>
+                                                    <th>Đối tượng</th>
+                                                    <th>Ngày xảy ra</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @{
+                                                    List<HistoryItem> lstHistory = _context.historyItems.Where(p => p.SoHoKhau == Model.SoHoKhau).ToList();
+                                                    foreach (var item in lstHistory)
+                                                    {
+                                                        <tr>
+                                                            <td>@item.HoatDong</td>
+                                                            <td>@item.GhiChu</td>
+                                                            <td>@item.NgayThayDoi</td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

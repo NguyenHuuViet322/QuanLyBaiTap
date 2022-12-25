@@ -1,0 +1,83 @@
+﻿@model QuanLyNhanKhau.Models.HoKhau
+@inject QuanLyNhanKhauConText _context
+
+<div class="modal fade" id="TachHoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel"><strong>Tách hộ khẩu</strong></h4>
+            </div>
+            <div class="modal-body m-2" style="background:aliceblue;">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row" style="margin-left:0px;margin-right:0px;">
+                            <form asp-action="Chia_HoKhau">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <label class="control-label">Những người tách hộ:</label>
+                                <div class="form-group">
+                                    @foreach(var member in Model.nhanKhaus)
+                                    {
+                                        <div class="form-check">
+                                        <input class="form-check-input" name="moveoutList" type="checkbox" value="@member.IdNhanKhau">
+                                        <label class="form-check-label" for="flexCheckDefault">
+                                            @member.HoTen (@member.CMND)
+                                        </label>
+                                    </div>
+                                    }
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="SoHoKhau" class="control-label"></label>
+                                    <input asp-for="SoHoKhau" class="form-control" />
+                                    <span asp-validation-for="SoHoKhau" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="SoNha" class="control-label"></label>
+                                    <input asp-for="SoNha" class="form-control" />
+                                    <span asp-validation-for="SoNha" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Duong" class="control-label"></label>
+                                    <select asp-for="Duong" class="form-control">
+                                        <option value="none">Chọn đường</option>
+                                        @foreach (var option in QuanLyNhanKhau.Models.Key.ListDuong)
+                                        {
+                                                <option value="@option">@option</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="Duong" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Phuong" class="control-label"></label>
+                                    <select asp-for="Phuong" class="form-control">
+                                        <option value="none">Chọn phường</option>
+                                        @foreach (var option in QuanLyNhanKhau.Models.Key.ListPhuong)
+                                        {
+                                            <option value="@option">@option</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="Phuong" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Quan" class="control-label"></label>
+                                    <select asp-for="Quan" class="form-control">
+                                        <option value="none">Chọn quận</option>
+                                        @foreach (var option in QuanLyNhanKhau.Models.Key.ListQuan)
+                                        {
+                                                <option value="@option">@option</option>
+                                        }
+                                    </select>
+                                    <span asp-validation-for="Quan" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <input type="submit" value="Create" class="btn btn-default" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

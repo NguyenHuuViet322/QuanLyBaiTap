@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -63,41 +64,93 @@ namespace QuanLyNhanKhau.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Leave_NhanKhau()
+        {
+            var nhanKhau = _context.nhanKhaus.Where(p => p.IdNhanKhau == Request.Form["id"]).FirstOrDefault();
+            var soHoKhau = nhanKhau.soHoKhau;
+            if (Request.Form["nguyenNhan"] == 0)
+            {
+                nhanKhau.NguyenNhan = "Qua đời";
+            }
+            if (Request.Form["nguyenNhan"] == 0)
+            {
+                nhanKhau.NguyenNhan = "Chuyển đi";
+                nhanKhau.DiaChiTruoc = nhanKhau.soHoKhau;
+                nhanKhau.soHoKhau = "0";
+            }
+            if (Request.Form["nguyenNhan"] == 0)
+            {
+                nhanKhau.NguyenNhan = "Tạm vắng";
+            }
+
+            _context.Update(nhanKhau);
+            _context.SaveChanges();
+            return RedirectToAction("Details_HoKhau", new { id = soHoKhau });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Chia_HoKhau([Bind("SoHoKhau,SoNha,Duong,Phuong,Quan")] HoKhau hoKhau)
+        {
+
+            if (ModelState.IsValid)
+            {
+                string soHoKhauOld = "";
+                _context.Add(hoKhau);
+                var memberList = Request.Form["moveoutList"];
+                foreach(var member in memberList)
+                {
+                    var memberObject = _context.nhanKhaus.Where(p=>p.IdNhanKhau == Int32.Parse(member)).FirstOrDefault();
+                    soHoKhauOld = memberObject.soHoKhau;
+                    memberObject.soHoKhau = hoKhau.SoHoKhau;
+                    _context.Update(memberObject);
+                }
+
+                _context.historyItems.Add(new HistoryItem("Tách hộ khẩu", hoKhau.SoHoKhau, DateTime.Now, String.Concat("Được tách ra từ ", soHoKhauOld), null));
+                _context.historyItems.Add(new HistoryItem("Tách hộ khẩu", soHoKhauOld, DateTime.Now, String.Concat("Tách hộ ", hoKhau.SoHoKhau, " ra"), null));
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(hoKhau);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create_NhanKhau([Bind("IdNhanKhau,HoTen,BiDanh,GioiTinh,NgaySinh,NoiSinh,NguyenQuan,DanToc,NgheNghiep,NoiLamViec,CMND,NgayCapCMND,NoiCapCMND,NgayDangKi,DiaChiTruoc,QuanHe,soHoKhau,NguyenChuyen,NoiChuyen,GhiChu")] NhanKhau nhanKhau)
         {
             if (ModelState.IsValid)
             {
                 nhanKhau.NgayChuyen = DateTime.Now;
+                _context.historyItems.Add(new HistoryItem("Nhân khẩu mới", nhanKhau.soHoKhau, DateTime.Now, nhanKhau.HoTen, nhanKhau.IdNhanKhau));
                 nhanKhau.NoiChuyen = "";
                 _context.Add(nhanKhau);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             ViewData["soHoKhau"] = new SelectList(_context.hoKhaus, "SoHoKhau", "SoHoKhau", nhanKhau.soHoKhau);
-            return View(nhanKhau);
+            return RedirectToAction("Details_HoKhau", new { id = nhanKhau.soHoKhau });
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit_NhanKhau(int? id, [Bind("IdNhanKhau,HoTen,BiDanh,GioiTinh,NgaySinh,NoiSinh,NguyenQuan,DanToc,NgheNghiep,NoiLamViec,CMND,NgayCapCMND,NoiCapCMND,NgayDangKi,DiaChiTruoc,QuanHe,soHoKhau")] NhanKhau nhanKhau)
+        public async Task<IActionResult> Edit_NhanKhau([Bind("IdNhanKhau,HoTen,BiDanh,GioiTinh,NgaySinh,NoiSinh,NguyenQuan,DanToc,NgheNghiep,NoiLamViec,CMND,NgayCapCMND,NoiCapCMND,NgayDangKi,DiaChiTruoc,QuanHe,soHoKhau")] NhanKhau nhanKhau)
         {
-            if (id != nhanKhau.IdNhanKhau)
-            {
-                return NotFound();
-            }
 
             if (ModelState.IsValid)
             {
                 try
                 {
                     _context.Update(nhanKhau);
-                    await _context.SaveChangesAsync();
+                    _context.historyItems.Add(new HistoryItem("Sửa thông tin nhân khẩu", nhanKhau.soHoKhau, DateTime.Now, nhanKhau.HoTen, nhanKhau.IdNhanKhau));
+                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    return NotFound();
+                    ViewBag.Failed_NhanKhau = "Có lỗi xảy ra";
+                    return RedirectToAction("Details_HoKhau", new { id = nhanKhau.soHoKhau });
                 }
-                return RedirectToAction(nameof(Index));
+                ViewBag.Success_NhanKhau = "Sửa đổi thông tin thành công";
+                return RedirectToAction("Details_HoKhau", new { id = nhanKhau.soHoKhau}); 
             }
             ViewData["soHoKhau"] = new SelectList(_context.hoKhaus, "SoHoKhau", "SoHoKhau", nhanKhau.soHoKhau);
             return View(nhanKhau);
@@ -113,8 +166,7 @@ namespace QuanLyNhanKhau.Controllers
                     try
                     {
                         var mem = _context.nhanKhaus.Where(p => p.IdNhanKhau == Int32.Parse(Request.Form["nkid"+i])).FirstOrDefault();
-                        mem.QuanHe = Request.Form["nk"+i];
-                        _context.Update(mem);
+                        mem.QuanHe = Request.Form["nk"+i];  
                         await _context.SaveChangesAsync();
                     }
                     catch (DbUpdateConcurrencyException)
@@ -128,12 +180,13 @@ namespace QuanLyNhanKhau.Controllers
                             .FirstOrDefault();
                     chuHo.QuanHe = "Chủ hộ";
                     _context.Update(chuHo);
+                    _context.historyItems.Add(new HistoryItem("Đổi chủ hộ", chuHo.soHoKhau, DateTime.Now, chuHo.HoTen, (int)chuHo.IdNhanKhau));
                     await _context.SaveChangesAsync();
+                return RedirectToAction("Details_HoKhau", new { id = chuHo.soHoKhau }) ;
                 } catch (DbUpdateConcurrencyException)
                 {
                     return NotFound();
                 }
-                return RedirectToAction(nameof(Index));
         }
 
         // POST: HoKhau/Edit/5
@@ -153,6 +206,7 @@ namespace QuanLyNhanKhau.Controllers
                 try
                 {
                     _context.Update(hoKhau);
+                    _context.historyItems.Add(new HistoryItem("Sửa thông tin hộ khẩu", hoKhau.SoHoKhau, DateTime.Now, "Hộ khẩu", null));
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

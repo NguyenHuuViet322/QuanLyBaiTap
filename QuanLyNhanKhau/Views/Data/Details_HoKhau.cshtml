@@ -27,6 +27,8 @@
         <div class="panel panel-info">
             <div class="panel-heading">
                 <strong>Thông tin hộ</strong>
+                <a style="float:right;padding-left:1em"><i data-toggle="modal" data-target="#HistoryModal" class="fa fa-history fa-2x" style="color:#625b96" aria-hidden="true"></i></a>
+                <a style="float:right;padding-left: 1em;"><i data-toggle="modal" data-target="#TachHoModal" class="fa fa-sitemap fa-2x" style="color:#7e1353" aria-hidden="true"></i></a>
             </div>
 
             <div class="panel-body">
@@ -75,6 +77,8 @@
             </div>
         </div>
     </div>
+    @Html.Partial("History_HoKhau.cshtml", Model)
+    @Html.Partial("TachHo_HoKhau.cshtml", Model)
 </div>
 <div class="col-md-8">
     <div class="row" style="margin-left:0px;margin-right:0px;">
@@ -112,6 +116,7 @@
                                                 <a data-toggle="modal" data-target="#Delete_@member.IdNhanKhau"><i class="fa fa-trash" aria-hidden="true"></i></a>
                                                 @Html.Partial("Details_NhanKhau.cshtml", @member)
                                                 @Html.Partial("Edit_NhanKhau.cshtml", @member)
+                                                @Html.Partial("Leave_NhanKhau.cshtml", @member)
                                             </td>
                                         </tr>
                                     }

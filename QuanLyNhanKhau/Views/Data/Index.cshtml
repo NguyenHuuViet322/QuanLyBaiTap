@@ -41,26 +41,24 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+    @foreach (var item in Model) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.SoHoKhau)
             </td>
                 @{
+                    string chuHo;
                     item.nhanKhaus = _context.nhanKhaus.Where(p => (p.soHoKhau == item.SoHoKhau)).ToList();
                 }
-                @if (item.nhanKhaus != null)
-                {
-                    <td>
-                        @item.nhanKhaus.Where(p => p.QuanHe == "Chủ hộ").FirstOrDefault().HoTen
-                    </td>
+                @try {
+                    chuHo = @item.nhanKhaus.Where(p => p.QuanHe == "Chủ hộ").FirstOrDefault().HoTen;
                 }
-                else
+                catch(NullReferenceException)
                 {
-                    <td>
-                        Chưa thiết lập
-                    </td>
+                    chuHo = "Chưa thiết lập";
                 }
+                <td>@chuHo</td>
+                        
             <td>
                 @Html.DisplayFor(modelItem => item.SoNha)
             </td>
