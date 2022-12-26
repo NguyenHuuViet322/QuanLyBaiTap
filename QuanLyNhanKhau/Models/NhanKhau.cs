@@ -99,5 +99,18 @@ namespace QuanLyNhanKhau.Models
             }
             return NguyenNhan;
         }
+
+        public string GetColor()
+        {
+            if (NguyenNhan == "Qua đời" || NguyenNhan == "Chuyển đi")
+            {
+                return "Red";
+            }
+            if (NguyenNhan == "Tạm vắng")
+            {
+                return "Yellow";
+            }
+            return "inherit";
+        }
     }
 }

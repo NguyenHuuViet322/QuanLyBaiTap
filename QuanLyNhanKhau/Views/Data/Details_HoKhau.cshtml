@@ -37,7 +37,7 @@
                         <tbody>
                             <tr class="info">
                                 <td><strong>Chủ hộ:</strong></td>
-                                @if (check)
+                                @if (chuHo != null)
                                 {
                                     <td>@chuHo.HoTen
                                         <a data-toggle="modal" data-target="#EditMasterModel" style="float:right;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
@@ -95,7 +95,7 @@
                             <tr class="info">
                                 <th>Họ tên</th>
                                 <th>CMND</th>
-                                <th>Quan hệ với chủ hộ</th>
+                                <th>Tình trạng</th>
                                 <th>Thao tác</th>
                             </tr>
                         </thead>
@@ -103,12 +103,12 @@
                             @{
                                 if (Model.nhanKhaus.Count() != 0)
                                 {
-                                    foreach (var member in Model.nhanKhaus)
+                                    foreach (var member in Model.nhanKhaus.OrderBy(p => p.NguyenNhan))
                                     {
-                                        <tr class="info">
+                                        <tr class="info" style="@member.GetColor()">
                                             <td>@member.HoTen</td>
                                             <td>@member.CMND</td>
-                                            <td>@member.QuanHe</td>
+                                            <td>@member.GetStatus()</td>
                                             <td>
                                                 <a data-toggle="modal" data-target="#EditNK_@member.IdNhanKhau"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
                                                 <a data-toggle="modal" data-target="#Leave_@member.IdNhanKhau"><i class="fa fa-minus-square" aria-hidden="true"></i></a>

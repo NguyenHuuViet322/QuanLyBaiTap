@@ -90,11 +90,11 @@ namespace QuanLyNhanKhau.Migrations
                 {
                     IdItem = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    HoatDong = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SoHoKhau = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    NgayThayDoi = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    GhiChu = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DoiTuong = table.Column<int>(type: "int", nullable: false)
+                    HoatDong = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SoHoKhau = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NgayThayDoi = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    GhiChu = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DoiTuong = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {

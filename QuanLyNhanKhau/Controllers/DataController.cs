@@ -66,19 +66,19 @@ namespace QuanLyNhanKhau.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Leave_NhanKhau()
         {
-            var nhanKhau = _context.nhanKhaus.Where(p => p.IdNhanKhau == Request.Form["id"]).FirstOrDefault();
+            var nhanKhau = _context.nhanKhaus.Where(p => p.IdNhanKhau == Int32.Parse(Request.Form["id"])).FirstOrDefault();
             var soHoKhau = nhanKhau.soHoKhau;
-            if (Request.Form["nguyenNhan"] == 0)
+            if (Request.Form["nguyenNhan"] == "0")
             {
                 nhanKhau.NguyenNhan = "Qua đời";
             }
-            if (Request.Form["nguyenNhan"] == 0)
+            if (Request.Form["nguyenNhan"] == "1")
             {
                 nhanKhau.NguyenNhan = "Chuyển đi";
                 nhanKhau.DiaChiTruoc = nhanKhau.soHoKhau;
                 nhanKhau.soHoKhau = "0";
             }
-            if (Request.Form["nguyenNhan"] == 0)
+            if (Request.Form["nguyenNhan"] == "2")
             {
                 nhanKhau.NguyenNhan = "Tạm vắng";
             }
@@ -106,8 +106,8 @@ namespace QuanLyNhanKhau.Controllers
                     _context.Update(memberObject);
                 }
 
-                _context.historyItems.Add(new HistoryItem("Tách hộ khẩu", hoKhau.SoHoKhau, DateTime.Now, String.Concat("Được tách ra từ ", soHoKhauOld), null));
-                _context.historyItems.Add(new HistoryItem("Tách hộ khẩu", soHoKhauOld, DateTime.Now, String.Concat("Tách hộ ", hoKhau.SoHoKhau, " ra"), null));
+                //_context.historyItems.Add(new HistoryItem("Tách hộ khẩu", hoKhau.SoHoKhau, DateTime.Now, String.Concat("Được tách ra từ ", soHoKhauOld), null));
+                //_context.historyItems.Add(new HistoryItem("Tách hộ khẩu", soHoKhauOld, DateTime.Now, String.Concat("Tách hộ ", hoKhau.SoHoKhau, " ra"), null));
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -116,16 +116,20 @@ namespace QuanLyNhanKhau.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create_NhanKhau([Bind("IdNhanKhau,HoTen,BiDanh,GioiTinh,NgaySinh,NoiSinh,NguyenQuan,DanToc,NgheNghiep,NoiLamViec,CMND,NgayCapCMND,NoiCapCMND,NgayDangKi,DiaChiTruoc,QuanHe,soHoKhau,NguyenChuyen,NoiChuyen,GhiChu")] NhanKhau nhanKhau)
+        public async Task<IActionResult> Create_NhanKhau([Bind("IdNhanKhau,HoTen,BiDanh,GioiTinh,NgaySinh,NoiSinh,NguyenNhan,NguyenQuan,DanToc,NgheNghiep,NoiLamViec,CMND,NgayCapCMND,NoiCapCMND,NgayDangKi,DiaChiTruoc,QuanHe,soHoKhau,NguyenChuyen,NoiChuyen,GhiChu")] NhanKhau nhanKhau)
         {
             if (ModelState.IsValid)
             {
                 nhanKhau.NgayChuyen = DateTime.Now;
-                _context.historyItems.Add(new HistoryItem("Nhân khẩu mới", nhanKhau.soHoKhau, DateTime.Now, nhanKhau.HoTen, nhanKhau.IdNhanKhau));
-                nhanKhau.NoiChuyen = "";
+                nhanKhau.NoiChuyen = "Bruh123@";
                 _context.Add(nhanKhau);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var id = _context.nhanKhaus.Where(p => p.NoiChuyen == "Bruh123@").FirstOrDefault();
+                _context.historyItems.Add(new HistoryItem("Nhân khẩu mới", nhanKhau.soHoKhau, DateTime.Now, nhanKhau.HoTen, id.IdNhanKhau));
+                id.NoiChuyen = "";
+                _context.Update(id);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Details_HoKhau", new { id = nhanKhau.soHoKhau });
             }
             ViewData["soHoKhau"] = new SelectList(_context.hoKhaus, "SoHoKhau", "SoHoKhau", nhanKhau.soHoKhau);
             return RedirectToAction("Details_HoKhau", new { id = nhanKhau.soHoKhau });

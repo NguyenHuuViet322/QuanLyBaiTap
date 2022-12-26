@@ -13,27 +13,29 @@
                         <form asp-action="Leave_NhanKhau">
                             <input class="form-control" type="hidden" value="@Model.IdNhanKhau" name="id"/>
                             <div class="form-group">
-                                <label class="form-control" for="hoten">Họ tên</labe>
+                                <label class="form-label" for="hoten">Họ tên</label>
                                 <input class="form-control" type="text" value="@Model.HoTen" name="hoten" disabled/>
                             </div>
                             <div class="form-group">
-                                <label class="form-control" for="CMND">CMND</labe>
+                                <label class="form-label" for="CMND">CMND</label>
                                 <input class="form-control" type="text" value="@Model.CMND" name="CMND" disabled/>
                             </div>
-                            <label class="form-control">Nguyên nhân</label>
-                            <select name="nguyenNhan">
+                            <label class="form-label">Nguyên nhân</label>
+                            <select name="nguyenNhan" class="form-control">
                                 <option value="">Chọn nguyên nhân</option>
                                 <option value="0">Qua đời</option>
                                 <option value="1">Chuyển đi</option>
                                 <option value="2">Tạm vắng</option>
                             </select>
                             <div class="form-group">
-                                <label class="form-control" for="ngayChuyen">Ngày chuyển</labe>
-                                <input class="form-control" type="datetime" name="ngayChuyen" disabled/>    
+                                <label class="form-label" for="ngayChuyen">
+                                    Ngày chuyển</label>
+                                <input class="form-control" type="Date" name="ngayChuyen"/>    
                             </div>
                             <div class="form-group">
-                                <label class="form-control" for="noiChuyen">Nơi chuyển</labe>
-                                <input class="form-control" type="text" name="noiChuyen" disabled/>
+                                <label class="form-label" for="noiChuyen">
+                                    Nơi chuyển</label>
+                                <input class="form-control" type="text" name="noiChuyen"/>
                             </div>
                             <div class="form-group">
                                 <input type="submit" value="Lưu thay đổi" class="btn btn-default" />
