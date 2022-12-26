@@ -1,0 +1,120 @@
+﻿@model IEnumerable<QuanLyNhanKhau.Models.HoKhau>
+@inject QuanLyNhanKhauConText _context
+
+@{
+    ViewData["Title"] = "Danh sách hộ khẩu";
+    ViewData["Desc"] = "Tìm kiếm và thao tác với các hộ khẩu";
+    Layout = "~/Views/Shared/_InnerLayout.cshtml";
+}
+
+<div class="panel">
+    <button class="btn btn-primary" data-toggle="modal" data-target="#createFormModal">
+        Tạo mới
+    </button>
+    <button class="btn btn-warning" data-toggle="modal" data-target="#searchFormModal">
+        Tìm kiếm
+    </button>
+</div>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.SoHoKhau)
+            </th>
+            <th>Chủ hộ</th>
+            <th>
+                @Html.DisplayNameFor(model => model.SoNha)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Duong)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Phuong)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quan)
+            </th>
+            <th>
+                Thao tác
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SoHoKhau)
+                </td>
+                @{
+                    string chuHo;
+                    item.nhanKhaus = _context.nhanKhaus.Where(p => (p.soHoKhau == item.SoHoKhau)).ToList();
+                }
+                @try
+                {
+                    chuHo = @item.nhanKhaus.Where(p => p.QuanHe == "Chủ hộ").FirstOrDefault().HoTen;
+                }
+                catch (NullReferenceException)
+                {
+                    chuHo = "Chưa thiết lập";
+                }
+                <td>@chuHo</td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.SoNha)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Duong)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Phuong)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quan)
+                </td>
+                <td>
+                    <a data-toggle="modal" data-target="#Edit_@item.SoHoKhau"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                    <a asp-action="Details_HoKhau" asp-route-id="@item.SoHoKhau"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                    <a data-toggle="modal" data-target="#Delete_@item.SoHoKhau"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                </td>
+
+                @Html.Partial("Edit_HoKhau.cshtml", @item)
+
+                @Html.Partial("Delete_HoKhau.cshtml", @item)
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<div class="modal fade" id="createFormModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel"><strong>Thêm hộ khẩu mới</strong></h4>
+            </div>
+            <div class="modal-body m-2" style="background:aliceblue;">
+                @Html.Partial("Create_HoKhau.cshtml", new QuanLyNhanKhau.Models.HoKhau())
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="searchFormModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel"><strong>Tìm kiếm</strong></h4>
+            </div>
+            <div class="modal-body m-2" style="background:aliceblue;">
+                <form method="get">
+                    <input name="condition" type="text">
+                    <button type="submit" action="Create">Tìm kiếm</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

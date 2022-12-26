@@ -19,14 +19,19 @@ namespace QuanLyNhanKhau.Models
         [Key]
         public int IdItem { get; set; }
 
+        [Display(Name = "Hoạt động")]
         public string HoatDong { get; set; }
 
+        [Display(Name = "Hộ khẩu thay đổi")]
         public string SoHoKhau { get; set; }
 
+        [Display(Name = "Ngày xảy ra")]
         public DateTime NgayThayDoi { get; set; }
 
+        [Display(Name = "Ghi chú")]
         public string GhiChu { get; set; }
 
+        [Display(Name = "Đối tượng chuyển")]
         public int? DoiTuong { get; set; }
 
         [ForeignKey("DoiTuong")]

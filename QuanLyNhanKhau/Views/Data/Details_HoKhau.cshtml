@@ -105,7 +105,7 @@
                                 {
                                     foreach (var member in Model.nhanKhaus.OrderBy(p => p.NguyenNhan))
                                     {
-                                        <tr class="info" style="@member.GetColor()">
+                                        <tr class="info" bgcolor = "@member.GetColor()">
                                             <td>@member.HoTen</td>
                                             <td>@member.CMND</td>
                                             <td>@member.GetStatus()</td>
@@ -113,10 +113,11 @@
                                                 <a data-toggle="modal" data-target="#EditNK_@member.IdNhanKhau"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
                                                 <a data-toggle="modal" data-target="#Leave_@member.IdNhanKhau"><i class="fa fa-minus-square" aria-hidden="true"></i></a>
                                                 <a data-toggle="modal" data-target="#Details_@member.IdNhanKhau"><i class="fa fa-eye" aria-hidden="true"></i></a>
-                                                <a data-toggle="modal" data-target="#Delete_@member.IdNhanKhau"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                                <a data-toggle="modal" data-target="#DeleteNK_@member.IdNhanKhau"><i class="fa fa-trash" aria-hidden="true"></i></a>
                                                 @Html.Partial("Details_NhanKhau.cshtml", @member)
                                                 @Html.Partial("Edit_NhanKhau.cshtml", @member)
                                                 @Html.Partial("Leave_NhanKhau.cshtml", @member)
+                                                
                                             </td>
                                         </tr>
                                     }

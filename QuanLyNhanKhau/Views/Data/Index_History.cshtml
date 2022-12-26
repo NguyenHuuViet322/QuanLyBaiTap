@@ -1,9 +1,9 @@
-﻿@model IEnumerable<QuanLyNhanKhau.Models.HoKhau>
+﻿@model IEnumerable<QuanLyNhanKhau.Models.HistoryItem>
 @inject QuanLyNhanKhauConText _context
 
 @{
-    ViewData["Title"] = "Danh sách hộ khẩu";
-    ViewData["Desc"] = "Tìm kiếm và thao tác với các hộ khẩu";
+    ViewData["Title"] = "Danh sách nhân khẩu";
+    ViewData["Desc"] = "Tìm kiếm và thao tác với các nhân khẩu";
     Layout = "~/Views/Shared/_InnerLayout.cshtml";  
 }
 
@@ -20,68 +20,54 @@
     <thead>
         <tr>
             <th>
+                STT
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.SoHoKhau)
             </th>
-            <th>Chủ hộ</th>
             <th>
-                @Html.DisplayNameFor(model => model.SoNha)
+                @Html.DisplayNameFor(model => model.HoatDong)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Duong)
+                @Html.DisplayNameFor(model => model.DoiTuong)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Phuong)
+                @Html.DisplayNameFor(model => model.GhiChu)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Quan)
-            </th>
-            <th>
-                Thao tác
+                @Html.DisplayNameFor(model => model.NgayThayDoi)
             </th>
         </tr>
     </thead>
     <tbody>
-    @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.SoHoKhau)
-            </td>
-                @{
-                    string chuHo;
-                    item.nhanKhaus = _context.nhanKhaus.Where(p => (p.soHoKhau == item.SoHoKhau)).ToList();
-                }
-                @try {
-                    chuHo = @item.nhanKhaus.Where(p => p.QuanHe == "Chủ hộ").FirstOrDefault().HoTen;
-                }
-                catch(NullReferenceException)
-                {
-                    chuHo = "Chưa thiết lập";
-                }
-                <td>@chuHo</td>
-                        
-            <td>
-                @Html.DisplayFor(modelItem => item.SoNha)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Duong)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Phuong)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Quan)
-            </td>
-            <td>
-                <a data-toggle="modal" data-target="#Edit_@item.SoHoKhau"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                <a asp-action="Details_HoKhau" asp-route-id="@item.SoHoKhau"><i class="fa fa-eye" aria-hidden="true"></i></a>
-                <a data-toggle="modal" data-target="#Delete_@item.SoHoKhau"><i class="fa fa-trash" aria-hidden="true"></i></a>
-            </td>
+        @{
+            int stt = 1;
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @stt
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SoHoKhau)
+                    </td>
 
-            @Html.Partial("Edit_HoKhau.cshtml", @item)
-
-            @Html.Partial("Delete_HoKhau.cshtml", @item)
-        </tr>
-}
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HoatDong)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DoiTuong)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.GhiChu)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NgayThayDoi)
+                    </td>
+                </tr>
+                stt++;
+            }
+        }
     </tbody>
 </table>
 

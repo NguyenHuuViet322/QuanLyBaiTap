@@ -1,0 +1,92 @@
+﻿@model IEnumerable<QuanLyNhanKhau.Models.NhanKhau>
+@inject QuanLyNhanKhauConText _context
+
+@{
+    ViewData["Title"] = "Danh sách nhân khẩu";
+    ViewData["Desc"] = "Tìm kiếm và thao tác với các nhân khẩu";
+    Layout = "~/Views/Shared/_InnerLayout.cshtml";  
+}
+
+<div class="panel">
+        <button class="btn btn-primary" data-toggle="modal" data-target="#createFormModal">
+            Tạo mới
+        </button>
+        <button class="btn btn-warning" data-toggle="modal" data-target="#searchFormModal">
+            Tìm kiếm
+        </button>
+</div>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CMND)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HoTen)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GioiTinh)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NgaySinh)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.soHoKhau)
+            </th>
+            <th>
+                Thao tác
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CMND)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HoTen)
+            </td>
+                        
+            <td>
+                @Html.DisplayFor(modelItem => item.GioiTinh)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NgaySinh)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.soHoKhau)
+            </td>
+            <td>
+                <a data-toggle="modal" data-target="#EditNK_@item.IdNhanKhau"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                <a data-toggle="modal" data-target="#Details_@item.IdNhanKhau"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                <a data-toggle="modal" data-target="#DeleteNK_@item.IdNhanKhau"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                @Html.Partial("Edit_NhanKhau.cshtml", @item)
+                @Html.Partial("Details_NhanKhau.cshtml",@item)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+
+
+
+    <div class="modal fade" id="searchFormModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel"><strong>Tìm kiếm</strong></h4>
+                </div>
+                <div class="modal-body m-2" style="background:aliceblue;">
+                    <form method="get">
+                        <input name="condition" type="text">
+                        <button type="submit" action="Create">Tìm kiếm</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+

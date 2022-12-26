@@ -59,13 +59,13 @@
                         <a href="#"><i class="fa fa-yelp "></i>Quản lý<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="invoice.html"><i class="fa fa-coffee"></i>Xem danh sách</a>
+                                <a asp-controller="Data" asp-action="Index_NhanKhau"><i class="fa fa-coffee"></i>Danh sách nhân khẩu</a>
                             </li>
                             <li>
-                                <a asp-controller="Data" asp-action="Index"><i class="fa fa-key "></i>Danh sách hộ khẩu</a>
+                                <a asp-controller="Data" asp-action="Index_HoKhau"><i class="fa fa-key "></i>Danh sách hộ khẩu</a>
                             </li>
                             <li>
-                                <a href="history.html"><i class="fa fa-send "></i>Lịch sử thay đôi</a>
+                                <a asp-controller="Data" asp-action="Index_History"><i class="fa fa-send "></i>Lịch sử thay đôi</a>
                             </li>
                         </ul>
                     </li>

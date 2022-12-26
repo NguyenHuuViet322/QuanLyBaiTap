@@ -21,11 +21,16 @@ namespace QuanLyNhanKhau.Controllers
         }
 
         // GET: HoKhau
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index_HoKhau()
         {
               return View(await _context.hoKhaus.ToListAsync());
         }
 
+        public async Task<IActionResult> Index_History()
+        {
+            return View(await _context.historyItems.ToListAsync());
+        }
+        
         public async Task<IActionResult> Details_HoKhau(string id)
         {
             if (id == null || _context.hoKhaus == null)
@@ -43,6 +48,11 @@ namespace QuanLyNhanKhau.Controllers
             }
 
             return View(hoKhau);
+        }
+
+        public async Task<IActionResult> Index_NhanKhau()
+        {
+            return View(await _context.nhanKhaus.ToListAsync());
         }
 
         // POST: HoKhau/Create
@@ -71,15 +81,19 @@ namespace QuanLyNhanKhau.Controllers
             if (Request.Form["nguyenNhan"] == "0")
             {
                 nhanKhau.NguyenNhan = "Qua đời";
+                _context.historyItems.Add(new HistoryItem("Nhân khẩu qua đời", soHoKhau, DateTime.Now, nhanKhau.HoTen, nhanKhau.IdNhanKhau));
             }
             if (Request.Form["nguyenNhan"] == "1")
             {
                 nhanKhau.NguyenNhan = "Chuyển đi";
                 nhanKhau.DiaChiTruoc = nhanKhau.soHoKhau;
                 nhanKhau.soHoKhau = "0";
+                _context.historyItems.Add(new HistoryItem("Nhân khẩu chuyển đi", soHoKhau, DateTime.Now, nhanKhau.HoTen, nhanKhau.IdNhanKhau));
+
             }
             if (Request.Form["nguyenNhan"] == "2")
             {
+                _context.historyItems.Add(new HistoryItem("Nhân khẩu tạm vắng", soHoKhau, DateTime.Now, nhanKhau.HoTen, nhanKhau.IdNhanKhau));
                 nhanKhau.NguyenNhan = "Tạm vắng";
             }
 
@@ -125,7 +139,7 @@ namespace QuanLyNhanKhau.Controllers
                 _context.Add(nhanKhau);
                 await _context.SaveChangesAsync();
                 var id = _context.nhanKhaus.Where(p => p.NoiChuyen == "Bruh123@").FirstOrDefault();
-                _context.historyItems.Add(new HistoryItem("Nhân khẩu mới", nhanKhau.soHoKhau, DateTime.Now, nhanKhau.HoTen, id.IdNhanKhau));
+                _context.historyItems.Add(new HistoryItem("Nhân khẩu mới " + nhanKhau.NguyenNhan, nhanKhau.soHoKhau, DateTime.Now, nhanKhau.HoTen, id.IdNhanKhau));
                 id.NoiChuyen = "";
                 _context.Update(id);
                 await _context.SaveChangesAsync();

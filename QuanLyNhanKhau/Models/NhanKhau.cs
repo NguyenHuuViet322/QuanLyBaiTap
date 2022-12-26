@@ -50,7 +50,7 @@ namespace QuanLyNhanKhau.Models
         [StringLength(25, MinimumLength = 3, ErrorMessage = "Độ dài nơi làm việc phải trong khoảng 3 đến 50 kí tự")]
         public string NoiLamViec { get; set; }
 
-        [Display(Name = "Số CMND/CCCD (Ghi số 0 nếu nhân khẩu chưa có CMND/CCCD)", Prompt = "Số CMND/CCCD")]
+        [Display(Name = "Số CMND/CCCD", Prompt = "Số CMND/CCCD")]
         [Required(ErrorMessage = "Thiếu số CMND/CCCD")]
         [StringLength(13, MinimumLength = 9, ErrorMessage = "Độ dài nơi làm việc phải trong khoảng 9 đến 13 kí tự")]
         public string CMND { get; set; }
