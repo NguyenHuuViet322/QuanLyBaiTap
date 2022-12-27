@@ -67,7 +67,6 @@ namespace QuanLyNhanKhau.Models
         public DateTime NgayDangKi { get; set; }
 
         [Display(Name = "Địa chỉ thường trú trước khi chuyển đến", Prompt = "Địa chỉ thường chú trước khi chuyển đến")]
-        [StringLength(25, ErrorMessage = "Độ dài nơi làm việc phải trong khoảng 9 đến 13 kí tự")]
         public string DiaChiTruoc { get; set; }
 
         [Display(Name = "Quan hệ với chủ hộ (Nếu là chủ hộ nhập '0')", Prompt = "Quan hệ với chủ hộ")]

@@ -67,9 +67,9 @@ namespace QuanLyNhanKhau.Controllers
             {
                 _context.Add(hoKhau);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index_HoKhau");
             }
-            return View(hoKhau);
+            return RedirectToAction("Index_HoKhau");
         }
 
         [HttpPost]
@@ -123,7 +123,7 @@ namespace QuanLyNhanKhau.Controllers
                 //_context.historyItems.Add(new HistoryItem("Tách hộ khẩu", hoKhau.SoHoKhau, DateTime.Now, String.Concat("Được tách ra từ ", soHoKhauOld), null));
                 //_context.historyItems.Add(new HistoryItem("Tách hộ khẩu", soHoKhauOld, DateTime.Now, String.Concat("Tách hộ ", hoKhau.SoHoKhau, " ra"), null));
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                            return RedirectToAction("Index_HoKhau");;
             }
             return View(hoKhau);
         }
@@ -238,7 +238,7 @@ namespace QuanLyNhanKhau.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index_HoKhau));
             }
             return View(hoKhau);
         }
@@ -255,11 +255,17 @@ namespace QuanLyNhanKhau.Controllers
             var hoKhau = await _context.hoKhaus.FindAsync(SoHoKhau);
             if (hoKhau != null)
             {
+                var lstNhanKhau = _context.nhanKhaus.Where(p => p.soHoKhau == SoHoKhau).ToList();
+                foreach(var item in lstNhanKhau)
+                {
+                    item.soHoKhau = "Null";
+                    _context.Update(item);
+                }    
                 _context.hoKhaus.Remove(hoKhau);
             }
             
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index_HoKhau");;
         }
 
         private bool HoKhauExists(string id)

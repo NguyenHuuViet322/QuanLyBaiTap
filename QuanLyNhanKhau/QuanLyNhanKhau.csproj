@@ -108,7 +108,9 @@
     <None Include="wwwroot\img\slideshow\1.jpg" />
     <None Include="wwwroot\img\slideshow\2.jpg" />
     <None Include="wwwroot\img\slideshow\3.jpg" />
-    <None Include="wwwroot\img\user.jpg" />
+    <None Include="wwwroot\img\ user.jpg" />
+	<None Include="wwwroot\img\ kaine.jpg" />
+    <None Include="wwwroot\img\ kaine1.jpg" />
     <None Include="wwwroot\js\bootstrap-fileupload.js" />
     <None Include="wwwroot\js\bootstrap.js" />
     <None Include="wwwroot\js\custom.js" />
