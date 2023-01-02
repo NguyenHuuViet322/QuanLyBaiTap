@@ -34,10 +34,14 @@ namespace QuanLyNhanKhau.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Password")
-                        .HasColumnType("int");
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("nhanKhauId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("role")
                         .HasColumnType("int");
 
                     b.HasKey("IdAccount");
@@ -45,6 +49,34 @@ namespace QuanLyNhanKhau.Migrations
                     b.HasIndex("nhanKhauId");
 
                     b.ToTable("Account");
+                });
+
+            modelBuilder.Entity("QuanLyNhanKhau.Models.CoSoVatChat", b =>
+                {
+                    b.Property<int>("IdItem")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdItem"));
+
+                    b.Property<string>("ghiChu")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("hienTrang")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("soLuong")
+                        .HasColumnType("int");
+
+                    b.Property<string>("tenCoSoVatChat")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("IdItem");
+
+                    b.ToTable("CoSoVatChat");
                 });
 
             modelBuilder.Entity("QuanLyNhanKhau.Models.HistoryItem", b =>
@@ -55,7 +87,7 @@ namespace QuanLyNhanKhau.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdItem"));
 
-                    b.Property<int>("DoiTuong")
+                    b.Property<int?>("DoiTuong")
                         .HasColumnType("int");
 
                     b.Property<string>("GhiChu")
@@ -134,8 +166,7 @@ namespace QuanLyNhanKhau.Migrations
 
                     b.Property<string>("DiaChiTruoc")
                         .IsRequired()
-                        .HasMaxLength(25)
-                        .HasColumnType("nvarchar(25)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("GhiChu")
                         .HasColumnType("nvarchar(max)");
@@ -220,9 +251,7 @@ namespace QuanLyNhanKhau.Migrations
                 {
                     b.HasOne("QuanLyNhanKhau.Models.NhanKhau", "DoiTuongO")
                         .WithMany()
-                        .HasForeignKey("DoiTuong")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("DoiTuong");
 
                     b.Navigation("DoiTuongO");
                 });

@@ -1,0 +1,68 @@
+﻿@model IEnumerable<QuanLyNhanKhau.Models.CoSoVatChat>
+
+@{
+    ViewData["Title"] = "Thiết bị nhà văn hóa";
+    ViewData["Desc"] = "Thao tác các cơ sở vật chất sử dụng trong nhà văn hóa";
+    Layout = "~/Views/Shared/_InnerLayout.cshtml";
+    int stt = 1;
+}
+
+<div class="panel">
+    <button class="btn btn-primary" data-toggle="modal" data-target="#createFormModal">
+        Tạo mới
+    </button>
+    <button class="btn btn-warning" data-toggle="modal" data-target="#searchFormModal">
+        Tìm kiếm
+    </button>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>STT</th>
+            <th>
+                @Html.DisplayNameFor(model => model.tenCoSoVatChat)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.soLuong)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.hienTrang)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ghiChu)
+            </th>
+            <th>Thao tác</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>@stt</td>
+            <td>
+                @Html.DisplayFor(modelItem => item.tenCoSoVatChat)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.soLuong)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.hienTrang)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ghiChu)
+            </td>
+            <td>
+                <a data-toggle="modal" data-target="#editCSVC_@item.IdItem"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                <a data-toggle="modal" data-target="#detailCSVC_@item.IdItem"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                <a data-toggle="modal" data-target="#deleteCSVC_@item.IdItem"><i class="fa fa-trash" aria-hidden="true"></i></a>
+            </td>
+            @Html.Partial("Edit_NhaVanHoa.cshtml", item)
+            @Html.Partial("Detail_NhaVanHoa.cshtml", item)
+            @Html.Partial("Delete_NhaVanHoa.cshtml", item)
+        </tr>
+        stt++;
+        }
+    </tbody>
+</table>
+
+@Html.Partial("Create_NhaVanHoa.cshtml", new QuanLyNhanKhau.Models.CoSoVatChat())

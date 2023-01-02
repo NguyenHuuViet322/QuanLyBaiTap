@@ -23,16 +23,20 @@ namespace QuanLyNhanKhau.Controllers
         // GET: HoKhau
         public async Task<IActionResult> Index_HoKhau()
         {
-              return View(await _context.hoKhaus.ToListAsync());
+            if (HttpContext.Session.GetString("Role") == null) return RedirectToAction("Index", "Account");
+            return View(await _context.hoKhaus.ToListAsync());
         }
 
         public async Task<IActionResult> Index_History()
         {
+            if (HttpContext.Session.GetString("Role") == null) return RedirectToAction("Index", "Account");
             return View(await _context.historyItems.ToListAsync());
         }
         
         public async Task<IActionResult> Details_HoKhau(string id)
         {
+            if (HttpContext.Session.GetString("Role") == null) return RedirectToAction("Index", "Account");
+
             if (id == null || _context.hoKhaus == null)
             {
                 return NotFound();
@@ -52,6 +56,8 @@ namespace QuanLyNhanKhau.Controllers
 
         public async Task<IActionResult> Index_NhanKhau()
         {
+            if (HttpContext.Session.GetString("Role") == null) return RedirectToAction("Index", "Account");
+
             return View(await _context.nhanKhaus.ToListAsync());
         }
 
@@ -62,7 +68,6 @@ namespace QuanLyNhanKhau.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create_HoKhau([Bind("SoHoKhau,SoNha,Duong,Phuong,Quan")] HoKhau hoKhau)
         {
-   
             if (ModelState.IsValid)
             {
                 _context.Add(hoKhau);
@@ -142,6 +147,7 @@ namespace QuanLyNhanKhau.Controllers
                 _context.historyItems.Add(new HistoryItem("Nhân khẩu mới " + nhanKhau.NguyenNhan, nhanKhau.soHoKhau, DateTime.Now, nhanKhau.HoTen, id.IdNhanKhau));
                 id.NoiChuyen = "";
                 _context.Update(id);
+                _context.accounts.Add(new Account("123", nhanKhau.CMND, (int)nhanKhau.IdNhanKhau));
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Details_HoKhau", new { id = nhanKhau.soHoKhau });
             }
@@ -153,6 +159,8 @@ namespace QuanLyNhanKhau.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit_NhanKhau([Bind("IdNhanKhau,HoTen,BiDanh,GioiTinh,NgaySinh,NoiSinh,NguyenQuan,DanToc,NgheNghiep,NoiLamViec,CMND,NgayCapCMND,NoiCapCMND,NgayDangKi,DiaChiTruoc,QuanHe,soHoKhau")] NhanKhau nhanKhau)
         {
+            if (HttpContext.Session.GetString("Role") == null) return RedirectToAction("Index", "Account");
+
 
             if (ModelState.IsValid)
             {
@@ -243,8 +251,27 @@ namespace QuanLyNhanKhau.Controllers
             return View(hoKhau);
         }
 
+        [HttpPost, ActionName("Delete_NhanKhau")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int? IdNhanKhau)
+        {
+            if (_context.nhanKhaus == null)
+            {
+                return Problem("Entity set 'QuanLyNhanKhauConText.nhanKhaus'  is null.");
+            }
+            var nhanKhau = await _context.nhanKhaus.FindAsync(IdNhanKhau);
+            if (nhanKhau != null)
+            {
+                _context.historyItems.Add(new HistoryItem("Xóa nhân khẩu", nhanKhau.soHoKhau, DateTime.Now, nhanKhau.HoTen, null));
+                _context.nhanKhaus.Remove(nhanKhau);
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index_NhanKhau));
+        }
+
         // POST: HoKhau/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("Delete_HoKhau")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string SoHoKhau)
         {
@@ -260,7 +287,8 @@ namespace QuanLyNhanKhau.Controllers
                 {
                     item.soHoKhau = "Null";
                     _context.Update(item);
-                }    
+                }
+                _context.historyItems.Add(new HistoryItem("Xóa hộ khẩu", SoHoKhau, DateTime.Now, SoHoKhau, null));
                 _context.hoKhaus.Remove(hoKhau);
             }
             

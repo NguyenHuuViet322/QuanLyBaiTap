@@ -12,6 +12,22 @@ namespace QuanLyNhanKhau.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "CoSoVatChat",
+                columns: table => new
+                {
+                    IdItem = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    tenCoSoVatChat = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    soLuong = table.Column<int>(type: "int", nullable: false),
+                    hienTrang = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ghiChu = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CoSoVatChat", x => x.IdItem);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "HoKhau",
                 columns: table => new
                 {
@@ -42,10 +58,10 @@ namespace QuanLyNhanKhau.Migrations
                     NgheNghiep = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
                     NoiLamViec = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
                     CMND = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
-                    NgayCapCMND = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    NoiCapCMND = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
+                    NgayCapCMND = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    NoiCapCMND = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: true),
                     NgayDangKi = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DiaChiTruoc = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
+                    DiaChiTruoc = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     QuanHe = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     soHoKhau = table.Column<string>(type: "nvarchar(15)", nullable: false),
                     NguyenNhan = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -69,8 +85,9 @@ namespace QuanLyNhanKhau.Migrations
                 {
                     IdAccount = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Password = table.Column<int>(type: "int", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CMND = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    role = table.Column<int>(type: "int", nullable: false),
                     nhanKhauId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -90,10 +107,10 @@ namespace QuanLyNhanKhau.Migrations
                 {
                     IdItem = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    HoatDong = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SoHoKhau = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NgayThayDoi = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    GhiChu = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    HoatDong = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SoHoKhau = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NgayThayDoi = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    GhiChu = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DoiTuong = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -103,8 +120,7 @@ namespace QuanLyNhanKhau.Migrations
                         name: "FK_History_NhanKhau_DoiTuong",
                         column: x => x.DoiTuong,
                         principalTable: "NhanKhau",
-                        principalColumn: "IdNhanKhau",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "IdNhanKhau");
                 });
 
             migrationBuilder.CreateIndex(
@@ -128,6 +144,9 @@ namespace QuanLyNhanKhau.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Account");
+
+            migrationBuilder.DropTable(
+                name: "CoSoVatChat");
 
             migrationBuilder.DropTable(
                 name: "History");

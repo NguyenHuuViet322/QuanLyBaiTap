@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using System.ComponentModel;
 
 namespace QuanLyNhanKhau.Models
 {
@@ -16,5 +17,15 @@ namespace QuanLyNhanKhau.Models
         public static List<string> ListTP = new List<string>() { "Hải Phòng", "Hà Nội", "Thái Bình",
                                                                     "Huế"};
         public static List<string> ListGioiTinh = new List<string>() { "Nam", "Nữ", "Gay"} ;
+    }
+
+    public enum Role
+    {
+        [Description("Dân")]
+        Dan = 0,
+        [Description("Cán bộ")]
+        CanBo = 1,
+        [Description("Admin")]
+        Admin = 2
     }
 }

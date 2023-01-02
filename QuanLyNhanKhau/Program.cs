@@ -10,6 +10,14 @@ builder.Services.AddDbContext<QuanLyNhanKhauConText>(options =>
     string conn = builder.Configuration.GetConnectionString("QuanLyNhanKhauDb");
     options.UseSqlServer(conn);
 });
+builder.Services.AddSession(session =>
+{
+    session.Cookie.Name = "name";
+    session.Cookie.Name = "id";
+    session.Cookie.Name = "role";
+    session.IdleTimeout = new TimeSpan(0, 60, 0);
+});
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 var app = builder.Build();
 
@@ -23,7 +31,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
+app.UseSession();
 app.UseRouting();
 
 app.UseAuthorization();
