@@ -9,6 +9,7 @@ namespace QuanLyNhanKhau.Models
         public DbSet<Account> accounts { get; set; }
         public DbSet<HistoryItem> historyItems { get; set; }
         public DbSet<CoSoVatChat> coSoVatChats { get; set; }
+        public DbSet<Request> requests { get; set; }
 
         public QuanLyNhanKhauConText(DbContextOptions<QuanLyNhanKhauConText> options):base(options) { }
 

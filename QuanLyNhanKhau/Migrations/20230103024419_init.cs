@@ -58,10 +58,10 @@ namespace QuanLyNhanKhau.Migrations
                     NgheNghiep = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
                     NoiLamViec = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
                     CMND = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
-                    NgayCapCMND = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    NoiCapCMND = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: true),
+                    NgayCapCMND = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    NoiCapCMND = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
                     NgayDangKi = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DiaChiTruoc = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DiaChiTruoc = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     QuanHe = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     soHoKhau = table.Column<string>(type: "nvarchar(15)", nullable: false),
                     NguyenNhan = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -123,6 +123,29 @@ namespace QuanLyNhanKhau.Migrations
                         principalColumn: "IdNhanKhau");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Request",
+                columns: table => new
+                {
+                    IdRequest = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IdNhanKhau = table.Column<int>(type: "int", nullable: false),
+                    requestTime = table.Column<int>(type: "int", nullable: false),
+                    requestDay = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    status = table.Column<bool>(type: "bit", nullable: false),
+                    ghiChu = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Request", x => x.IdRequest);
+                    table.ForeignKey(
+                        name: "FK_Request_NhanKhau_IdNhanKhau",
+                        column: x => x.IdNhanKhau,
+                        principalTable: "NhanKhau",
+                        principalColumn: "IdNhanKhau",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Account_nhanKhauId",
                 table: "Account",
@@ -137,6 +160,11 @@ namespace QuanLyNhanKhau.Migrations
                 name: "IX_NhanKhau_soHoKhau",
                 table: "NhanKhau",
                 column: "soHoKhau");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Request_IdNhanKhau",
+                table: "Request",
+                column: "IdNhanKhau");
         }
 
         /// <inheritdoc />
@@ -150,6 +178,9 @@ namespace QuanLyNhanKhau.Migrations
 
             migrationBuilder.DropTable(
                 name: "History");
+
+            migrationBuilder.DropTable(
+                name: "Request");
 
             migrationBuilder.DropTable(
                 name: "NhanKhau");

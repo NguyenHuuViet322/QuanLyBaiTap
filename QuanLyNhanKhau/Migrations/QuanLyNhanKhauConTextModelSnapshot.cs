@@ -60,7 +60,6 @@ namespace QuanLyNhanKhau.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdItem"));
 
                     b.Property<string>("ghiChu")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("hienTrang")
@@ -236,6 +235,38 @@ namespace QuanLyNhanKhau.Migrations
                     b.ToTable("NhanKhau");
                 });
 
+            modelBuilder.Entity("QuanLyNhanKhau.Models.Request", b =>
+                {
+                    b.Property<int?>("IdRequest")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("IdRequest"));
+
+                    b.Property<int?>("IdNhanKhau")
+                        .IsRequired()
+                        .HasColumnType("int");
+
+                    b.Property<string>("ghiChu")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("requestDay")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("requestTime")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("status")
+                        .HasColumnType("bit");
+
+                    b.HasKey("IdRequest");
+
+                    b.HasIndex("IdNhanKhau");
+
+                    b.ToTable("Request");
+                });
+
             modelBuilder.Entity("QuanLyNhanKhau.Models.Account", b =>
                 {
                     b.HasOne("QuanLyNhanKhau.Models.NhanKhau", "nhanKhau")
@@ -265,6 +296,17 @@ namespace QuanLyNhanKhau.Migrations
                         .IsRequired();
 
                     b.Navigation("hoKhau");
+                });
+
+            modelBuilder.Entity("QuanLyNhanKhau.Models.Request", b =>
+                {
+                    b.HasOne("QuanLyNhanKhau.Models.NhanKhau", "nhanKhau")
+                        .WithMany()
+                        .HasForeignKey("IdNhanKhau")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("nhanKhau");
                 });
 
             modelBuilder.Entity("QuanLyNhanKhau.Models.HoKhau", b =>

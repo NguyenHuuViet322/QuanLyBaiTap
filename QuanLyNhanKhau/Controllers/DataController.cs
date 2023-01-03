@@ -23,19 +23,19 @@ namespace QuanLyNhanKhau.Controllers
         // GET: HoKhau
         public async Task<IActionResult> Index_HoKhau()
         {
-            if (HttpContext.Session.GetString("Role") == null) return RedirectToAction("Index", "Account");
+            //if (HttpContext.Session.GetString("Role") == null) return RedirectToAction("Index", "Account");
             return View(await _context.hoKhaus.ToListAsync());
         }
 
         public async Task<IActionResult> Index_History()
         {
-            if (HttpContext.Session.GetString("Role") == null) return RedirectToAction("Index", "Account");
+            //if (HttpContext.Session.GetString("Role") == null) return RedirectToAction("Index", "Account");
             return View(await _context.historyItems.ToListAsync());
         }
         
         public async Task<IActionResult> Details_HoKhau(string id)
         {
-            if (HttpContext.Session.GetString("Role") == null) return RedirectToAction("Index", "Account");
+            //if (HttpContext.Session.GetString("Role") == null) return RedirectToAction("Index", "Account");
 
             if (id == null || _context.hoKhaus == null)
             {
@@ -125,8 +125,8 @@ namespace QuanLyNhanKhau.Controllers
                     _context.Update(memberObject);
                 }
 
-                //_context.historyItems.Add(new HistoryItem("Tách hộ khẩu", hoKhau.SoHoKhau, DateTime.Now, String.Concat("Được tách ra từ ", soHoKhauOld), null));
-                //_context.historyItems.Add(new HistoryItem("Tách hộ khẩu", soHoKhauOld, DateTime.Now, String.Concat("Tách hộ ", hoKhau.SoHoKhau, " ra"), null));
+                _context.historyItems.Add(new HistoryItem("Tách hộ khẩu", hoKhau.SoHoKhau, DateTime.Now, String.Concat("Được tách ra từ ", soHoKhauOld), null));
+                _context.historyItems.Add(new HistoryItem("Tách hộ khẩu", soHoKhauOld, DateTime.Now, String.Concat("Tách hộ ", hoKhau.SoHoKhau, " ra"), null));
                 await _context.SaveChangesAsync();
                             return RedirectToAction("Index_HoKhau");;
             }
