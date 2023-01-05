@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@inject IHttpContextAccessor _accessor
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
@@ -30,9 +31,14 @@
             </div>
 
             <div class="header-right">
-                <a asp-controller="Account" asp-action="Index" class="btn btn-info" title="New Message"><i class="fa fa-sign-in fa-2x" style="vertical-align: middle;"></i><b>  Đăng nhập</b></a>
-                <a href="login.html" class="btn btn-danger" title="Logout"><i class="fa fa-sign-out fa-2x" style="vertical-align: middle;"></i><b>  Đăng xuất  </b></a>
-
+                @if (_accessor.HttpContext.Session.GetInt32("id") == null)
+                {
+                    <a asp-controller="Account" asp-action="Index" class="btn btn-info" title="New Message"><i class="fa fa-sign-in fa-2x" style="vertical-align: middle;"></i><b>  Đăng nhập</b></a>
+                }
+                else
+                {
+                    <a href="login.html" class="btn btn-danger" title="Logout"><i class="fa fa-sign-out fa-2x" style="vertical-align: middle;"></i><b>  Đăng xuất  </b></a>
+                }
             </div>
         </nav>
         <!-- /. NAV TOP  -->
@@ -77,7 +83,7 @@
                                 <a asp-action="Index_NhaVanHoa" asp-controller="NhaVanHoa"><i class="fa fa-info "></i>Cơ sở vật chất</a>
                             </li>
                             <li>
-                                <a href="#"><i class="fa fa-calendar "></i>Yêu cầu sử dụng</a>
+                                <a asp-action="Duyet_NhaVanHoa" asp-controller="NhaVanHoa"><i class="fa fa-calendar "></i>Yêu cầu sử dụng</a>
                             </li>
                         </ul>
                     </li>

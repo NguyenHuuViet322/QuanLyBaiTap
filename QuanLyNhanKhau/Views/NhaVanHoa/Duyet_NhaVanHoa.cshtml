@@ -1,0 +1,54 @@
+﻿@inject QuanLyNhanKhauConText _context
+@inject IHttpContextAccessor _accessor
+@model IEnumerable<QuanLyNhanKhau.Models.Request>
+
+@{
+    ViewData["Title"] = "Sử dụng nhà văn hóa";
+    ViewData["Desc"] = "Duyệt yêu cầu đăng kí sử dụng nhà văn hóa.";
+    Layout = "~/Views/Shared/_InnerLayout.cshtml";
+    int stt = 1;
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>STT</th>
+            <th>
+                Tầng đăng kí
+            </th>
+            <th>
+                Ngày đăng kí
+            </th>
+            <th>
+                Ca đăng kí
+            </th>
+            <th class="width: 20%">
+                Thao tác
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach(var request in Model)
+{
+    <tr>
+        <td>@stt</td>
+        <td>@request.ghiChu</td>
+        <td>@request.requestDay.Date</td>
+        <td>@request.requestTime</td>
+        <td>
+            <form method="post">
+                <input name="id" type="hidden" value="@request.IdRequest">
+                <div class="col-md-6">
+                    <button class="btn btn-danger form-control" type="submit" asp-action="Duyet_false">Từ chối</button>
+                </div>
+                <div class="col-md-6">
+                    <button class="btn btn-success form-control" type="submit" asp-action="Duyet_true">Chấp nhận</button>
+                </div>
+            </form>
+        </td>
+    </tr>
+    stt++;
+}
+    </tbody>
+</table>
+

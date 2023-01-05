@@ -12,10 +12,12 @@ namespace QuanLyNhanKhau.Controllers
     public class NhaVanHoaController : Controller
     {
         private readonly QuanLyNhanKhauConText _context;
+        private readonly IHttpContextAccessor _accessor;
 
-        public NhaVanHoaController(QuanLyNhanKhauConText context)
+        public NhaVanHoaController(QuanLyNhanKhauConText context, IHttpContextAccessor accessor)
         {
             _context = context;
+            _accessor = accessor;
         }
 
         // GET: NhaVanHoa
@@ -146,6 +148,59 @@ namespace QuanLyNhanKhau.Controllers
             
             await _context.SaveChangesAsync();
             return RedirectToAction("Index_NhaVanHoa");
+        }
+
+        public IActionResult DangKiNhaVH(int? id)
+        {
+            ViewData["tang"] = id;
+            return View("DangKi_NhaVanHoa");
+        }
+
+        public IActionResult DangKi([Bind("IdNhanKhau, requestDay, requestTime, ghiChu")] Request request)
+        {
+            request.status = false;
+            _context.Add(request);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        public IActionResult Duyet_NhaVanHoa()
+        {
+            var listRequest = _context.requests.Where(p=> p.status == false).ToList();
+            return View(listRequest);
+        }
+
+        public IActionResult Duyet(bool action)
+        {
+            if (action)
+            {
+                var request = _context.requests.Where(p => p.IdRequest == Int32.Parse(Request.Form["id"])).FirstOrDefault();
+                request.status = true;
+                _context.Update(request);
+                _context.SaveChanges();
+
+                return View("Duyet_NhaVanHoa" ,_context.requests.Where(p => p.status == false).ToList());
+            } else
+            {
+                var request = _context.requests.Where(p => p.IdRequest == Int32.Parse(Request.Form["id"])).FirstOrDefault();
+                _context.Remove(request);
+                _context.SaveChanges();
+
+                return View("Duyet_NhaVanHoa", _context.requests.Where(p => p.status == false).ToList());
+            }
+        }
+
+        public IActionResult Duyet_true()
+        {
+            Duyet(true);
+            return View("Duyet_NhaVanHoa", _context.requests.Where(p => p.status == false).ToList());
+        }
+
+        public IActionResult Duyet_false()
+        {
+            Duyet(false);
+            return View("Duyet_NhaVanHoa", _context.requests.Where(p => p.status == false).ToList());
         }
 
         private bool QLNhaVHExists(int id)

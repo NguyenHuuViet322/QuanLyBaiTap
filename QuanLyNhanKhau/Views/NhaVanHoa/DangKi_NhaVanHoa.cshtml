@@ -1,0 +1,68 @@
+﻿@inject QuanLyNhanKhauConText _context
+@inject IHttpContextAccessor _accessor
+@model QuanLyNhanKhau.Models.Request
+
+@{
+    ViewData["Title"] = "Sử dụng nhà văn hóa";
+    ViewData["Desc"] = "Gửi yêu cầu đăng kí sử dụng nhà văn hóa.";
+    Layout = "~/Views/Shared/_InnerLayout.cshtml";
+    int stt = 1;
+    var lstRequest = _context.requests.ToList();
+}
+
+<p>Chi tiết về ca sử dụng xem <a href='https://docs.google.com/spreadsheets/d/1R57VEkYdSBnof7k2yU0KBF6MMluqXcFL/edit?usp=sharing&ouid=105537375543493727257&rtpof=true&sd=true'>tại đây.</a></p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>STT</th>
+            <th>
+                Tầng đăng kí
+            </th>
+            <th>
+                Ngày đăng kí
+            </th>
+            <th>
+                Ca đăng kí
+            </th>
+            <th>
+                Thao tác
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@for (int i=1;i <= 14;i++) {
+            var day = DateTime.Now.AddDays(i);
+            for(int j=1; j<=5;j++)
+            {
+                var tmp = lstRequest.Where(p => (p.requestDay.Date == day.Date && p.requestTime == j && p.ghiChu == ViewData["tang"].ToString())).FirstOrDefault();
+                if (tmp == null)
+                {
+                    tmp = new Request();
+                    tmp.status = false;
+                }
+
+                if (tmp.status != true)
+                {
+                    <tr>
+                        <td>@stt</td>
+                        <td>Tầng @ViewData["tang"]</td>
+                        <td>@day.Date</td>
+                        <td>Ca @j</td>
+                        <td>
+                            <form asp-action="DangKi">
+                                <input asp-for="IdNhanKhau" type="hidden" value="@_accessor.HttpContext.Session.GetInt32("id")">
+                                <input asp-for="requestDay" type="hidden" value="@day.Date">
+                                <input asp-for="requestTime" type="hidden" value="@j">
+                                <input asp-for="ghiChu" type="hidden" value="@ViewData["tang"].ToString()">
+                                <button class="btn btn-success form-control" type="submit">Mượn</button>
+                            </form>
+                        </td>
+                    </tr>
+                    stt++;
+                }
+            }
+        }
+    </tbody>
+</table>
+
+@Html.Partial("Create_NhaVanHoa.cshtml", new QuanLyNhanKhau.Models.CoSoVatChat())

@@ -19,14 +19,20 @@ namespace QuanLyNhanKhau.Controllers
 
         public IActionResult Login(string CMND, string password)
         {
-            var account = _context.accounts.Where(p => p.CMND == CMND).FirstOrDefault();
-            account.nhanKhau = _context.nhanKhaus.Where(p => p.IdNhanKhau == account.nhanKhauId).FirstOrDefault();
-            if (account.Password == password)
+            try
             {
-                HttpContext.Session.SetInt32("id", account.nhanKhauId);
-                HttpContext.Session.SetString("name", account.nhanKhau.HoTen);
-                HttpContext.Session.SetInt32("role", account.role);
-                return RedirectToAction("Index", "Home");
+                var account = _context.accounts.Where(p => p.CMND == CMND).FirstOrDefault();
+                account.nhanKhau = _context.nhanKhaus.Where(p => p.IdNhanKhau == account.nhanKhauId).FirstOrDefault();
+                if (account.Password == password)
+                {
+                    HttpContext.Session.SetInt32("id", account.nhanKhauId);
+                    HttpContext.Session.SetString("name", account.nhanKhau.HoTen);
+                    HttpContext.Session.SetInt32("role", account.role);
+                    return RedirectToAction("Index", "Home");
+                }
+            } catch (NullReferenceException)
+            {
+                return View("Login");
             }
             return View();
         }

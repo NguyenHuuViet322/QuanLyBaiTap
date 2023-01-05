@@ -86,8 +86,14 @@
                 <strong>Đăng kí sử dụng nhà văn hóa</strong>
             </div>
             <div class="panel-body">
-                <strong>Xem chi tiết các ca tại <a href="https://docs.google.com/spreadsheets/d/1R57VEkYdSBnof7k2yU0KBF6MMluqXcFL/edit?rtpof=true&sd=true">đây.</a></strong>
-                <button>Đăng kí</button>
+                <form class="form-group">
+                    <div class="col-md-6">
+                        <button class="btn btn-success form-control" type="submit" asp-controller="NhaVanHoa" asp-action="DangKiNhaVH" asp-route-id="1"><strong>Tầng 1</strong></button>
+                    </div>
+                    <div class="col-md-6">
+                        <button class="btn btn-success form-control" type="submit" asp-controller="NhaVanHoa" asp-action="DangKiNhaVH" asp-route-id="2"><strong>Tầng 2</strong></button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
