@@ -35,7 +35,7 @@ Có 3 tài khoản quản lý được sinh sẵn trong Database.
 
 *, Account: 1111
    Pass:    123
-   Role:    Quản lý nhân khẩu
+   Role:    Quản lý nhân khẩu 
 
 *, Account: 2222
    Pass:    123
@@ -46,6 +46,11 @@ Có 3 tài khoản quản lý được sinh sẵn trong Database.
    Role:    ADMIN
 
 Note: Admin có quyền truy cập vào tất cả các page.
+
+#Final
+
+Hãy bắt đầu sử dụng Account ADMIN để có toàn quyền truy cập các chức năng. Sau đó mới tiếp tục sử dụng các Account khác.
+Do phần phân quyền và đăng nhập bị Rush vội nên sẽ có "rất" nhiều bug xuất hiện thêm. Xin vui lòng báo lại cho người viết nếu gặp phải.
 
 #END
 
