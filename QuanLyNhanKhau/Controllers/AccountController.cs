@@ -22,14 +22,21 @@ namespace QuanLyNhanKhau.Controllers
             try
             {
                 var account = _context.accounts.Where(p => p.CMND == CMND).FirstOrDefault();
-                account.nhanKhau = _context.nhanKhaus.Where(p => p.IdNhanKhau == account.nhanKhauId).FirstOrDefault();
-                if (account.Password == password)
+                
+                if (account.Password == password && account.role == (int)Role.Dan)
                 {
-                    HttpContext.Session.SetInt32("id", account.nhanKhauId);
+                    HttpContext.Session.SetInt32("id", (int)account.nhanKhauId);
                     HttpContext.Session.SetString("name", account.nhanKhau.HoTen);
                     HttpContext.Session.SetInt32("role", account.role);
                     return RedirectToAction("Index", "Home");
                 }
+                else
+                {
+                    HttpContext.Session.SetInt32("id", -1);
+                    HttpContext.Session.SetString("name", "Nguyễn Hữu Việt");
+                    HttpContext.Session.SetInt32("role", account.role);
+                    return RedirectToAction("Index", "Home");
+                }    
             } catch (NullReferenceException)
             {
                 return View("Login");
@@ -40,7 +47,7 @@ namespace QuanLyNhanKhau.Controllers
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
-            return View("Login");
+            return RedirectToAction("Index", "Account");
         }
     }
 }

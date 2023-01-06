@@ -1,9 +1,17 @@
-namespace QuanLyNhanKhau.Models
+﻿namespace QuanLyNhanKhau.Models
 {
     public class ErrorViewModel
     {
-        public string? RequestId { get; set; }
+        public string noiDung;
 
-        public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
+        public ErrorViewModel()
+        {
+            this.noiDung = "Có lỗi xảy ra";
+        }
+
+        public ErrorViewModel(string noiDung)
+        {
+            this.noiDung = noiDung;
+        }
     }
 }

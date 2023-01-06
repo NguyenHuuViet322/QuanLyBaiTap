@@ -9,9 +9,11 @@
 
 <div class="panel">
     <button class="btn btn-primary" data-toggle="modal" data-target="#createFormModal">
+        <i class="fa fa-plus"></i>
         Tạo mới
     </button>
     <button class="btn btn-warning" data-toggle="modal" data-target="#searchFormModal">
+        <i class="fa fa-search"></i>
         Tìm kiếm
     </button>
 </div>
@@ -110,9 +112,9 @@
                 <h4 class="modal-title" id="myModalLabel"><strong>Tìm kiếm</strong></h4>
             </div>
             <div class="modal-body m-2" style="background:aliceblue;">
-                <form method="get">
-                    <input name="condition" type="text">
-                    <button type="submit" action="Create">Tìm kiếm</button>
+                <form method="post">
+                    <input name="keyword" type="text">
+                    <button type="submit" action="Index_HoKhau" asp-action-route-id="1">Tìm kiếm</button>
                 </form>
             </div>
         </div>

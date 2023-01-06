@@ -6,7 +6,7 @@ namespace QuanLyNhanKhau.Models
     [Table("Account")]
     public class Account
     {
-        public Account(string password, string cMND, int nhanKhauId)
+        public Account(string password, string cMND, int? nhanKhauId)
         {
             Password = password;
             CMND = cMND;
@@ -25,9 +25,9 @@ namespace QuanLyNhanKhau.Models
 
         public int role { get; set; }
 
-        public int nhanKhauId { get; set;}
+        public int? nhanKhauId { get; set;}
 
-        [ForeignKey("nhanKhauId")]
+        [NotMapped]
         public NhanKhau nhanKhau { get; set;}
     }
 }

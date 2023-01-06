@@ -23,7 +23,31 @@ namespace QuanLyNhanKhau.Controllers
         // GET: NhaVanHoa
         public async Task<IActionResult> Index_NhaVanHoa()
         {
-              return View(await _context.coSoVatChats.ToListAsync());
+            if (HttpContext.Session.GetInt32("role") == (int)Role.Admin || HttpContext.Session.GetInt32("role") == (int)Role.CanBo)
+            {
+                return View(await _context.coSoVatChats.ToListAsync());
+            }
+            else
+                return RedirectToAction("Index", "Home"); 
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Index_NhaVanHoa(int id)
+        {
+            if (HttpContext.Session.GetInt32("role") == (int)Role.Admin || HttpContext.Session.GetInt32("role") == (int)Role.CanBo)
+            {
+                var lstThietBi = await _context.coSoVatChats.ToListAsync();
+
+                if (id == 0)
+                {
+                    string keyWord = Request.Form["keyword"];
+                    lstThietBi = lstThietBi.Where(p => (p.tenCoSoVatChat.Contains(keyWord))).ToList();
+                }
+
+                return View(lstThietBi);
+            }
+            else
+                return RedirectToAction("Index", "Home");
         }
 
         // GET: NhaVanHoa/Details/5
@@ -89,7 +113,6 @@ namespace QuanLyNhanKhau.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit_NhaVanHoa(int id, [Bind("IdItem,tenCoSoVatChat,soLuong,hienTrang,ghiChu")] CoSoVatChat qLNhaVH)
         {
-
             if (ModelState.IsValid)
             {
                 try
@@ -152,8 +175,13 @@ namespace QuanLyNhanKhau.Controllers
 
         public IActionResult DangKiNhaVH(int? id)
         {
-            ViewData["tang"] = id;
-            return View("DangKi_NhaVanHoa");
+            if (HttpContext.Session.GetInt32("role") == (int)Role.Dan)
+            {
+                ViewData["tang"] = id;
+                return View("DangKi_NhaVanHoa");
+            }
+            else
+                return RedirectToAction("Index", "Home");
         }
 
         public IActionResult DangKi([Bind("IdNhanKhau, requestDay, requestTime, ghiChu")] Request request)
@@ -167,8 +195,13 @@ namespace QuanLyNhanKhau.Controllers
 
         public IActionResult Duyet_NhaVanHoa()
         {
-            var listRequest = _context.requests.Where(p=> p.status == false).ToList();
-            return View(listRequest);
+            if (HttpContext.Session.GetInt32("role") == (int)Role.NhaVH || HttpContext.Session.GetInt32("role") == (int)Role.Admin)
+            {
+                var listRequest = _context.requests.Where(p => p.status == false).ToList();
+                return View(listRequest);
+            }
+            else
+                return RedirectToAction("Index", "Home");
         }
 
         public IActionResult Duyet(bool action)

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using System.ComponentModel;
+using System.Reflection;
 
 namespace QuanLyNhanKhau.Models
 {
@@ -17,15 +18,31 @@ namespace QuanLyNhanKhau.Models
         public static List<string> ListTP = new List<string>() { "Hải Phòng", "Hà Nội", "Thái Bình",
                                                                     "Huế"};
         public static List<string> ListGioiTinh = new List<string>() { "Nam", "Nữ", "Gay"} ;
+
+        public static string GetEnumDescription(Enum value)
+        {
+            FieldInfo fi = value.GetType().GetField(value.ToString());
+
+            DescriptionAttribute[] attributes = fi.GetCustomAttributes(typeof(DescriptionAttribute), false) as DescriptionAttribute[];
+
+            if (attributes != null && attributes.Any())
+            {
+                return attributes.First().Description;
+            }
+
+            return value.ToString();
+        }
     }
 
     public enum Role
     {
-        [Description("Dân")]
+        [Description("Công dân")]
         Dan = 0,
-        [Description("Cán bộ")]
+        [Description("Quản lý")]
         CanBo = 1,
+        [Description("Cán bộ")]
+        NhaVH = 2,
         [Description("Admin")]
-        Admin = 2
+        Admin = 3
     }
 }

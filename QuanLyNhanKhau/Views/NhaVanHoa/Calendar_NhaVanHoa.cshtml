@@ -1,0 +1,59 @@
+﻿@model IEnumerable<QuanLyNhanKhau.Models.Request>
+@inject QuanLyNhanKhauConText _context
+
+@{
+    int stt = 1;
+
+    var lstNhanKhau = _context.nhanKhaus.ToList();
+}
+
+
+<div class="modal fade" id="CalendarModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel"><strong>Lịch sử dụng nhà văn hóa</strong></h4>
+            </div>
+            <div class="modal-body m-2" style="background:aliceblue;">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>
+                                Tầng
+                            </th>
+                            <th>
+                                Ngày
+                            </th>
+                            <th>
+                                Ca
+                            </th>
+                            <th>Người sử dụng</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var request in Model)
+                        {
+                            var nhanKhau = lstNhanKhau.Where(p => p.IdNhanKhau == request.IdNhanKhau).FirstOrDefault();
+                            <tr>
+                                <td>@stt</td>
+                                <td>Tầng @request.ghiChu</td>
+                                <td>@request.requestDay.Date.ToShortDateString()</td>
+                                <td>@request.requestTime</td>
+                                <td>@nhanKhau.HoTen (@nhanKhau.CMND)</td>
+                            </tr>
+                            stt++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

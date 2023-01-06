@@ -1,4 +1,6 @@
 ﻿@inject IHttpContextAccessor _accessor
+@inject QuanLyNhanKhauConText _context
+@using QuanLyNhanKhau.Models
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -17,6 +19,20 @@
     <!-- GOOGLE FONTS-->
     <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css" />
 </head>
+@{
+    bool isLogin = false; string name=""; int id=0; int role=0; string sohokhau ="";
+    if (_accessor.HttpContext.Session.GetInt32("id") != null)
+        isLogin = true;
+    if(isLogin)
+    {
+        name = _accessor.HttpContext.Session.GetString("name");
+        id = (int)_accessor.HttpContext.Session.GetInt32("id");
+        role = (int)_accessor.HttpContext.Session.GetInt32("role");
+        if (role == 0)
+            sohokhau = _context.nhanKhaus.Where(p => p.IdNhanKhau == id).First().soHoKhau;
+    }
+    
+}
 <body>
     <div id="wrapper">
         <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
@@ -31,13 +47,13 @@
             </div>
 
             <div class="header-right">
-                @if (_accessor.HttpContext.Session.GetInt32("id") == null)
+                @if (!isLogin)
                 {
                     <a asp-controller="Account" asp-action="Index" class="btn btn-info" title="New Message"><i class="fa fa-sign-in fa-2x" style="vertical-align: middle;"></i><b>  Đăng nhập</b></a>
                 }
                 else
                 {
-                    <a href="login.html" class="btn btn-danger" title="Logout"><i class="fa fa-sign-out fa-2x" style="vertical-align: middle;"></i><b>  Đăng xuất  </b></a>
+                    <a asp-controller="Account" asp-action="Logout" class="btn btn-danger" title="Logout"><i class="fa fa-sign-out fa-2x" style="vertical-align: middle;"></i><b>  Đăng xuất  </b></a>
                 }
             </div>
         </nav>
@@ -45,14 +61,18 @@
         <nav class="navbar-default navbar-side" role="navigation">
             <div class="sidebar-collapse">
                 <ul class="nav" id="main-menu">
+
                     <li>
                         <div class="user-img-div">
                             <img src="~/img/user.jpg" class="img-thumbnail" />
 
                             <div class="inner-text">
-                                Sei Shonagon
+                                @if(isLogin)
+                                {
+                                    @Key.GetEnumDescription((Role)role)
+                                }
                                 <br />
-                                <small>Last Login : 2 Weeks Ago </small>
+                                <small>@name</small>
                             </div>
                         </div>
                     </li>
@@ -61,32 +81,46 @@
                         <a asp-controller="Home" asp-action="Index"><i class="fa fa-dashboard "></i>Trang chủ</a>
                     </li>
 
-                    <li>
-                        <a href="#"><i class="fa fa-yelp "></i>Quản lý<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
+                    @if (role == (int)Role.CanBo || role == (int)Role.Dan)
+                    {
                             <li>
-                                <a asp-controller="Data" asp-action="Index_NhanKhau"><i class="fa fa-coffee"></i>Danh sách nhân khẩu</a>
+                            <a asp-controller="Data" asp-action="Details_HoKhau" asp-route-id="@sohokhau"><i class="fa fa-key"></i>Thông tin hộ khẩu</a>
                             </li>
-                            <li>
-                                <a asp-controller="Data" asp-action="Index_HoKhau"><i class="fa fa-key "></i>Danh sách hộ khẩu</a>
-                            </li>
-                            <li>
-                                <a asp-controller="Data" asp-action="Index_History"><i class="fa fa-send "></i>Lịch sử thay đôi</a>
-                            </li>
-                        </ul>
-                    </li>
+                    }
 
-                    <li>
-                        <a href="#"><i class="fa fa-flash "></i>Nhà văn hóa<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a asp-action="Index_NhaVanHoa" asp-controller="NhaVanHoa"><i class="fa fa-info "></i>Cơ sở vật chất</a>
-                            </li>
-                            <li>
-                                <a asp-action="Duyet_NhaVanHoa" asp-controller="NhaVanHoa"><i class="fa fa-calendar "></i>Yêu cầu sử dụng</a>
-                            </li>
-                        </ul>
-                    </li>
+                    @if (role == (int)Role.CanBo || role == (int) Role.Admin)
+                    {
+                        <li>
+                            <a href="#"><i class="fa fa-yelp "></i>Quản lý<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a asp-controller="Data" asp-action="Index_NhanKhau"><i class="fa fa-coffee"></i>Danh sách nhân khẩu</a>
+                                </li>
+                                <li>
+                                    <a asp-controller="Data" asp-action="Index_HoKhau"><i class="fa fa-key "></i>Danh sách hộ khẩu</a>
+                                </li>
+                                <li>
+                                    <a asp-controller="Data" asp-action="Index_History"><i class="fa fa-send "></i>Lịch sử thay đôi</a>
+                                </li>
+                            </ul>
+                        </li>
+                    }
+
+                    @if (role == (int) Role.NhaVH || role == (int) Role.Admin)
+                    {
+                        <li>
+                            <a href="#"><i class="fa fa-flash "></i>Nhà văn hóa<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a asp-action="Index_NhaVanHoa" asp-controller="NhaVanHoa"><i class="fa fa-info "></i>Cơ sở vật chất</a>
+                                </li>
+                                <li>
+                                    <a asp-action="Duyet_NhaVanHoa" asp-controller="NhaVanHoa"><i class="fa fa-calendar "></i>Yêu cầu sử dụng</a>
+                                </li>
+                            </ul>
+                        </li>
+                    }
+
                     <li>
                         <a asp-controller="Home" asp-action="Index"><i class="fa fa-dashboard "></i>Nam gay</a>
                     </li>

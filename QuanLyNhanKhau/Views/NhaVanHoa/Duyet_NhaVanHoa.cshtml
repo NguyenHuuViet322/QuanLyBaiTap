@@ -7,7 +7,14 @@
     ViewData["Desc"] = "Duyệt yêu cầu đăng kí sử dụng nhà văn hóa.";
     Layout = "~/Views/Shared/_InnerLayout.cshtml";
     int stt = 1;
+
+    var lstNhanKhau = _context.nhanKhaus.ToList();
 }
+
+<button class="btn btn-primary" data-toggle="modal" data-target="#CalendarModal">
+    <i class="fa fa-calendar"></i>
+    Lịch sử dụng
+</button>
 
 <table class="table">
     <thead>
@@ -22,6 +29,7 @@
             <th>
                 Ca đăng kí
             </th>
+            <th>Người đăng kí</th>
             <th class="width: 20%">
                 Thao tác
             </th>
@@ -30,11 +38,13 @@
     <tbody>
 @foreach(var request in Model)
 {
+    var nhanKhau = lstNhanKhau.Where(p => p.IdNhanKhau == request.IdNhanKhau).FirstOrDefault();
     <tr>
         <td>@stt</td>
-        <td>@request.ghiChu</td>
-        <td>@request.requestDay.Date</td>
+        <td>Tầng @request.ghiChu</td>
+        <td>@request.requestDay.Date.ToShortDateString()</td>
         <td>@request.requestTime</td>
+        <td>@nhanKhau.HoTen (@nhanKhau.CMND)</td>
         <td>
             <form method="post">
                 <input name="id" type="hidden" value="@request.IdRequest">
@@ -51,4 +61,7 @@
 }
     </tbody>
 </table>
+@Html.Partial("Calendar_NhaVanHoa.cshtml", _context.requests.Where(p=> (p.status == true && p.requestDay.Date >= DateTime.Now.Date))
+                                                            .OrderBy(p => p.requestDay)
+                                                            .ToList());
 

@@ -25,6 +25,7 @@ namespace QuanLyNhanKhau.Models
 
         public string ghiChu { get; set; }
 
+
         [ForeignKey("IdNhanKhau")]
         public NhanKhau? nhanKhau { get; set; }
     }

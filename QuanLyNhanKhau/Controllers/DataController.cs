@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Azure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -23,42 +24,109 @@ namespace QuanLyNhanKhau.Controllers
         // GET: HoKhau
         public async Task<IActionResult> Index_HoKhau()
         {
-            //if (HttpContext.Session.GetString("Role") == null) return RedirectToAction("Index", "Account");
-            return View(await _context.hoKhaus.ToListAsync());
+            if (HttpContext.Session.GetInt32("role") == (int)Role.Admin || HttpContext.Session.GetInt32("role") == (int)Role.CanBo)
+            {
+                var lstHoKhau = await _context.hoKhaus.ToListAsync();
+
+                return View(lstHoKhau);
+            }
+            else
+                return RedirectToAction("Index", "Home");  
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Index_HoKhau(int id)
+        {
+            if (HttpContext.Session.GetInt32("role") == (int)Role.Admin || HttpContext.Session.GetInt32("role") == (int)Role.CanBo)
+            {
+                var lstHoKhau = await _context.hoKhaus.ToListAsync();
+                var lstNhanKhau = await _context.nhanKhaus.ToListAsync();
+
+                foreach (var hoKhau in lstHoKhau)
+                {
+                    hoKhau.chuHo = lstNhanKhau.Where(p => (p.soHoKhau == hoKhau.SoHoKhau && p.QuanHe == "Chủ hộ")).First().HoTen;
+                }
+
+                if (id == 0)
+                {
+                    string keyWord = Request.Form["keyword"];
+                    lstHoKhau = lstHoKhau.Where(p => (p.chuHo.Contains(keyWord)
+                                                        || p.Quan == keyWord
+                                                        || p.Duong == keyWord
+                                                        || p.Phuong == keyWord
+                                                        || p.SoHoKhau == keyWord)).ToList();
+                }
+
+                return View(lstHoKhau);
+            }
+            else
+                return RedirectToAction("Index", "Home");
+
+            
         }
 
         public async Task<IActionResult> Index_History()
         {
-            //if (HttpContext.Session.GetString("Role") == null) return RedirectToAction("Index", "Account");
-            return View(await _context.historyItems.ToListAsync());
+            if (HttpContext.Session.GetInt32("role") == (int)Role.Admin || HttpContext.Session.GetInt32("role") == (int)Role.CanBo)
+            {
+                return View(await _context.historyItems.ToListAsync());
+            }
+            else
+                return RedirectToAction("Index", "Home"); 
         }
         
         public async Task<IActionResult> Details_HoKhau(string id)
         {
-            //if (HttpContext.Session.GetString("Role") == null) return RedirectToAction("Index", "Account");
-
-            if (id == null || _context.hoKhaus == null)
+            if (HttpContext.Session.GetInt32("role") == (int)Role.Admin || HttpContext.Session.GetInt32("role") == (int)Role.CanBo || HttpContext.Session.GetInt32("role") == (int)Role.Dan)
             {
-                return NotFound();
-            }
+                if (id == null || _context.hoKhaus == null)
+                {
+                    return NotFound();
+                }
 
-            var hoKhau = await _context.hoKhaus
-                .FirstOrDefaultAsync(m => m.SoHoKhau == id);
-            hoKhau.nhanKhaus =  _context.nhanKhaus.Where(p => p.soHoKhau == hoKhau.SoHoKhau)
-                .ToList();
-            if (hoKhau == null)
-            {
-                return NotFound();
-            }
+                var hoKhau = await _context.hoKhaus
+                    .FirstOrDefaultAsync(m => m.SoHoKhau == id);
+                hoKhau.nhanKhaus = _context.nhanKhaus.Where(p => p.soHoKhau == hoKhau.SoHoKhau)
+                    .ToList();
+                if (hoKhau == null)
+                {
+                    return NotFound();
+                }
 
-            return View(hoKhau);
+                return View(hoKhau);
+            }
+            else
+                return RedirectToAction("Index", "Home");
         }
 
         public async Task<IActionResult> Index_NhanKhau()
         {
-            if (HttpContext.Session.GetString("Role") == null) return RedirectToAction("Index", "Account");
+            if (HttpContext.Session.GetInt32("role") == (int)Role.Admin || HttpContext.Session.GetInt32("role") == (int)Role.CanBo)
+            {
+                return View(await _context.nhanKhaus.ToListAsync());
+            }
+            else
+                return RedirectToAction("Index", "Home");
+        }
 
-            return View(await _context.nhanKhaus.ToListAsync());
+        [HttpPost]
+        public async Task<IActionResult> Index_NhanKhau(int id)
+        {
+            if (HttpContext.Session.GetInt32("role") == (int)Role.Admin || HttpContext.Session.GetInt32("role") == (int)Role.CanBo)
+            {
+                var lstNhanKhau = await _context.nhanKhaus.ToListAsync();
+
+                if (id == 0)
+                {
+                    string keyWord = Request.Form["keyword"];
+                    lstNhanKhau = lstNhanKhau.Where(p => (p.HoTen.Contains(keyWord)
+                                                            || p.CMND == keyWord)).ToList();
+                }
+
+                return View(lstNhanKhau);
+            }
+            else
+                return RedirectToAction("Index", "Home");         
         }
 
         // POST: HoKhau/Create
@@ -74,7 +142,8 @@ namespace QuanLyNhanKhau.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index_HoKhau");
             }
-            return RedirectToAction("Index_HoKhau");
+
+            return RedirectToAction("Error", "Home", new { message = "Thông tin nhập vào chưa chính xác" }); ; 
         }
 
         [HttpPost]
@@ -128,9 +197,9 @@ namespace QuanLyNhanKhau.Controllers
                 _context.historyItems.Add(new HistoryItem("Tách hộ khẩu", hoKhau.SoHoKhau, DateTime.Now, String.Concat("Được tách ra từ ", soHoKhauOld), null));
                 _context.historyItems.Add(new HistoryItem("Tách hộ khẩu", soHoKhauOld, DateTime.Now, String.Concat("Tách hộ ", hoKhau.SoHoKhau, " ra"), null));
                 await _context.SaveChangesAsync();
-                            return RedirectToAction("Index_HoKhau");;
+                return RedirectToAction("Index_HoKhau");;
             }
-            return View(hoKhau);
+            return RedirectToAction("Error", "Home", new { message = "Thông tin nhập vào chưa chính xác" }); ;
         }
 
         [HttpPost]
@@ -152,7 +221,7 @@ namespace QuanLyNhanKhau.Controllers
                 return RedirectToAction("Details_HoKhau", new { id = nhanKhau.soHoKhau });
             }
             ViewData["soHoKhau"] = new SelectList(_context.hoKhaus, "SoHoKhau", "SoHoKhau", nhanKhau.soHoKhau);
-            return RedirectToAction("Details_HoKhau", new { id = nhanKhau.soHoKhau });
+            return RedirectToAction("Error", "Home", new { message = "Thông tin nhập vào chưa chính xác" }); ;
         }
 
         [HttpPost]
@@ -179,7 +248,7 @@ namespace QuanLyNhanKhau.Controllers
                 return RedirectToAction("Details_HoKhau", new { id = nhanKhau.soHoKhau}); 
             }
             ViewData["soHoKhau"] = new SelectList(_context.hoKhaus, "SoHoKhau", "SoHoKhau", nhanKhau.soHoKhau);
-            return View(nhanKhau);
+            return RedirectToAction("Error", "Home", new { message = "Thông tin nhập vào chưa chính xác" }); ;
         }
 
         [HttpPost]
@@ -197,7 +266,7 @@ namespace QuanLyNhanKhau.Controllers
                     }
                     catch (DbUpdateConcurrencyException)
                     {
-                        return NotFound();
+                        return RedirectToAction("Error", "Home", new { message = "Có lỗi xảy ra với Database" }); ;
                     }
                 }
                 try
@@ -211,8 +280,8 @@ namespace QuanLyNhanKhau.Controllers
                 return RedirectToAction("Details_HoKhau", new { id = chuHo.soHoKhau }) ;
                 } catch (DbUpdateConcurrencyException)
                 {
-                    return NotFound();
-                }
+                return RedirectToAction("Error", "Home", new { message = "Có lỗi xảy ra với Database" }); ;
+            }
         }
 
         // POST: HoKhau/Edit/5
@@ -224,7 +293,7 @@ namespace QuanLyNhanKhau.Controllers
         {
             if (id != hoKhau.SoHoKhau)
             {
-                return NotFound();
+                return RedirectToAction("Error", "Home", new { message = "Không tìm thấy Hộ khẩu" }); ;
             }
 
             if (ModelState.IsValid)
@@ -239,7 +308,7 @@ namespace QuanLyNhanKhau.Controllers
                 {
                     if (!HoKhauExists(hoKhau.SoHoKhau))
                     {
-                        return NotFound();
+                        return RedirectToAction("Error", "Home", new { message = "Không tìm thấy hộ khẩu" }); ;
                     }
                     else
                     {
@@ -257,7 +326,7 @@ namespace QuanLyNhanKhau.Controllers
         {
             if (_context.nhanKhaus == null)
             {
-                return Problem("Entity set 'QuanLyNhanKhauConText.nhanKhaus'  is null.");
+                return RedirectToAction("Error", "Home", new { message = "Nhân khẩu không tồn tại" }); ;
             }
             var nhanKhau = await _context.nhanKhaus.FindAsync(IdNhanKhau);
             if (nhanKhau != null)
@@ -277,7 +346,7 @@ namespace QuanLyNhanKhau.Controllers
         {
             if (_context.hoKhaus == null)
             {
-                return Problem("Entity set 'QuanLyNhanKhauConText.hoKhaus'  is null.");
+                return RedirectToAction("Error", "Home", new { message = "Hộ khẩu không tồn tại" }); ;
             }
             var hoKhau = await _context.hoKhaus.FindAsync(SoHoKhau);
             if (hoKhau != null)

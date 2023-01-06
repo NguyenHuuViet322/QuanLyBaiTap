@@ -88,17 +88,11 @@ namespace QuanLyNhanKhau.Migrations
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CMND = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     role = table.Column<int>(type: "int", nullable: false),
-                    nhanKhauId = table.Column<int>(type: "int", nullable: false)
+                    nhanKhauId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Account", x => x.IdAccount);
-                    table.ForeignKey(
-                        name: "FK_Account_NhanKhau_nhanKhauId",
-                        column: x => x.nhanKhauId,
-                        principalTable: "NhanKhau",
-                        principalColumn: "IdNhanKhau",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -165,6 +159,10 @@ namespace QuanLyNhanKhau.Migrations
                 name: "IX_Request_IdNhanKhau",
                 table: "Request",
                 column: "IdNhanKhau");
+
+            migrationBuilder.Sql("INSERT INTO [dbo].[Account]\r\n           ([Password]\r\n           ,[CMND]\r\n           ,[role]\r\n           ,[nhanKhauId])\r\n     VALUES\r\n           ('123'\r\n           ,'1111'\r\n           ,1\r\n           ,null)");
+            migrationBuilder.Sql("INSERT INTO [dbo].[Account]\r\n           ([Password]\r\n           ,[CMND]\r\n           ,[role]\r\n           ,[nhanKhauId])\r\n     VALUES\r\n           ('123'\r\n           ,'2222'\r\n           ,2\r\n           ,null)");
+            migrationBuilder.Sql("INSERT INTO [dbo].[Account]\r\n           ([Password]\r\n           ,[CMND]\r\n           ,[role]\r\n           ,[nhanKhauId])\r\n     VALUES\r\n           ('123'\r\n           ,'3333'\r\n           ,3\r\n           ,null)");
         }
 
         /// <inheritdoc />

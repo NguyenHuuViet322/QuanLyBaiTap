@@ -46,7 +46,7 @@
                     <tr>
                         <td>@stt</td>
                         <td>Tầng @ViewData["tang"]</td>
-                        <td>@day.Date</td>
+                        <td>@day.Date.ToShortDateString()</td>
                         <td>Ca @j</td>
                         <td>
                             <form asp-action="DangKi">

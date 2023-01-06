@@ -1,4 +1,5 @@
 ﻿@model QuanLyNhanKhau.Models.HoKhau
+@inject IHttpContextAccessor _accessor
 @inject QuanLyNhanKhauConText _context
 
 @{
@@ -20,6 +21,18 @@
     {
         chuHo = Model.nhanKhaus.Where(p => p.QuanHe == "Chủ hộ").FirstOrDefault();
     }
+
+    bool isLogin = false; string name = ""; int id = 0; int role = 0; string sohokhau = "";
+    if (_accessor.HttpContext.Session.GetInt32("id") != null)
+        isLogin = true;
+    if (isLogin)
+    {
+        name = _accessor.HttpContext.Session.GetString("name");
+        id = (int)_accessor.HttpContext.Session.GetInt32("id");
+        role = (int)_accessor.HttpContext.Session.GetInt32("role");
+        if (role == 0)
+            sohokhau = _context.nhanKhaus.Where(p => p.IdNhanKhau == id).First().soHoKhau;
+    }
 }
 
 <div class="col-md-4">
@@ -28,7 +41,12 @@
             <div class="panel-heading">
                 <strong>Thông tin hộ</strong>
                 <a style="float:right;padding-left:1em"><i data-toggle="modal" data-target="#HistoryModal" class="fa fa-history fa-2x" style="color:#625b96" aria-hidden="true"></i></a>
-                <a style="float:right;padding-left: 1em;"><i data-toggle="modal" data-target="#TachHoModal" class="fa fa-sitemap fa-2x" style="color:#7e1353" aria-hidden="true"></i></a>
+                @if (role == (int) Role.Dan)
+                {
+                } else
+                {
+                    <a style="float:right;padding-left: 1em;"><i data-toggle="modal" data-target="#TachHoModal" class="fa fa-sitemap fa-2x" style="color:#7e1353" aria-hidden="true"></i></a>
+                }
             </div>
 
             <div class="panel-body">
@@ -127,16 +145,22 @@
                                             <td>@member.HoTen</td>
                                             <td>@member.CMND</td>
                                             <td>@member.GetStatus()</td>
-                                            <td>
-                                                <a data-toggle="modal" data-target="#EditNK_@member.IdNhanKhau"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                                                <a data-toggle="modal" data-target="#Leave_@member.IdNhanKhau"><i class="fa fa-minus-square" aria-hidden="true"></i></a>
-                                                <a data-toggle="modal" data-target="#Details_@member.IdNhanKhau"><i class="fa fa-eye" aria-hidden="true"></i></a>
-                                                <a data-toggle="modal" data-target="#DeleteNK_@member.IdNhanKhau"><i class="fa fa-trash" aria-hidden="true"></i></a>
-                                                @Html.Partial("Details_NhanKhau.cshtml", @member)
-                                                @Html.Partial("Edit_NhanKhau.cshtml", @member)
-                                                @Html.Partial("Leave_NhanKhau.cshtml", @member)
-                                                @Html.Partial("Delete_NhanKhau.cshtml", @member)
-                                            </td>
+                                            @if (role == (int)Role.Dan)
+                                            {
+                                                
+                                            } else
+                                            {
+                                                <td>
+                                                    <a data-toggle="modal" data-target="#EditNK_@member.IdNhanKhau"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                                    <a data-toggle="modal" data-target="#Leave_@member.IdNhanKhau"><i class="fa fa-minus-square" aria-hidden="true"></i></a>
+                                                    <a data-toggle="modal" data-target="#Details_@member.IdNhanKhau"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                                                    <a data-toggle="modal" data-target="#DeleteNK_@member.IdNhanKhau"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                                    @Html.Partial("Details_NhanKhau.cshtml", @member)
+                                                    @Html.Partial("Edit_NhanKhau.cshtml", @member)
+                                                    @Html.Partial("Leave_NhanKhau.cshtml", @member)
+                                                    @Html.Partial("Delete_NhanKhau.cshtml", @member)
+                                                </td>
+                                            }
                                         </tr>
                                     }
                                 } else
@@ -162,4 +186,10 @@
     </div>
 </div>
 
-@Html.Partial("MasterChange_HoKhau.cshtml", Model)
+@if (role == (int)Role.Dan)
+{
+    
+} else
+{
+    @Html.Partial("MasterChange_HoKhau.cshtml", Model)
+}

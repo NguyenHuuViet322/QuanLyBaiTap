@@ -9,9 +9,11 @@
 
 <div class="panel">
         <button class="btn btn-primary" data-toggle="modal" data-target="#createFormModal">
+            <i class="fa fa-plus"></i>
             Tạo mới
         </button>
         <button class="btn btn-warning" data-toggle="modal" data-target="#searchFormModal">
+            <i class="fa fa-search"></i>
             Tìm kiếm
         </button>
 </div>
@@ -73,20 +75,20 @@
 
 
 
-    <div class="modal fade" id="searchFormModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title" id="myModalLabel"><strong>Tìm kiếm</strong></h4>
-                </div>
-                <div class="modal-body m-2" style="background:aliceblue;">
-                    <form method="get">
-                        <input name="condition" type="text">
-                        <button type="submit" action="Create">Tìm kiếm</button>
-                    </form>
-                </div>
+<div class="modal fade" id="searchFormModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel"><strong>Tìm kiếm</strong></h4>
+            </div>
+            <div class="modal-body m-2" style="background:aliceblue;">
+                <form method="post">
+                    <input name="keyword" type="text">
+                    <button type="submit" action="Index_NhanKhau" asp-action-route-id="0">Tìm kiếm</button>
+                </form>
             </div>
         </div>
     </div>
+</div>
 

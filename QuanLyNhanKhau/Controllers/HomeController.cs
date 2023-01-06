@@ -16,10 +16,16 @@ namespace QuanLyNhanKhau.Controllers
         public IActionResult Index()
         {
 
-            //if (HttpContext.Session.GetString("name") == null) 
-            //    return RedirectToAction("Index", "Account");
-            //else 
-                return View();
+            if (HttpContext.Session.GetInt32("id") == null)
+                return RedirectToAction("Index", "Account");
+
+            return View();
+        }
+
+        public IActionResult Error(string message)
+        {
+            ErrorViewModel modelViewError = new ErrorViewModel(message);
+            return View(modelViewError);
         }
     }
 }
