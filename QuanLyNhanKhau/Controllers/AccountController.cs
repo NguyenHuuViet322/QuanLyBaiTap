@@ -25,6 +25,7 @@ namespace QuanLyNhanKhau.Controllers
                 
                 if (account.Password == password && account.role == (int)Role.Dan)
                 {
+                    account.nhanKhau = _context.nhanKhaus.Where(p => p.IdNhanKhau == account.nhanKhauId).FirstOrDefault();
                     HttpContext.Session.SetInt32("id", (int)account.nhanKhauId);
                     HttpContext.Session.SetString("name", account.nhanKhau.HoTen);
                     HttpContext.Session.SetInt32("role", account.role);

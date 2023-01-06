@@ -206,6 +206,9 @@ namespace QuanLyNhanKhau.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create_NhanKhau([Bind("IdNhanKhau,HoTen,BiDanh,GioiTinh,NgaySinh,NoiSinh,NguyenNhan,NguyenQuan,DanToc,NgheNghiep,NoiLamViec,CMND,NgayCapCMND,NoiCapCMND,NgayDangKi,DiaChiTruoc,QuanHe,soHoKhau,NguyenChuyen,NoiChuyen,GhiChu")] NhanKhau nhanKhau)
         {
+            if (nhanKhau.NguyenNhan == "Mới sinh")
+                nhanKhau.CMND = "0";
+
             if (ModelState.IsValid)
             {
                 nhanKhau.NgayChuyen = DateTime.Now;

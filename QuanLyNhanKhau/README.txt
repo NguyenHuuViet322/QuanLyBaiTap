@@ -46,6 +46,7 @@ Có 3 tài khoản quản lý được sinh sẵn trong Database.
    Role:    ADMIN
 
 Note: Admin có quyền truy cập vào tất cả các page.
+      Account của dân sẽ được tự động tạo sau khi thêm nhân khẩu. (Pass mặc định là 123)
 
 #Final
 
