@@ -6,7 +6,7 @@ namespace QuanLyNhanKhau.Models
 {
     public class Key
     {
-        public static List<string> ListDuong = new List<string>(){"Đà nẵng", "Chu Văn An", "Văn Cao",
+        public static List<string> ListDuong = new List<string>(){"Đà Nẵng", "Chu Văn An", "Văn Cao",
                                                                     "Lê Lai", "Lê Lợi", "Đổng Quốc Bình",
                                                                     "Bùi Thị Từ Nhiên"};
 
