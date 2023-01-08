@@ -53,11 +53,22 @@ namespace QuanLyNhanKhau.Controllers
                 if (id == 0)
                 {
                     string keyWord = Request.Form["keyword"];
-                    lstHoKhau = lstHoKhau.Where(p => (p.chuHo.Contains(keyWord)
+
+                    if (p.chuHo == null)
+                    {
+                        lstHoKhau = lstHoKhau.Where(p => (p.Quan == keyWord
+                                                        || p.Duong == keyWord
+                                                        || p.Phuong == keyWord
+                                                        || p.SoHoKhau == keyWord)).ToList();
+                    } else
+                    {
+                        lstHoKhau = lstHoKhau.Where(p => (p.chuHo.Contains(keyWord)
                                                         || p.Quan == keyWord
                                                         || p.Duong == keyWord
                                                         || p.Phuong == keyWord
                                                         || p.SoHoKhau == keyWord)).ToList();
+                    }
+                    
                 }
 
                 return View(lstHoKhau);
