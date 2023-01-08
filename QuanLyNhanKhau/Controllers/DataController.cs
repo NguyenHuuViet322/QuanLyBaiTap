@@ -44,7 +44,10 @@ namespace QuanLyNhanKhau.Controllers
 
                 foreach (var hoKhau in lstHoKhau)
                 {
-                    hoKhau.chuHo = lstNhanKhau.Where(p => (p.soHoKhau == hoKhau.SoHoKhau && p.QuanHe == "Chủ hộ")).FirstOrDefault().HoTen;
+                    try
+                    {
+                        hoKhau.chuHo = lstNhanKhau.Where(p => (p.soHoKhau == hoKhau.SoHoKhau && p.QuanHe == "Chủ hộ")).FirstOrDefault().HoTen;
+                    }catch(NullReferenceException) { }
                 }
 
                 if (id == 0)
