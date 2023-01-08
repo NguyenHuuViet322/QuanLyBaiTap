@@ -126,7 +126,8 @@ namespace QuanLyNhanKhau.Controllers
                 if (id == 0)
                 {
                     string keyWord = Request.Form["keyword"];
-                    lstNhanKhau = lstNhanKhau.Where(p => (p.HoTen.Contains(keyWord)
+                    lstNhanKhau = lstNhanKhau.Where(p => (p.soHoKhau == keyWord 
+                                                            || p.HoTen.Contains(keyWord)
                                                             || p.CMND == keyWord)).ToList();
                 }
 
