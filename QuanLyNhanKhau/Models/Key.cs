@@ -45,4 +45,22 @@ namespace QuanLyNhanKhau.Models
         [Description("Admin")]
         Admin = 3
     }
+
+    public enum DoTuoi
+    {
+        [Description("Mầm non")]
+        MamNon = 0,
+        [Description("Mẫu giáo")]
+        MauGiao = 1,
+        [Description("Cấp 1")]
+        Cap1 = 2,
+        [Description("Cấp 2")]
+        Cap2 = 3,
+        [Description("Cấp 3")]
+        Cap3 = 4,
+        [Description("Lao động")]
+        LaoDong = 5,
+        [Description("Nghỉ hưu")]
+        NghiHuu = 6
+    }
 }

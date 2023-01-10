@@ -91,6 +91,9 @@ namespace QuanLyNhanKhau.Models
         [ForeignKey("soHoKhau")]
         public HoKhau? hoKhau { get; set; }
 
+        [NotMapped]
+        public int? DoTuoi { get; set; }
+
         public string GetStatus() {
             if(NguyenNhan == "Chuyển tới")
             {
@@ -110,6 +113,17 @@ namespace QuanLyNhanKhau.Models
                 return "Yellow";
             }
             return "inherit";
+        }
+
+        public int GetAge()
+        {
+            int[] ageList = { 0, 4, 6, 11, 15, 18, 65, 999999 };
+            int doTuoi = DateTime.Now.Year - NgaySinh.Year;
+            for(int i=0;i <=7;i++)
+            {
+                if (doTuoi < ageList[i]) return i-1;
+            }
+            return -1;
         }
     }
 }

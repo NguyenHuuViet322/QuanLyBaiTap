@@ -72,12 +72,13 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title" id="myModalLabel"><strong>Tìm kiếm</strong></h4>
+                <h4class="modal-title" id="myModalLabel"><strong>Tìm kiếm</strong></h4>
             </div>
             <div class="modal-body m-2" style="background:aliceblue;">
                 <form method="post">
-                    <input name="keyword" type="text">
-                    <button type="submit" action="Index_NhanKhau" asp-action-route-id="0">Tìm kiếm</button>
+                    <input class="form-control" placeholder="Từ khóa tìm kiếm" name="keyword" type="text">
+                    <br />
+                    <button class="btn btn-info" type="submit" action="Index_NhanKhau" asp-action-route-id="0">Tìm kiếm</button>
                 </form>
             </div>
         </div>

@@ -129,6 +129,23 @@ namespace QuanLyNhanKhau.Controllers
                     lstNhanKhau = lstNhanKhau.Where(p => (p.soHoKhau == keyWord 
                                                             || p.HoTen.Contains(keyWord)
                                                             || p.CMND == keyWord)).ToList();
+
+                    string gioiTinh = Request.Form["gioiTinh"];
+                    string doTuoi = Request.Form["doTuoi"];
+
+                    if(gioiTinh != "-1")
+                    {
+                        lstNhanKhau = lstNhanKhau.Where(p => p.GioiTinh == gioiTinh).ToList();
+                    }
+
+                    if (doTuoi != "-1")
+                    {
+                        foreach(var item in lstNhanKhau)
+                        {
+                            item.DoTuoi = item.GetAge();
+                        }
+                        lstNhanKhau = lstNhanKhau.Where(p => p.DoTuoi == Int32.Parse(doTuoi)).ToList();
+                    }
                 }
 
                 return View(lstNhanKhau);
@@ -144,6 +161,9 @@ namespace QuanLyNhanKhau.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create_HoKhau([Bind("SoHoKhau,SoNha,Duong,Phuong,Quan")] HoKhau hoKhau)
         {
+            if (_context.hoKhaus.Any(p => p.SoHoKhau == hoKhau.SoHoKhau))
+                return RedirectToAction("Error", "Home", new { message = "Số hộ khẩu bạn nhập bị trùng" }); 
+
             if (ModelState.IsValid)
             {
                 _context.Add(hoKhau);
@@ -151,7 +171,7 @@ namespace QuanLyNhanKhau.Controllers
                 return RedirectToAction("Index_HoKhau");
             }
 
-            return RedirectToAction("Error", "Home", new { message = "Thông tin nhập vào chưa chính xác" }); ; 
+            return RedirectToAction("Error", "Home", new { message = "Thông tin nhập vào không hợp lệ" }); 
         }
 
         [HttpPost]
@@ -207,13 +227,16 @@ namespace QuanLyNhanKhau.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index_HoKhau");;
             }
-            return RedirectToAction("Error", "Home", new { message = "Thông tin nhập vào chưa chính xác" }); ;
+            return RedirectToAction("Error", "Home", new { message = "Thông tin nhập vào không hợp lệ" }); ;
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create_NhanKhau([Bind("IdNhanKhau,HoTen,BiDanh,GioiTinh,NgaySinh,NoiSinh,NguyenNhan,NguyenQuan,DanToc,NgheNghiep,NoiLamViec,CMND,NgayCapCMND,NoiCapCMND,NgayDangKi,DiaChiTruoc,QuanHe,soHoKhau,NguyenChuyen,NoiChuyen,GhiChu")] NhanKhau nhanKhau)
         {
+            if (_context.nhanKhaus.Any(p => p.CMND == nhanKhau.CMND)) 
+                return RedirectToAction("Error", "Home", new { message = "Số CMND bạn nhập bị trùng" });
+
             if (nhanKhau.NguyenNhan == "Mới sinh")
                 nhanKhau.CMND = "0";
 
@@ -232,7 +255,7 @@ namespace QuanLyNhanKhau.Controllers
                 return RedirectToAction("Details_HoKhau", new { id = nhanKhau.soHoKhau });
             }
             ViewData["soHoKhau"] = new SelectList(_context.hoKhaus, "SoHoKhau", "SoHoKhau", nhanKhau.soHoKhau);
-            return RedirectToAction("Error", "Home", new { message = "Thông tin nhập vào chưa chính xác" }); ;
+            return RedirectToAction("Error", "Home", new { message = "Thông tin nhập vào không hợp lệ" }); ;
         }
 
         [HttpPost]
@@ -252,14 +275,13 @@ namespace QuanLyNhanKhau.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    ViewBag.Failed_NhanKhau = "Có lỗi xảy ra";
-                    return RedirectToAction("Details_HoKhau", new { id = nhanKhau.soHoKhau });
+                    return RedirectToAction("Error", "Home", new { message = "Thông tin nhập vào không hợp lệ" });
                 }
                 ViewBag.Success_NhanKhau = "Sửa đổi thông tin thành công";
                 return RedirectToAction("Details_HoKhau", new { id = nhanKhau.soHoKhau}); 
             }
             ViewData["soHoKhau"] = new SelectList(_context.hoKhaus, "SoHoKhau", "SoHoKhau", nhanKhau.soHoKhau);
-            return RedirectToAction("Error", "Home", new { message = "Thông tin nhập vào chưa chính xác" }); ;
+            return RedirectToAction("Error", "Home", new { message = "Thông tin nhập vào không hợp lệ" }); 
         }
 
         [HttpPost]

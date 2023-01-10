@@ -3,6 +3,15 @@
     Layout = "~/Views/Shared/_InnerLayout.cshtml";
     ViewData["Title"] = "Thông báo hệ thống";
 }
+<link rel="stylesheet" href ="~/css/error.css"/>
 
-<h1 class="text-danger">Có lỗi xảy ra!</h1>
-<h2 class="text-danger">@Model.noiDung</h2>
+<div class="error-body">
+    <div class="noise"></div>
+    <div class="overlay"></div>
+    <div class="terminal">
+        <h1><span class="errorcode">Error</span></h1>
+        <p class="output">@Model.noiDung.</p>
+        <p class="output">Bạn có thể <a href='javascript:history.go(-1)'>trở lại</a> hoặc <a href="#2">về trang chủ</a>.</p>
+        <p class="output">Chúc may mắn.</p>
+    </div>
+</div>

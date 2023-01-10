@@ -8,10 +8,10 @@
 }
 
 <div class="panel">
-        <button class="btn btn-primary" data-toggle="modal" data-target="#createFormModal">
+        @*<button class="btn btn-primary" data-toggle="modal" data-target="#createFormModal">
             <i class="fa fa-plus"></i>
             Tạo mới
-        </button>
+        </button>*@
         <button class="btn btn-warning" data-toggle="modal" data-target="#searchFormModal">
             <i class="fa fa-search"></i>
             Tìm kiếm
@@ -34,6 +34,9 @@
                 @Html.DisplayNameFor(model => model.NgaySinh)
             </th>
             <th>
+                Độ tuổi
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.soHoKhau)
             </th>
             <th>
@@ -50,12 +53,14 @@
             <td>
                 @Html.DisplayFor(modelItem => item.HoTen)
             </td>
-                        
             <td>
                 @Html.DisplayFor(modelItem => item.GioiTinh)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.NgaySinh)
+            </td>
+            <td>
+                    @Key.GetEnumDescription((DoTuoi)item.GetAge())
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.soHoKhau)
@@ -84,8 +89,25 @@
             </div>
             <div class="modal-body m-2" style="background:aliceblue;">
                 <form method="post">
-                    <input name="keyword" type="text">
-                    <button type="submit" action="Index_NhanKhau" asp-action-route-id="0">Tìm kiếm</button>
+                    <input class="form-control" name="keyword" placeholder="Tên/Số hộ khẩu" type="text">
+                    <br />
+                    <select class="form-control" name="doTuoi">
+                        <option value="-1">Chọn độ tuổi</option>
+                        @for(int i=0;i<=6;i++)
+                        {
+                            <option value="@i">@Key.GetEnumDescription((DoTuoi)i)</option>
+                        }
+                    </select>
+                    <br />
+                    <select class="form-control" name="gioiTinh">
+                        <option value="-1">Chọn giới tính</option>
+                        @foreach(var item in Key.ListGioiTinh)
+                        {
+                            <option value="@item">@item</option>
+                        }
+                    </select>
+                    <br />
+                    <button type="submit" class="btn btn-info" action="Index_NhanKhau" asp-action-route-id="0">Tìm kiếm</button>
                 </form>
             </div>
         </div>
