@@ -57,7 +57,7 @@
                 @Html.DisplayFor(modelItem => item.GioiTinh)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.NgaySinh)
+                @Html.DisplayFor(modelItem => item.NgaySinh.ToShortDateString())
             </td>
             <td>
                     @Key.GetEnumDescription((DoTuoi)item.GetAge())

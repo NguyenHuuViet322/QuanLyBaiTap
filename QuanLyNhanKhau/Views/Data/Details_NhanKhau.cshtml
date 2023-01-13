@@ -28,7 +28,7 @@
                                 </tr>
                                 <tr>
                                     <td style="font-weight:bold;">Ngày sinh</td>
-                                    <td>@Model.NgaySinh</td>
+                                    <td>@Model.NgaySinh.ToShortDateString()</td>
                                 </tr>
                                 <tr>
                                     <td style="font-weight:bold;">Nơi sinh</td>
@@ -56,7 +56,7 @@
                                 </tr>
                                 <tr>
                                     <td style="font-weight:bold;">Ngày cấp CMND</td>
-                                    <td>@Model.NgayCapCMND</td>
+                                    <td>@Model.NgayCapCMND.ToShortDateString()</td>
                                 </tr>
                                 <tr>
                                     <td style="font-weight:bold;">Nơi cấp CMND</td>
@@ -64,7 +64,7 @@
                                 </tr>
                                 <tr>
                                     <td style="font-weight:bold;">Ngày đăng kí thường trú</td>
-                                    <td>@Model.NgayDangKi</td>
+                                    <td>@Model.NgayDangKi.ToShortDateString()</td>
                                 </tr>
                                 <tr>
                                     <td style="font-weight:bold;">Địa chỉ trước</td>
