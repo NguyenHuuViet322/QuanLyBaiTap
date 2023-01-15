@@ -2,19 +2,11 @@
 @inject QuanLyNhanKhauConText _context
 
 @{
-    ViewData["Title"] = "Danh sách nhân khẩu";
-    ViewData["Desc"] = "Tìm kiếm và thao tác với các nhân khẩu";
-    Layout = "~/Views/Shared/_InnerLayout.cshtml";  
+    ViewData["Title"] = "Lịch sử thay đổi";
+    ViewData["Desc"] = "Xem chi tiết thời gian thay đổi";
+    Layout = "~/Views/Shared/_InnerLayout.cshtml";
+    var lstNhanKhau = _context.nhanKhaus.ToList();
 }
-
-<div class="panel">
-        <button class="btn btn-primary" data-toggle="modal" data-target="#createFormModal">
-            Tạo mới
-        </button>
-        <button class="btn btn-warning" data-toggle="modal" data-target="#searchFormModal">
-            Tìm kiếm
-        </button>
-</div>
 
 <table class="table table-bordered">
     <thead>
@@ -56,7 +48,7 @@
                         @Html.DisplayFor(modelItem => item.HoatDong)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.DoiTuong)
+                        @lstNhanKhau.Where(p => p.IdNhanKhau == item.DoiTuong).FirstOrDefault().HoTen
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.GhiChu)
