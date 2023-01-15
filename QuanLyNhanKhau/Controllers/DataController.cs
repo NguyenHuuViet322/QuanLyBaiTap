@@ -26,7 +26,7 @@ namespace QuanLyNhanKhau.Controllers
         {
             if (HttpContext.Session.GetInt32("role") == (int)Role.Admin || HttpContext.Session.GetInt32("role") == (int)Role.CanBo)
             {
-                var lstHoKhau = await _context.hoKhaus.ToListAsync();
+                var lstHoKhau = await _context.hoKhaus.Where(p => p.SoHoKhau != "0").ToListAsync();
 
                 return View(lstHoKhau);
             }
@@ -39,7 +39,7 @@ namespace QuanLyNhanKhau.Controllers
         {
             if (HttpContext.Session.GetInt32("role") == (int)Role.Admin || HttpContext.Session.GetInt32("role") == (int)Role.CanBo)
             {
-                var lstHoKhau = await _context.hoKhaus.ToListAsync();
+                var lstHoKhau = await _context.hoKhaus.Where(p => p.SoHoKhau != "0").ToListAsync();
                 var lstNhanKhau = await _context.nhanKhaus.ToListAsync();
 
                 foreach (var hoKhau in lstHoKhau)
@@ -353,6 +353,7 @@ namespace QuanLyNhanKhau.Controllers
             return View(hoKhau);
         }
 
+
         [HttpPost, ActionName("Delete_NhanKhau")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int? IdNhanKhau)
@@ -364,8 +365,11 @@ namespace QuanLyNhanKhau.Controllers
             var nhanKhau = await _context.nhanKhaus.FindAsync(IdNhanKhau);
             if (nhanKhau != null)
             {
+                nhanKhau.NguyenNhan = "Xóa";
+                nhanKhau.DiaChiTruoc = nhanKhau.soHoKhau;
+                nhanKhau.soHoKhau = "0";
                 _context.historyItems.Add(new HistoryItem("Xóa nhân khẩu", nhanKhau.soHoKhau, DateTime.Now, nhanKhau.HoTen, null));
-                _context.nhanKhaus.Remove(nhanKhau);
+                _context.nhanKhaus.Update(nhanKhau);
             }
 
             await _context.SaveChangesAsync();

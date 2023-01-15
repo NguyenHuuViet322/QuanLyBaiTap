@@ -118,7 +118,7 @@ namespace QuanLyNhanKhau.Models
         public int GetAge()
         {
             int[] ageList = { 0, 4, 6, 11, 15, 18, 65, 999999 };
-            int doTuoi = DateTime.Now.Year - NgaySinh.Year;
+            int doTuoi = Math.Abs(DateTime.Now.Year - NgaySinh.Year);
             for(int i=0;i <=7;i++)
             {
                 if (doTuoi < ageList[i]) return i-1;

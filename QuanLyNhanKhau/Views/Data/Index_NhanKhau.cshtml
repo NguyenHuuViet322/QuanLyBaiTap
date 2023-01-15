@@ -57,14 +57,28 @@
                 @Html.DisplayFor(modelItem => item.GioiTinh)
             </td>
             <td>
-                    @item.NgaySinh.ToShortDateString()
+                @item.NgaySinh.ToShortDateString()
             </td>
             <td>
-                    @Key.GetEnumDescription((DoTuoi)item.GetAge())
+                @Key.GetEnumDescription((DoTuoi)item.GetAge())
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.soHoKhau)
-            </td>
+            
+                    @{
+                        if (item.soHoKhau == "0")
+                        {
+                            if (item.NguyenNhan == "Xóa")
+                            {
+                                <td>Bị xóa</td>
+                            } else 
+                            {
+                            <td>Chưa có</td>
+                        }
+                    }
+                    else
+                    {
+                        <td>@Html.DisplayFor(modelItem => item.soHoKhau)</td>
+                    }
+                }
             <td>
                 <a data-toggle="modal" data-target="#EditNK_@item.IdNhanKhau"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
                 <a data-toggle="modal" data-target="#Details_@item.IdNhanKhau"><i class="fa fa-eye" aria-hidden="true"></i></a>

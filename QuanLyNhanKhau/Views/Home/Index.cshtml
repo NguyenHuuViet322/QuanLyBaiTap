@@ -18,7 +18,7 @@
                 <div class="main-box mb-red">
                     <a href="#">
                         <i class="fa fa-bolt fa-5x"></i>
-                        <h5>@_context.hoKhaus.Count() hộ gia đình</h5>
+                        <h5>@(_context.hoKhaus.Count()-1) hộ gia đình</h5>
                     </a>
                 </div>
             </div>
@@ -26,7 +26,7 @@
                 <div class="main-box mb-dull">
                     <a href="#">
                         <i class="fa fa-plug fa-5x"></i>
-                        <h5>@_context.nhanKhaus.Count() nhân khẩu</h5>
+                        <h5>@_context.nhanKhaus.Where(p=>p.NguyenNhan != "Xóa").Count() nhân khẩu</h5>
                     </a>
                 </div>
             </div>

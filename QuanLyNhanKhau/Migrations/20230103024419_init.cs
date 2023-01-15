@@ -163,6 +163,7 @@ namespace QuanLyNhanKhau.Migrations
             migrationBuilder.Sql("INSERT INTO [dbo].[Account]\r\n           ([Password]\r\n           ,[CMND]\r\n           ,[role]\r\n           ,[nhanKhauId])\r\n     VALUES\r\n           ('123'\r\n           ,'1111'\r\n           ,1\r\n           ,null)");
             migrationBuilder.Sql("INSERT INTO [dbo].[Account]\r\n           ([Password]\r\n           ,[CMND]\r\n           ,[role]\r\n           ,[nhanKhauId])\r\n     VALUES\r\n           ('123'\r\n           ,'2222'\r\n           ,2\r\n           ,null)");
             migrationBuilder.Sql("INSERT INTO [dbo].[Account]\r\n           ([Password]\r\n           ,[CMND]\r\n           ,[role]\r\n           ,[nhanKhauId])\r\n     VALUES\r\n           ('123'\r\n           ,'3333'\r\n           ,3\r\n           ,null)");
+            migrationBuilder.Sql("INSERT INTO [dbo].[HoKhau]\r\n           ([SoHoKhau]\r\n           ,[SoNha]\r\n           ,[Duong]\r\n           ,[Phuong]\r\n           ,[Quan])\r\n     VALUES\r\n           (0\r\n           ,0\r\n           ,0\r\n           ,0\r\n           ,0)");
         }
 
         /// <inheritdoc />
