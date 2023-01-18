@@ -2,14 +2,21 @@
 {
     public class ErrorViewModel
     {
-        public string noiDung;
+        public List<string> noiDung;
 
         public ErrorViewModel()
         {
-            this.noiDung = "Có lỗi xảy ra";
+            noiDung = new List<string>();
+            noiDung.Add("Có lỗi xảy ra");
         }
 
         public ErrorViewModel(string noiDung)
+        {
+            this.noiDung = new List<string>();
+            this.noiDung.Add(noiDung);
+        }
+
+        public ErrorViewModel(List<string> noiDung)
         {
             this.noiDung = noiDung;
         }

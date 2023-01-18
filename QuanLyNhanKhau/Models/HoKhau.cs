@@ -11,7 +11,6 @@ namespace QuanLyNhanKhau.Models
         [Key]
         [Display(Name = "Số hộ khẩu", Prompt = "Số hộ khẩu")]
         [Required(ErrorMessage = "Thiếu số hộ khẩu")]
-        [StringLength(15, MinimumLength = 6, ErrorMessage = "Độ dài số hộ khẩu không hợp lệ")]
         public string? SoHoKhau { get; set; }
 
         [Display(Name = "Số nhà", Prompt = "Số nhà")]

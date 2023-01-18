@@ -10,7 +10,12 @@
     <div class="overlay"></div>
     <div class="terminal">
         <h1><span class="errorcode">Error</span></h1>
-        <p class="output">@Model.noiDung.</p>
+        @{
+            foreach(var item in Model.noiDung)
+            {
+                <p class="output">@item</p>
+            }
+        }
         <p class="output">Bạn có thể <a href='javascript:history.go(-1)'>trở lại</a> hoặc <a href="#2">về trang chủ</a>.</p>
         <p class="output">Chúc may mắn.</p>
     </div>

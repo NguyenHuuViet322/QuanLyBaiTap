@@ -171,7 +171,10 @@ namespace QuanLyNhanKhau.Controllers
                 return RedirectToAction("Index_HoKhau");
             }
 
-            return RedirectToAction("Error", "Home", new { message = "Thông tin nhập vào không hợp lệ" }); 
+            var errors = ModelState.Values
+                                    .SelectMany(v => v.Errors)
+                                    .Select(e => e.ErrorMessage).ToList();
+            return RedirectToAction("Error_list", "Home", new { error = errors });
         }
 
         [HttpPost]
@@ -227,14 +230,17 @@ namespace QuanLyNhanKhau.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index_HoKhau");;
             }
-            return RedirectToAction("Error", "Home", new { message = "Thông tin nhập vào không hợp lệ" }); ;
+            var errors = ModelState.Values
+                                    .SelectMany(v => v.Errors)
+                                    .Select(e => e.ErrorMessage).ToList();
+            return RedirectToAction("Error_list", "Home", new { error = errors });
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create_NhanKhau([Bind("IdNhanKhau,HoTen,BiDanh,GioiTinh,NgaySinh,NoiSinh,NguyenNhan,NguyenQuan,DanToc,NgheNghiep,NoiLamViec,CMND,NgayCapCMND,NoiCapCMND,NgayDangKi,DiaChiTruoc,QuanHe,soHoKhau,NguyenChuyen,NoiChuyen,GhiChu")] NhanKhau nhanKhau)
         {
-            if (_context.nhanKhaus.Any(p => p.CMND == nhanKhau.CMND)) 
+            if (_context.nhanKhaus.Any(p => p.CMND == nhanKhau.CMND && p.CMND != "0")) 
                 return RedirectToAction("Error", "Home", new { message = "Số CMND bạn nhập bị trùng" });
 
             if (nhanKhau.NguyenNhan == "Mới sinh")
@@ -255,14 +261,17 @@ namespace QuanLyNhanKhau.Controllers
                 return RedirectToAction("Details_HoKhau", new { id = nhanKhau.soHoKhau });
             }
             ViewData["soHoKhau"] = new SelectList(_context.hoKhaus, "SoHoKhau", "SoHoKhau", nhanKhau.soHoKhau);
-            return RedirectToAction("Error", "Home", new { message = "Thông tin nhập vào không hợp lệ" }); ;
+            var errors = ModelState.Values
+                                    .SelectMany(v => v.Errors)
+                                    .Select(e => e.ErrorMessage).ToList();
+            return RedirectToAction("Error_list", "Home", new { error = errors });
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit_NhanKhau([Bind("IdNhanKhau,HoTen,BiDanh,GioiTinh,NgaySinh,NoiSinh,NguyenQuan,DanToc,NgheNghiep,NoiLamViec,CMND,NgayCapCMND,NoiCapCMND,NgayDangKi,DiaChiTruoc,QuanHe,soHoKhau")] NhanKhau nhanKhau)
         {
-            if (HttpContext.Session.GetString("Role") == null) return RedirectToAction("Index", "Account");
+            if (HttpContext.Session.GetInt32("Role") == 0) return RedirectToAction("Index", "Account");
 
 
             if (ModelState.IsValid)
@@ -281,7 +290,10 @@ namespace QuanLyNhanKhau.Controllers
                 return RedirectToAction("Details_HoKhau", new { id = nhanKhau.soHoKhau}); 
             }
             ViewData["soHoKhau"] = new SelectList(_context.hoKhaus, "SoHoKhau", "SoHoKhau", nhanKhau.soHoKhau);
-            return RedirectToAction("Error", "Home", new { message = "Thông tin nhập vào không hợp lệ" }); 
+            var errors = ModelState.Values
+                                    .SelectMany(v => v.Errors)
+                                    .Select(e => e.ErrorMessage).ToList();
+            return RedirectToAction("Error_list", "Home", new { error = errors }); 
         }
 
         [HttpPost]
@@ -350,7 +362,10 @@ namespace QuanLyNhanKhau.Controllers
                 }
                 return RedirectToAction(nameof(Index_HoKhau));
             }
-            return View(hoKhau);
+            var errors = ModelState.Values
+                                    .SelectMany(v => v.Errors)
+                                    .Select(e => e.ErrorMessage).ToList();
+            return RedirectToAction("Error_list", "Home", new { error = errors });
         }
 
 

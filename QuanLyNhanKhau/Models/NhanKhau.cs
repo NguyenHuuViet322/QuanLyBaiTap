@@ -52,15 +52,14 @@ namespace QuanLyNhanKhau.Models
 
         [Display(Name = "Số CMND/CCCD", Prompt = "Số CMND/CCCD")]
         [Required(ErrorMessage = "Thiếu số CMND/CCCD")]
-        [StringLength(13, MinimumLength = 9, ErrorMessage = "Độ dài nơi làm việc phải trong khoảng 9 đến 13 kí tự")]
+        [StringLength(13, ErrorMessage = "Độ dài CMND không được quá 13 kí tự")]
         public string CMND { get; set; }
 
         [Display(Name = "Ngày cấp CMND", Prompt = "Nơi cấp CMND")]
-        public DateTime NgayCapCMND { get; set; }
+        public DateTime? NgayCapCMND { get; set; }
 
         [Display(Name = "Nơi cấp CMND/CCCD", Prompt = "Nơi cấp CMND/CCCD")]
-        [StringLength(25, MinimumLength = 3, ErrorMessage = "Độ dài nơi làm việc phải trong khoảng 3 đến 25 kí tự")]
-        public string NoiCapCMND { get; set; }
+        public string? NoiCapCMND { get; set; }
 
         [Display(Name = "Ngày tháng năm đăng kí thường trú", Prompt = "Ngày tháng năm đăng kí thường trú")]
         [Required(ErrorMessage = "Thiếu số thông tin")]

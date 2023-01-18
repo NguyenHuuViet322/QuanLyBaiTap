@@ -27,5 +27,11 @@ namespace QuanLyNhanKhau.Controllers
             ErrorViewModel modelViewError = new ErrorViewModel(message);
             return View(modelViewError);
         }
+
+        public IActionResult Error_list(List<string> error)
+        {
+            ErrorViewModel modelViewError = new ErrorViewModel(error);
+            return View("Error", modelViewError);
+        }
     }
 }
