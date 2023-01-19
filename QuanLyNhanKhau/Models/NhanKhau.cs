@@ -51,9 +51,8 @@ namespace QuanLyNhanKhau.Models
         public string NoiLamViec { get; set; }
 
         [Display(Name = "Số CMND/CCCD", Prompt = "Số CMND/CCCD")]
-        [Required(ErrorMessage = "Thiếu số CMND/CCCD")]
         [StringLength(13, ErrorMessage = "Độ dài CMND không được quá 13 kí tự")]
-        public string CMND { get; set; }
+        public string? CMND { get; set; }
 
         [Display(Name = "Ngày cấp CMND", Prompt = "Nơi cấp CMND")]
         public DateTime? NgayCapCMND { get; set; }
