@@ -246,6 +246,12 @@ namespace QuanLyNhanKhau.Controllers
             if (nhanKhau.CMND == null)
                 nhanKhau.CMND = "0";
 
+            if (nhanKhau.NgayCapCMND == null)
+                nhanKhau.NgayCapCMND = DateTime.Parse("01/01/0001");
+
+            if (nhanKhau.NoiCapCMND == null)
+                nhanKhau.NoiCapCMND = "0";
+
             if (ModelState.IsValid)
             {
                 nhanKhau.NgayChuyen = DateTime.Now;
