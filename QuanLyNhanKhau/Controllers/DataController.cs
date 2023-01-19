@@ -243,7 +243,7 @@ namespace QuanLyNhanKhau.Controllers
             if (_context.nhanKhaus.Any(p => p.CMND == nhanKhau.CMND && p.CMND != "0")) 
                 return RedirectToAction("Error", "Home", new { message = "Số CMND bạn nhập bị trùng" });
 
-            if (nhanKhau.NguyenNhan == "Mới sinh")
+            if (nhanKhau.CMND == null)
                 nhanKhau.CMND = "0";
 
             if (ModelState.IsValid)
