@@ -48,7 +48,15 @@
                         @Html.DisplayFor(modelItem => item.HoatDong)
                     </td>
                     <td>
-                        @lstNhanKhau.Where(p => p.IdNhanKhau == item.DoiTuong).FirstOrDefault().HoTen
+                        @{
+                            try
+                            {
+                                @lstNhanKhau.Where(p => p.IdNhanKhau == item.DoiTuong).FirstOrDefault().HoTen
+                            } catch(NullReferenceException)
+                            {
+                                
+                            }
+                        }
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.GhiChu)

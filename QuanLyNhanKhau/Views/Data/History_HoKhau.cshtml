@@ -23,14 +23,17 @@
                                             </thead>
                                             <tbody>
                                                 @{
-                                                    List<HistoryItem> lstHistory = _context.historyItems.Where(p => p.SoHoKhau == Model.SoHoKhau).ToList();
-                                                    foreach (var item in lstHistory)
+                                                    if (_context.historyItems.Where(p => p.SoHoKhau == Model.SoHoKhau).Count() != 0)
                                                     {
-                                                        <tr>
-                                                            <td>@item.HoatDong</td>
-                                                            <td>@item.GhiChu</td>
-                                                            <td>@item.NgayThayDoi</td>
-                                                        </tr>
+                                                        List<HistoryItem> lstHistory = _context.historyItems.Where(p => p.SoHoKhau == Model.SoHoKhau).ToList();
+                                                        foreach (var item in lstHistory)
+                                                        {
+                                                            <tr>
+                                                                <td>@item.HoatDong</td>
+                                                                <td>@item.GhiChu</td>
+                                                                <td>@item.NgayThayDoi</td>
+                                                            </tr>
+                                                        }
                                                     }
                                                 }
                                             </tbody>
