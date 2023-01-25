@@ -13,13 +13,13 @@
                         <div class="col-md-12">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             <div class="form-group">
-                                <label asp-for="HoTen" class="control-label"></label>
-                                <input asp-for="HoTen" class="form-control" />
+                                <label asp-for="HoTen" class="control-label required"></label>
+                                <input asp-for="HoTen" class="form-control" required />
                                 <span asp-validation-for="HoTen" class="text-danger"></span>
                             </div>
                             <div class="form-group">
-                                <label asp-for="BiDanh" class="control-label"></label>
-                                <input asp-for="BiDanh" class="form-control" />
+                                <label asp-for="BiDanh" class="control-label required"></label>
+                                <input asp-for="BiDanh" class="form-control" required />
                                 <span asp-validation-for="BiDanh" class="text-danger"></span>
                             </div>
                             <div class="form-group">
@@ -36,7 +36,7 @@
                             <div class="form-group">
                                 <label asp-for="NguyenNhan" class="control-label"></label>
                                 <select asp-for="NguyenNhan" class="form-control">
-                                    <option value="none">Mới sinh/Chuyển tới/Tạm trú</option>
+                                    <option value="none">Chọn nguyên nhân</option>
                                     <option value="Mới sinh">Mới sinh</option>
                                     <option value="Chuyển tới">Chuyển tới</option>
                                     <option value="Tạm trú">Tạm trú</option>
@@ -71,18 +71,18 @@
                                 <span asp-validation-for="NguyenQuan" class="text-danger"></span>
                             </div>
                             <div class="form-group">
-                                <label asp-for="DanToc" class="control-label"></label>
-                                <input asp-for="DanToc" class="form-control" />
+                                <label asp-for="DanToc" class="control-label required"></label>
+                                <input asp-for="DanToc" class="form-control" required />
                                 <span asp-validation-for="DanToc" class="text-danger"></span>
                             </div>
                             <div class="form-group">
-                                <label asp-for="NgheNghiep" class="control-label"></label>
-                                <input asp-for="NgheNghiep" class="form-control" />
+                                <label asp-for="NgheNghiep" class="control-label required"></label>
+                                <input asp-for="NgheNghiep" class="form-control" required />
                                 <span asp-validation-for="NgheNghiep" class="text-danger"></span>
                             </div>
                             <div class="form-group">
-                                <label asp-for="NoiLamViec" class="control-label"></label>
-                                <input asp-for="NoiLamViec" class="form-control" />
+                                <label asp-for="NoiLamViec" class="control-label required"></label>
+                                <input asp-for="NoiLamViec" class="form-control"  required/>
                                 <span asp-validation-for="NoiLamViec" class="text-danger"></span>
                             </div>
                             <div class="form-group">
@@ -111,9 +111,9 @@
                                 <span asp-validation-for="DiaChiTruoc" class="text-danger"></span>
                             </div>
                             <div class="form-group">
-                                <label asp-for="QuanHe" class="control-label"></label>
+                                <label asp-for="QuanHe" class="control-label required"></label>
                                 <input asp-for="QuanHe" class="form-control" />
-                                <span asp-validation-for="QuanHe" class="text-danger"></span>
+                                <span asp-validation-for="QuanHe" class="text-danger" required></span>
                             </div>
                                 <input type="hidden" asp-for="soHoKhau" class="form-control" value="@ViewBag.SoHoKhau"/>
                             <div class="form-group">

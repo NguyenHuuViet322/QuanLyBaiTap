@@ -36,8 +36,8 @@
 
         <!-- Login Form -->
         <form asp-action="Login">
-            <input type="text" id="login" class="fadeIn second" asp-for="CMND" placeholder="CMND">
-            <input type="text" id="password" class="fadeIn third" asp-for="Password" placeholder="Mật khẩu">
+            <input type="text" id="login" class="fadeIn second" asp-for="CMND" placeholder="CMND" required>
+            <input type="text" id="password" class="fadeIn third" asp-for="Password" placeholder="Mật khẩu" required>
             <input type="submit" class="fadeIn fourth" value="Đăng nhập">
         </form>
 

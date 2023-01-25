@@ -21,6 +21,8 @@ namespace QuanLyNhanKhau.Controllers
         {
             try
             {
+                if (CMND == "0") return View("Login");
+
                 var account = _context.accounts.Where(p => p.CMND == CMND).FirstOrDefault();
                 
                 if (account.Password == password && account.role == (int)Role.Dan)
