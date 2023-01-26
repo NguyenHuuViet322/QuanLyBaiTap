@@ -36,29 +36,29 @@
         </tr>
     </thead>
     <tbody>
-@foreach(var request in Model)
-{
-    var nhanKhau = lstNhanKhau.Where(p => p.IdNhanKhau == request.IdNhanKhau).FirstOrDefault();
-    <tr>
-        <td>@stt</td>
-        <td>Tầng @request.ghiChu</td>
-        <td>@request.requestDay.Date.ToShortDateString()</td>
-        <td>@request.requestTime</td>
-        <td>@nhanKhau.HoTen (@nhanKhau.CMND)</td>
-        <td>
-            <form method="post">
-                <input name="id" type="hidden" value="@request.IdRequest">
-                <div class="col-md-6">
-                    <button class="btn btn-danger form-control" type="submit" asp-action="Duyet_false">Từ chối</button>
-                </div>
-                <div class="col-md-6">
-                    <button class="btn btn-success form-control" type="submit" asp-action="Duyet_true">Chấp nhận</button>
-                </div>
-            </form>
-        </td>
-    </tr>
-    stt++;
-}
+        @foreach (var request in Model)
+        {
+            var nhanKhau = lstNhanKhau.Where(p => p.IdNhanKhau == request.IdNhanKhau).FirstOrDefault();
+            <tr>
+                <td>@stt</td>
+                <td>Tầng @request.ghiChu</td>
+                <td>@request.requestDay.Date.ToShortDateString()</td>
+                <td>@request.requestTime</td>
+                <td>@nhanKhau.HoTen (@nhanKhau.CMND)</td>
+                <td>
+                    <form method="post">
+                        <input name="id" type="hidden" value="@request.IdRequest">
+                        <div class="col-md-6">
+                            <button class="btn btn-danger form-control" type="submit" asp-action="Duyet_false">Từ chối</button>
+                        </div>
+                        <div class="col-md-6">
+                            <button class="btn btn-success form-control" type="submit" asp-action="Duyet_true">Chấp nhận</button>
+                        </div>
+                    </form>
+                </td>
+            </tr>
+            stt++;
+        }
     </tbody>
 </table>
 @Html.Partial("Calendar_NhaVanHoa.cshtml", _context.requests.Where(p=> (p.status == true && p.requestDay.Date >= DateTime.Now.Date))

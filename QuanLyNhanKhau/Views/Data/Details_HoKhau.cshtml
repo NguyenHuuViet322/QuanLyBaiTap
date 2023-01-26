@@ -121,8 +121,11 @@
         <div class="panel panel-info">
             <div class="panel-heading">
                 <strong>Thành viên hộ</strong>
-                <a style="float:right"><i data-toggle="modal" data-target="#Create_NhanKhau" class="fa fa-plus fa-2x" style="color:green" aria-hidden="true"></i></a>
-                @Html.Partial("Create_NhanKhau.cshtml", new QuanLyNhanKhau.Models.NhanKhau())
+                @if (role != (int)Role.Dan)
+                {
+                    <a style="float:right"><i data-toggle="modal" data-target="#Create_NhanKhau" class="fa fa-plus fa-2x" style="color:green" aria-hidden="true"></i></a>
+                    @Html.Partial("Create_NhanKhau.cshtml", new QuanLyNhanKhau.Models.NhanKhau())
+                }
             </div>
             <div class="panel-body">
                 <div class="table-responsive">
@@ -143,11 +146,17 @@
                                     {
                                         <tr class="info" bgcolor = "@member.GetColor()">
                                             <td>@member.HoTen</td>
-                                            <td>@member.CMND</td>
+                                            @if (member.CMND == "0")
+                                            {
+                                                <td>Chưa cấp</td>
+                                            } else
+                                            {
+                                                <td>@member.CMND</td>
+                                            }
                                             <td>@member.GetStatus()</td>
                                             @if (role == (int)Role.Dan)
                                             {
-                                                
+                                                <td></td>
                                             } else
                                             {
                                                 <td>

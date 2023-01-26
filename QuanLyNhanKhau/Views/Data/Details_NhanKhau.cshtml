@@ -52,7 +52,11 @@
                                 </tr>
                                 <tr>
                                     <td style="font-weight:bold;">CMND/CCCD</td>
-                                    <td>@Model.CMND</td>
+                                    @if (Model.CMND == "0") {
+                                        <td>Chưa cấp</td>
+                                    } else {
+                                        <td>@Model.CMND</td>
+                                    }
                                 </tr>
                                 <tr>
                                     <td style="font-weight:bold;">Ngày cấp CMND</td>

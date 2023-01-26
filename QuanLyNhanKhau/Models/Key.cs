@@ -6,6 +6,7 @@ namespace QuanLyNhanKhau.Models
 {
     public class Key
     {
+        public static int Price = 20000;
         public static List<string> ListDuong = new List<string>(){"Đà Nẵng", "Chu Văn An", "Văn Cao",
                                                                     "Lê Lai", "Lê Lợi", "Đổng Quốc Bình",
                                                                     "Bùi Thị Từ Nhiên"};
