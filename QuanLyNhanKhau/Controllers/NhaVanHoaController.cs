@@ -209,7 +209,14 @@ namespace QuanLyNhanKhau.Controllers
             if (action)
             {
                 var request = _context.requests.Where(p => p.IdRequest == Int32.Parse(Request.Form["id"])).FirstOrDefault();
+                var deny_request = _context.requests.Where(p => p.requestDay == request.requestDay && p.requestTime == request.requestTime && p.ghiChu == request.ghiChu).ToList();
                 request.status = true;
+                foreach(var item in deny_request)
+                {
+                    item.status = true;
+                    item.ghiChu = item.ghiChu + " ";
+                    _context.Update(item);
+                }
                 _context.Update(request);
                 _context.SaveChanges();
 

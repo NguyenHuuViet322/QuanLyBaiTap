@@ -33,6 +33,8 @@
         if (role == 0)
             sohokhau = _context.nhanKhaus.Where(p => p.IdNhanKhau == id).First().soHoKhau;
     }
+
+    List<Request> lstRequest = new List<Request>();
 }
 
 <div class="col-md-4">
@@ -144,6 +146,7 @@
                                 {
                                     foreach (var member in Model.nhanKhaus.OrderBy(p => p.NguyenNhan))
                                     {
+                                        lstRequest.AddRange(_context.requests.Where(p => p.IdNhanKhau == member.IdNhanKhau).ToList());
                                         <tr class="info" bgcolor = "@member.GetColor()">
                                             <td>@member.HoTen</td>
                                             @if (member.CMND == "0")
@@ -193,6 +196,7 @@
             </div>
         </div>
     </div>
+    @Html.Partial("Details_HoKhau_Request.cshtml", lstRequest)
 </div>
 
 @if (role == (int)Role.Dan)

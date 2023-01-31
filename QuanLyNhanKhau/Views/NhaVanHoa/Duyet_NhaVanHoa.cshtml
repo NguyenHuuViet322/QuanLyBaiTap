@@ -46,7 +46,7 @@
                 <td>@request.requestTime</td>
                 <td>@nhanKhau.HoTen (@nhanKhau.CMND)</td>
                 <td>
-                    <form method="post">
+                    <form method="post" id="duyet_form">
                         <input name="id" type="hidden" value="@request.IdRequest">
                         <div class="col-md-6">
                             <button class="btn btn-danger form-control" type="submit" asp-action="Duyet_false">Từ chối</button>
@@ -61,7 +61,14 @@
         }
     </tbody>
 </table>
+<script>
+        $("body").on("submit", "#duyet_form", function () {
+            return confirm("Duyệt yêu cầu này sẽ từ chối tất cả các yêu cầu khác có cùng thời điểm và ca đăng kí. Bạn có muốn tiếp tục?");
+        });
+</script>
 @Html.Partial("Calendar_NhaVanHoa.cshtml", _context.requests.Where(p=> (p.status == true && p.requestDay.Date >= DateTime.Now.Date))
                                                             .OrderBy(p => p.requestDay)
                                                             .ToList());
+
+
 
