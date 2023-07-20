@@ -1,0 +1,70 @@
+﻿@model QuanLyTruongHoc.Models.QuanLyNghiepVu.ThongBao
+@inject IHttpContextAccessor _accessor
+@using QuanLyTruongHoc.Models
+@using QuanLyTruongHoc.Models.QuanLyNghiepVu;
+@inject QuanLyTruongHocConText _context
+
+@{
+    var id = (int)_accessor.HttpContext.Session.GetInt32("id");
+    var role = (int)_accessor.HttpContext.Session.GetInt32("role");
+    var lstLopHoc = new List<Class>();
+    var student = _context.Students.FirstOrDefault(p => p.Id == (int)(ViewData["IdHocSinh"])).name;
+
+    if (role == 2)
+    {
+        var tkbItem = _context.tKBItems.Where(p => p.IdGiaoVien == id);
+        var lstLopChuNhiem = _context.classes.FirstOrDefault(p => p.IdGiaoVien == id);
+        lstLopHoc = _context.classes.Where(p => tkbItem.Any(t => t.IdLop == p.Id)).ToList();
+        lstLopHoc.Add(lstLopChuNhiem);
+    }
+    else
+    {
+        id = 0;
+        lstLopHoc = _context.classes.ToList();
+    }
+}
+
+<div class="modal fade" id="createFormModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel"><strong>@ViewData["Title"]</strong></h4>
+            </div>
+            <div class="modal-body m-2" style="background:aliceblue;">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form asp-action="CreateThongBao" asp-controller="Note">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input name="loaiThongBao" value="@((int)(LoaiThongBao.HocSinh))" type="hidden" />
+                            <input type="hidden" asp-for="IdGiaoVien" value="@id" />
+                            <div class="form-group">
+                                <label asp-for="title" class="control-label">Tiêu đề</label>
+                                <input asp-for="title" class="form-control" />
+                                <span asp-validation-for="title" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="content" class="control-label">Nội dung</label>
+                                <textarea style="height:200px;" asp-for="content" class="form-control"></textarea>
+                                <span asp-validation-for="content" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Người nhận</label>
+                                <input value="@student" class="form-control" />
+                                <input value="@id" name="doituong" type="hidden" readonly/>
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" style="float:right;" value="Tạo thông báo" class="btn btn-primary" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

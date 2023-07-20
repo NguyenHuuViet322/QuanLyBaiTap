@@ -1,0 +1,119 @@
+﻿@using QuanLyTruongHoc.Models.QuanLyConNguoi;
+@using QuanLyTruongHoc.Models.QuanLyNghiepVu
+@using QuanLyTruongHoc.Models
+@model TeacherInfo
+@inject QuanLyTruongHocConText _context
+
+@{
+    ViewData["Title"] = "Sửa/Chấm điểm";
+    ViewData["Desc"] = "Thao tác chấm điểm kì thi";
+    Layout = "~/Views/Shared/_InnerLayout.cshtml";
+    int stt = 0;
+
+    var lstTKB = _context.tKBs.Where(p => p.status == true).ToList();
+    var lstGiangDay = _context.tKBItems.Where(p => _context.tKBs.Any(t => t.Id == p.IdTKB) && p.IdGiaoVien == Model.Id).ToList();
+    var lstMonHoc = lstGiangDay.Select(p => p.IdMonHoc).Distinct().ToList();
+    var lstLopHoc = lstGiangDay.Select(p => p.IdLop).Distinct().ToList();
+    var lstKiThi = _context.kiThis.Where(p => lstMonHoc.Any(t => t == p.IdMonHoc)).ToList();
+    var lstGradeProfile = _context.gradeProfiles.ToList();
+    var lstHocSinh = _context.Students.ToList();
+}
+
+<div class="col-md-5">
+    <div class="row" style="margin-left:0px;margin-right:0px;">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <strong>Các kì thi trong quyền</strong>
+            </div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr class="info">
+                                <th>Kì thi</th>
+                                <th>Môn học</th>
+                                <th>Hệ số</th>
+                                <th>Điểm</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+
+                                foreach(var kiThi in lstKiThi)
+                                {
+                                    var monHoc = _context.monHocs.FirstOrDefault(p => p.Id == kiThi.IdMonHoc);
+                                    <tr>
+                                        <td>@kiThi.name</td>
+                                        <td>@monHoc.Name</td>
+                                        <td>@kiThi.heSo</td>
+                                        <td><button class="btn btn-primary chamDiemBtn" id="@kiThi.Id">Chấm điểm</button></td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-md-7">
+    <div class="row" style="margin-left:0px;margin-right:0px;">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <strong>Danh sách điểm</strong>
+            </div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <form asp-action="updateGrade" asp-controller="KiThi" method="post">
+                    <table class="table">
+                        <thead>
+                            <tr class="info">
+                                <th style="width: 30%;">Họ tên</th>
+                                <th style="width: 20%;">Lớp</th>
+                                <th style="width: 30%;">Ngày sinh</th>
+                                <th style="width: 20%;" class="wx-10">Điểm</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var kiThi in lstKiThi)
+                                {
+                                    var lstGradeTmp = lstGradeProfile.Where(p => p.IdKiThi == kiThi.Id).ToList();
+                                @foreach (var diem in lstGradeTmp)
+                                {
+                                    var hs = lstHocSinh.FirstOrDefault(p => p.Id == diem.IdHocSinh);
+                                    var lop = _context.classes.FirstOrDefault(p => p.Id == hs.IdLop);
+                                    if (lstLopHoc.Any(t => t == hs.IdLop))
+                                    {
+                                            
+                                                <tr style="display:none" class="chamThi kiThi-@kiThi.Id">
+                                                    <td>@hs.name</td>
+                                                    <td>@lop.Name</td>
+                                                    <td>@Utils.TimeToString(@hs.ngaySinh)</td>
+                                                    <td>
+                                                        <input type="hidden" name="id" value="@diem.Id">
+                                                        <input type="hidden" name="idHs" value="@diem.IdHocSinh">
+                                                        <input type="hidden" name="idKiThi" value="@diem.IdKiThi" />
+                                                        @if (diem.Diem == -1)
+                                                        {
+                                                            <input type="number" class="form-control" name="diem" />
+                                                        }
+                                                        else
+                                                        {
+                                                            <input type="number" class="form-control" name="diem" value="@diem.Diem" />
+                                                        }
+                                                    </td>
+                                                </tr>
+                                            
+                                        }
+                                }
+                            }
+                        </tbody>
+                    </table>
+                    <button type="submit" class="btn btn-success">Lưu điểm</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

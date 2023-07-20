@@ -1,0 +1,42 @@
+﻿@using QuanLyTruongHoc.Models
+@inject QuanLyTruongHocConText _context
+
+@{
+    ViewData["Title"] = "Dashboard";
+    ViewData["Subtitle"] = "Trang chủ";
+}
+
+        <div class="row" style="margin-left:0px;margin-right:0px;">
+            <div class="col-md-12">
+                <h1 class="page-head-line">@ViewData["Title"]</h1>
+                <h1 class="page-subhead-line">@ViewData["Subtitle"]</h1>
+
+            </div>
+        </div>
+        <!-- /. ROW  -->
+        <div class="row" style="margin-left:0px;margin-right:0px;">
+            <div class="col-md-4">
+                <div class="main-box mb-red">
+                    <a href="#">
+                        <i class="fa fa-bolt fa-5x"></i>
+                        <h5>Học sinh</h5>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="main-box mb-dull">
+                    <a href="#">
+                        <i class="fa fa-plug fa-5x"></i>
+                        <h5>Giáo viên</h5>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="main-box mb-pink">
+                    <a href="#">
+                        <i class="fa fa-calendar fa-5x"></i>
+                        <h5>Kì học</h5>
+                    </a>
+                </div>
+            </div>
+        </div>

@@ -31,13 +31,22 @@ Note: Trong trường hợp không thực hiện được => Sử dụng file ba
 
 #Account
 
-Tài khoản Admin:
+Có 3 tài khoản quản lý được sinh sẵn trong Database.
 
-Admin
-123
+*, Account: 1111
+   Pass:    123
+   Role:    Quản lý nhân khẩu 
+
+*, Account: 2222
+   Pass:    123
+   Role:    Quản lý nhà văn hóa
+
+*, Account: 3333
+   Pass:    123
+   Role:    ADMIN
 
 Note: Admin có quyền truy cập vào tất cả các page.
-      Account của các nhân tố sẽ được tự động tạo sau khi thêm nhân khẩu. (Pass mặc định là 123)
+      Account của dân sẽ được tự động tạo sau khi thêm nhân khẩu. (Pass mặc định là 123)
 
 #Final
 
@@ -50,3 +59,4 @@ Chúc các bạn một ngày tốt lành và thuận lợi trong quá trình cà
 
 Xin cảm ơn,
 VietMK
+

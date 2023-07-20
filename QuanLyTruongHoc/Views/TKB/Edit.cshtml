@@ -1,0 +1,145 @@
+﻿@using QuanLyTruongHoc.Models.QuanLyNghiepVu;
+@model QuanLyTruongHoc.Models.QuanLyNghiepVu.TKB
+@using QuanLyTruongHoc.Models
+@using QuanLyTruongHoc.Models.Utils;
+@inject QuanLyTruongHocConText _context
+
+@{
+    ViewData["Title"] = "Chỉnh sửa Thời khóa biểu";
+    ViewData["Desc"] = "Thực hiện thêm mới/chỉnh sửa thời khóa biểu";
+    Layout = "~/Views/Shared/_InnerLayout.cshtml";
+
+    var lstGiaoVien = _context.Teachers.ToList();
+    var lstMonHoc = _context.monHocs.ToList();
+    var lstGiangDay = _context.giaoVienMonHocs.ToList();
+    var lstClass = _context.classes.Where(p => p.Khoi.ToString() == Model.KhoiHoc).ToList();
+    var lstTKBItem = _context.tKBItems.ToList();
+    var stt = 0;
+ 
+}
+
+<style>
+    .tkb-date {
+        border-radius: 10px;
+        padding: 1em;
+    }
+    .tkb-date:hover {
+        background-color: aliceblue;
+    }
+    hr {
+        margin-top:0px;
+        margin-bottom:0px;
+        border-top: 1px dotted blue;
+    }
+    
+    .tkb-item {
+        padding: 1em;
+        border-bottom: 1px dotted #6a76ad;
+    }
+</style>
+
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"readonly></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group" style="margin-bottom:1em">
+                <label asp-for="KiHoc" class="control-label"></label>
+                <input asp-for="KiHoc" class="form-control" value="@Utils.getKiHoc()" readonly/>
+                <span asp-validation-for="KiHoc" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="margin-bottom:1em">
+                <label asp-for="KhoiHoc" class="control-label"></label>
+                <select asp-for="KhoiHoc" class="form-control">
+                    <option value="@Model.KhoiHoc">Khối @Model.KhoiHoc</option>
+                </select>
+                <span asp-validation-for="KhoiHoc" class="text-danger"></span>
+            </div>
+            
+            @foreach(var lop in lstClass)
+            {
+                <div class="form-group">
+                    <div class="row" style="margin-left:0;margin-right:0;">
+                        <label class="control-label">Lớp @lop.Name</label>
+                        <div class="row">
+                            @for(int j = 2; j <= 7;j++)
+                            {
+                                <div class="col-md-4 tkb-date">
+                                    <div style="margin-bottom:0;background:steelblue;text-align:center;border-radius:10px;" class="form-group" data-toggle="collapse" data-target="#thu-@j-lop-@lop.Id">
+                                        <label style="font-size:120%; color:white;" class="control-label">Thứ @j</label>
+                                    </div>
+                                    <div class="tkb-date-item collapse multi-collapse" id="thu-@j-lop-@lop.Id">
+                                        @for (int i = 1; i <= 5; i++)
+                                        {
+                                            <div class="row tkb-item">
+                                                <div class="col-md-3">
+                                                    <span class="badge badge-primary">Tiết @i</span>
+                                                </div>
+                                                <div class="col-md-9">
+                                                    @{
+                                                        var selectMonHoc = "";
+                                                        var selectGiaoVien = "";
+                                                        var Id = 0;
+                                                        var tkbItem = lstTKBItem.FirstOrDefault(p => p.IdLop == lop.Id && p.tietHoc == i && p.day == j.ToString() && (p.IdTKB ==  Model.Id));                                                      
+                                                        if(tkbItem != null)
+                                                        {
+                                                            var gv = lstGiaoVien.FirstOrDefault(p => p.Id == tkbItem.IdGiaoVien);
+                                                            var mh = lstMonHoc.FirstOrDefault(p => p.Id == tkbItem.IdMonHoc);
+                                                            Id = tkbItem.Id;
+                                                            selectGiaoVien = "<option value='" + tkbItem.IdGiaoVien + "'>" + gv.name + "</option>";
+                                                            selectMonHoc = "<option value='" + tkbItem.IdMonHoc + "'>" + mh.Name + "</option>";
+                                                        }
+                                                    }
+                                                    <input class="hidden" asp-for="@Model.tkbList[stt].Id" value="@Id"/>
+                                                    <input class="hidden" asp-for="@Model.tkbList[stt].IdLop" value="@lop.Id" />
+                                                    <input class="hidden" asp-for="@Model.tkbList[stt].tietHoc" value="@i" />
+                                                    <input class="hidden" asp-for="@Model.tkbList[stt].day" value="@j" />
+                                                    <div class="form-group">
+                                                        <label asp-for="@Model.tkbList[stt].IdMonHoc" class="control-label"></label>
+                                                        <select asp-for="@Model.tkbList[stt].IdMonHoc" class="form-control subject">
+                                                            @Html.Raw(selectMonHoc)
+                                                            <option value="0">Không học</option>
+                                                            @foreach (var monHoc in lstMonHoc)
+                                                            {
+                                                                <option value="@monHoc.Id">@monHoc.Name</option>
+                                                            }
+                                                        </select>
+                                                        <span asp-validation-for="@Model.tkbList[stt].IdMonHoc" class="text-danger"></span>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label asp-for="@Model.tkbList[stt].IdGiaoVien" class="control-label"></label>
+                                                        <select asp-for="@Model.tkbList[stt].IdGiaoVien" class="form-control teacher">
+                                                            @Html.Raw(selectGiaoVien)
+                                                            <option value="0">Chọn giáo viên</option>
+                                                        </select>
+                                                        <span asp-validation-for="@Model.tkbList[stt].IdGiaoVien" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+                                                <hr />
+                                                @{
+                                                    stt++;
+                                                }
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div class="form-group">
+                <label class="control-label">Hiệu lực: </label>
+                <div class="switchToggle">
+                    <input asp-for="status" type="checkbox" id="switch1">
+                    <label for="switch1">Toggle</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <input style="float:right" type="submit" value="Save" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+</div>
+          

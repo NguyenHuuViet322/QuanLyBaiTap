@@ -1,0 +1,36 @@
+﻿@model IEnumerable<QuanLyTruongHoc.Models.QuanLyNghiepVu.Note>
+@inject IHttpContextAccessor _accessor
+@using QuanLyTruongHoc.Models
+@using QuanLyTruongHoc.Models.QuanLyNghiepVu;
+@inject QuanLyTruongHocConText _context
+
+@{
+    Layout = "~/Views/Shared/_InnerLayout.cshtml";
+    ViewData["Title"] = "Quản lý ghi chú";
+    ViewData["Desc"] = "Xem và tạo các ghi chú cần thiết";
+}
+
+<div class="panel">
+    <button class="btn btn-primary" data-toggle="modal" data-target="#createFormModal">
+        <i class="fa fa-plus"></i>
+        Tạo ghi chú
+    </button>
+</div>
+
+<div class="row">
+    @foreach (var thongbao in Model)
+    {
+                <div class="col-xs-18 col-sm-6 col-md-3" >
+                    <div class="thumbnail" style="background: #f5f5f5;">
+                        <div class="caption">
+                            <h4><a  data-toggle="modal" data-target="#detailFormModal_@thongbao.Id"><strong>@thongbao.title</strong></a></h4>
+                            <div><p>@thongbao.content</p></div>
+                            <span style="float: right; position: absolute; top: -8px; right: 8px;" class="label label-default">@Utils.TimeToString(thongbao.dateCreated)</span>
+                        </div>
+                    </div>
+                </div>
+                @Html.Partial("Details.cshtml", thongbao)
+    }
+</div>
+
+@Html.Partial("Create.cshtml", new Note())

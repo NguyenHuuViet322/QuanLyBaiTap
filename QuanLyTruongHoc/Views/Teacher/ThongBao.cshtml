@@ -1,0 +1,96 @@
+﻿@model QuanLyTruongHoc.Models.QuanLyNghiepVu.ThongBao
+@inject IHttpContextAccessor _accessor
+@using QuanLyTruongHoc.Models
+@using QuanLyTruongHoc.Models.QuanLyNghiepVu;
+@inject QuanLyTruongHocConText _context
+
+@{
+    var id = (int)_accessor.HttpContext.Session.GetInt32("id");
+    var role = (int)_accessor.HttpContext.Session.GetInt32("role");
+    var lstLopHoc = new List<Class>();
+
+    if (role == 2)
+    {
+        var tkbItem = _context.tKBItems.Where(p => p.IdGiaoVien == id);
+        var lstLopChuNhiem = _context.classes.FirstOrDefault(p => p.IdGiaoVien == id);
+        lstLopHoc = _context.classes.Where(p => tkbItem.Any(t => t.IdLop == p.Id)).ToList();
+        if (!lstLopHoc.Any(p => p == lstLopChuNhiem))
+        lstLopHoc.Add(lstLopChuNhiem);
+    }
+    else
+    {
+        id = 0;
+        lstLopHoc = _context.classes.ToList();
+    }
+}
+
+<div class="modal fade" id="createFormModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel"><strong>@ViewData["Title"]</strong></h4>
+            </div>
+            <div class="modal-body m-2" style="background:aliceblue;">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form asp-action="CreateThongBao" asp-controller="Note">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input name="loaiThongBao" value="@((int)(LoaiThongBao.Lop))" type="hidden" />
+                            <input type="hidden" asp-for="IdGiaoVien" value="@id" />
+                            <div class="form-group">
+                                <label asp-for="title" class="control-label">Tiêu đề</label>
+                                <input asp-for="title" class="form-control" />
+                                <span asp-validation-for="title" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="content" class="control-label">Nội dung</label>
+                                <textarea style="height:200px;" asp-for="content" class="form-control"></textarea>
+                                <span asp-validation-for="content" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Lớp nhận thông báo</label>
+                                @{
+                                    for (int i = 10; i <= 12; i++)
+                                    {
+                                        var lstItem = lstLopHoc.Where(p => p.Khoi == i).ToList();
+
+                                        @if (lstItem.Count() != 0)
+                                        {
+                                            <div class="grade row" style="margin-top:1em;margin-right: 0px;margin-left:0px;padding:0.5em; border:1px solid #ccc;background: white;">
+                                                <span class="badge badge-primary">
+                                                    Khối @i
+                                                    <input class="form-check-input allClassCheck" type="checkbox" id="flexSwitchCheckDefault">
+                                                    <label class="form-check-label" for="flexSwitchCheckDefault">Tất cả</label>
+                                                </span>
+                                                @foreach (var item in lstItem)
+                                                {
+                                                    <div class="form-check" style="margin-top: 1em;">
+                                                        <div class="col-md-3">
+                                                            <input class="form-check-input" type="checkbox" value="@item.Id" name="doituong">
+                                                            <label class="form-check-label">
+                                                                @item.Name
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </div>
+                                        }
+                                    }
+                                }
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" style="float:right;" value="Tạo thông báo" class="btn btn-primary" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

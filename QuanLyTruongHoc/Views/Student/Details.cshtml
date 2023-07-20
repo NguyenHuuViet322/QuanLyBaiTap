@@ -1,0 +1,228 @@
+﻿@using QuanLyTruongHoc.Models.QuanLyConNguoi
+@using QuanLyTruongHoc.Models
+@using QuanLyTruongHoc.Models.QuanLyNghiepVu;
+@using QuanLyTruongHoc.Models.Utils
+@model StudentInfo
+@inject IHttpContextAccessor _accessor
+@inject QuanLyTruongHocConText _context
+
+@{
+    ViewData["Title"] = "Học bạ";
+    ViewData["Desc"] = "Xem chi học bạ học sinh";
+    ViewData["IdHocSinh"] = Model.Id;
+    Layout = "~/Views/Shared/_InnerLayout.cshtml";
+}
+
+@{
+    var lstDiemThi = _context.gradeProfiles.Where(p => p.IdHocSinh == Model.Id).ToList();
+    var lopHoc = _context.classes.FirstOrDefault(p => p.Id == Model.IdLop);
+    var lstKiThi = _context.kiThis.ToList();
+    var gvcn = new TeacherInfo();
+    if (lopHoc is null)
+    {
+        gvcn = null;
+    } else
+    {
+        gvcn = _context.Teachers.FirstOrDefault(p => p.Id == lopHoc.IdGiaoVien);
+    }
+    var stt = 1;
+}
+
+<div class="col-md-4">
+    <div class="row" style="margin-left:0px;margin-right:0px;">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <strong>Thông tin học sinh</strong>
+                <a style="float:right;padding-left:1em"><i data-toggle="modal" data-target="#HistoryModal" class="fa fa-history fa-2x" style="color:#625b96" aria-hidden="true"></i></a>
+            </div>
+
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <tbody>
+                            <tr class="info">
+                                <td><strong>Họ tên:</strong></td>
+                                <td>@Model.name</td>
+                            </tr>
+                            <tr class="info">
+                                <td><strong>Lớp học:</strong></td>
+                                @if (lopHoc is null)
+                                {
+                                    <td>Chưa phân</td>
+                                } else
+                                {
+                                    <td>@lopHoc.Name</td>
+                                }
+                            </tr>
+                            <tr class="info">
+                                <td><strong>Ngày sinh:</strong></td>
+                                @if (Model.ngaySinh == null)
+                                {
+                                    <td>N/A</td>
+                                } else
+                                {
+                                    <td>@(((DateTime)(Model.ngaySinh)).ToShortDateString())</td>
+                                }
+                            </tr>
+                            <tr class="info">
+                                <td><strong>GVCN:</strong></td>
+                                @if (gvcn == null)
+                                {
+                                    <td>Chưa phân</td>
+                                } else
+                                {
+                                    <td>@gvcn.name</td>
+                                }
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" style="margin-left:0px;margin-right:0px;">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <strong>Thao tác</strong>
+            </div>
+            <div class="panel-body">
+                <form class="form-group">
+                    <div class="col-md-6">
+                        <button type="button" class="btn btn-success form-control" data-toggle="modal" data-target="#tkbFormModal_@Model.IdLop"><strong>Thời khóa biểu</strong></button>
+                    </div>
+                    @if (_accessor.HttpContext.Session.GetInt32("role") == 1)
+                    {
+                        <div class="col-md-6">
+                            <button class="btn btn-success form-control" disabled><strong>Tạo thông báo</strong></button>
+                        </div>
+                    } else
+                    {
+                        <div class="col-md-6">
+                            <button type="button" class="btn btn-success form-control" data-toggle="modal" data-target="#createFormModal"><strong>Tạo thông báo</strong></button>
+                        </div>
+                    }
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-md-8">
+    <div class="row" style="margin-left:0px;margin-right:0px;">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <strong>Danh sách điểm thi</strong>
+            </div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr class="info">
+                                <th>STT</th>
+                                <th>Tên kì thi</th>
+                                <th>Kì học</th>
+                                <th>Điểm</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                var lstKiHoc = _context.gradeProfiles.Where(p => p.IdHocSinh == Model.Id).OrderByDescending(p => p.createTime);
+                                foreach (var diemThi in lstDiemThi)
+                                {
+                                    var kiThi = lstKiThi.FirstOrDefault(p => p.Id == diemThi.IdKiThi);
+                                    <tr class="info">
+                                        <td>@stt</td>
+                                        <td>@kiThi.name</td>
+                                        <td>@kiThi.namHoc</td>
+                                        <td>
+                                            @((diemThi.Diem==-1)?("Chưa có"):(diemThi.Diem))
+                                        </td>
+                                    </tr>
+                                    stt++;
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="margin-left:0px;margin-right:0px;">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <strong>Điểm tổng kết các kì</strong>
+            </div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr class="info">
+                                <th>STT</th>
+                                <th>Kì học</th>
+                                <th>Điểm</th>
+                                <th>Trạng thái</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                stt = 0;
+                                var lstDiemSorted = from diem in lstDiemThi
+                                                    join kiThi in lstKiThi on diem.IdKiThi equals kiThi.Id
+                                                    where diem.IdHocSinh == Model.Id
+                                                    select new
+                                                    {
+                                                        kiHoc = kiThi.namHoc,
+                                                        diemThi = diem.Diem,
+                                                        heSo = kiThi.heSo,
+                                                    };
+
+                                var lstKi = lstDiemSorted.Select(p => p.kiHoc).Distinct().ToList();
+
+                                foreach (var kiHoc in lstKi)
+                                {
+                                    var tmp = lstDiemSorted.Where(p => p.kiHoc == kiHoc).ToList();
+                                    var diem = 0.0f;
+                                    var heso = 0.0f;
+                                    foreach (var diemThi in tmp)
+                                    {
+                                        diem += diemThi.diemThi * diemThi.heSo;
+                                        heso += diemThi.heSo;
+                                    }
+                                    stt++;
+                                    if (kiHoc == Utils.getKiHoc())
+                                    {
+                                        <tr class="info">
+                                            <td>@stt</td>
+                                            <td>@kiHoc</td>
+                                            <td>@((diem / heso == -1) ? ("Chưa có") : (diem / heso))</td>
+                                            <td>
+                                                Chưa chính thức
+                                            </td>
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        <tr class="info">
+                                            <td>@stt</td>
+                                            <td>@kiHoc</td>
+                                            <td>@((diem / heso == -1) ? ("Chưa có") : (diem / heso))</td>
+                                            <td>
+                                                Đã chính thức
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@Html.Partial("TKB_Details.cshtml", _context.classes.FirstOrDefault(p => p.Id == Model.IdLop));
+@if (_accessor.HttpContext.Session.GetInt32("role") == 2) {
+    @Html.Partial("ThongBao.cshtml", new ThongBao())
+}

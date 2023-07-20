@@ -1,0 +1,127 @@
+﻿@using QuanLyTruongHoc.Models.QuanLyNghiepVu
+@using QuanLyTruongHoc.Models.Utils;
+@using QuanLyTruongHoc.Models
+@model KiThi
+@inject QuanLyTruongHocConText _context
+@inject IHttpContextAccessor _accessor
+
+@{
+    ViewData["Title"] = ((Model.Id==0)?"Thêm mới":"Sửa đổi") + " kì thi";
+
+    var lstGiaoVien = _context.Teachers.ToList();
+    var lstMonHoc = _context.monHocs.ToList();
+    var kiHoc = Utils.getKiHoc();
+    var id = (int)_accessor.HttpContext.Session.GetInt32("id");
+    var role = (int)_accessor.HttpContext.Session.GetInt32("role");
+    var lstLopHoc = new List<Class>();
+
+    if (role == 2)
+    {
+        var tkbItem = _context.tKBItems.Where(p => p.IdGiaoVien == id);
+
+        lstLopHoc = _context.classes.Where(p => tkbItem.Any(t => t.IdLop == p.Id)).ToList();
+    } else
+    {
+        id = 0;
+        lstLopHoc = _context.classes.ToList();
+    }
+}
+
+<div class="modal fade" id="createFormModal_@Model.Id" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel"><strong>@ViewData["Title"]</strong></h4>
+            </div>
+            <div class="modal-body m-2" style="background:aliceblue;">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form asp-action="Edit">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input type="hidden" asp-for="Id" />
+                            <input type="hidden" name="IdGiaoVien" value="@id" />
+                            <div class="form-group">
+                                <label asp-for="name" class="control-label"></label>
+                                <input asp-for="name" class="form-control" />
+                                <span asp-validation-for="name" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="IdMonHoc" class="control-label"></label>
+                                <select asp-for="IdMonHoc" class="form-control">
+                                    <option value="0">Chọn chuyên môn</option>
+                                    @{
+                                        foreach (var value in lstMonHoc)
+                                        {
+                                            <option value="@value.Id"> @value.Name</option>
+                                        }
+                                    }
+                                </select>
+                                <span asp-validation-for="IdMonHoc" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="heSo" class="control-label"></label>
+                                <input asp-for="heSo" min="1" class="form-control" />
+                                <span asp-validation-for="heSo" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="khoi" class="control-label"></label>
+                                <select asp-for="khoi" class="form-control">
+                                    <option value="0">Chọn khối</option>
+                                    <option value="10">Khối 10</option>
+                                    <option value="11">Khối 11</option>
+                                    <option value="12">Khối 12</option>
+                                </select>
+                                <span asp-validation-for="khoi" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="namHoc" class="control-label"></label>
+                                <input asp-for="namHoc" class="form-control" value="@((Model.namHoc is null)?(kiHoc):(Model.namHoc))" readonly/>
+                                <span asp-validation-for="namHoc" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="ghiChu" class="control-label"></label>
+                                <input asp-for="ghiChu" class="form-control" />
+                                <span asp-validation-for="ghiChu" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Lớp tham gia</label>
+                                @{
+                                    for(int i = 10; i <= 12;i++)
+                                    {
+                                        var lstItem = lstLopHoc.Where(p => p.Khoi == i).ToList();
+
+                                        @if(lstItem.Count() != 0)
+                                        {
+                                            <div class="grade row" style="margin-top:1em;margin-right: 0px;margin-left:0px;padding:0.5em; border:1px solid #ccc;background: white;">
+                                                <span class="badge badge-primary">
+                                                    Khối @i
+                                                    <input class="form-check-input allClassCheck" type="checkbox" id="flexSwitchCheckDefault">
+                                                    <label class="form-check-label" for="flexSwitchCheckDefault">Tất cả</label>
+                                                </span>
+                                                @foreach (var item in lstItem)
+                                                {
+                                                    <div class="form-check" style="margin-top: 1em;">
+                                                        <div class="col-md-3">
+                                                            <input class="form-check-input" type="checkbox" value="@item.Id" name="doituong">
+                                                            <label class="form-check-label">
+                                                                @item.Name
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </div>
+                                        }
+                                    }
+                                }       
+                            </div>
+                            <div class="form-group">
+                                <input style="float: right" type="submit" value="Tạo mới" class="btn btn-primary" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

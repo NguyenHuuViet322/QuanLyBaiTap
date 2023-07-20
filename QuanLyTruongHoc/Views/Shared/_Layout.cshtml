@@ -1,0 +1,237 @@
+﻿@inject IHttpContextAccessor _accessor
+@using QuanLyTruongHoc.Models
+@inject QuanLyTruongHocConText _context
+@using QuanLyTruongHoc.Models.QuanLyConNguoi;
+@using QuanLyTruongHoc.Models.Utils;
+@using QuanLyTruongHoc.Models.QuanLyNghiepVu;
+@using QuanLyTruongHoc.Models.QuanLyCSVC;
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+
+    <!-- BOOTSTRAP STYLES-->
+    <link href="~/css/bootstrap.css" rel="stylesheet" />
+    <!-- FONTAWESOME STYLES-->
+    <link href="~/css/font-awesome.css" rel="stylesheet" />
+    <!--CUSTOM BASIC STYLES-->
+    <link href="~/css/basic.css" rel="stylesheet" />
+    <!--CUSTOM MAIN STYLES-->
+    <link href="~/css/custom.css" rel="stylesheet" />
+    <!-- GOOGLE FONTS-->
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css" />
+</head>
+@{
+    bool isLogin = false; int id=0; int role=0;
+    var numThongBao = 0;
+    var teacherInfo = new TeacherInfo();
+    var studentInfo = new StudentInfo();
+    if (_accessor.HttpContext.Session.GetInt32("id") != null)
+        isLogin = true;
+    if(isLogin)
+    {
+
+        id = (int)_accessor.HttpContext.Session.GetInt32("id");
+        role = (int)_accessor.HttpContext.Session.GetInt32("role");
+
+        if (role == 1)
+        {
+            studentInfo = _context.Students.FirstOrDefault(p => p.Id == id);
+            numThongBao = _context.thongBaoLinks.Count(p => p.IdHocSinh == id) + _context.thongBaoLinks.Count(p => p.IdLopHoc == studentInfo.IdLop);
+        }
+        else
+        {
+            teacherInfo = _context.Teachers.FirstOrDefault(p => p.Id == id);
+            numThongBao = _context.thongBaoLinks.Count(p => p.IdGiaoVienDt == id);
+        }
+        
+    }
+    var kiHoc = Utils.getKiHoc();
+}
+<body>
+    <div id="wrapper">
+        <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Kì học @kiHoc</a>
+            </div>
+
+            <div class="header-right">
+                @if (!isLogin)
+                {
+                    <a asp-controller="Account" asp-action="Index" class="btn btn-info" title="New Message"><i class="fa fa-sign-in fa-2x" style="vertical-align: middle;"></i><b>  Đăng nhập</b></a>
+                }
+                else
+                {
+                    <a asp-controller="Account" asp-action="Logout" class="btn btn-danger" title="Logout"><i class="fa fa-sign-out fa-2x" style="vertical-align: middle;"></i><b>  Đăng xuất  </b></a>
+                }
+            </div>
+        </nav>
+        <!-- /. NAV TOP  -->
+        <nav class="navbar-default navbar-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav" id="main-menu">
+
+                    <li>
+                        <div class="user-img-div">
+                            <img src="~/img/user.jpg" class="img-thumbnail" />
+
+                            <div class="inner-text">
+                                @(Utils.GetEnumDescription((Role)role))
+                                <br />
+                                <small>@((role == 5) ? ("Admin") : ((role == 1) ? (studentInfo.name) : (teacherInfo.name)))</small>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li>
+                        <a asp-controller="Home" asp-action="Index"><i class="fa fa-home "></i>Trang chủ</a>
+                    </li>
+
+                    @if (role == 1) {
+                        <li>
+                            <a asp-controller="Student" asp-action="Details" asp-route-id="@id"><i class="fa fa-user"></i>Học bạ cá nhân</a>
+                        </li>
+                        <li>
+                            <a asp-controller = "Note" asp-action="IndexThongBao" asp-route-id="@id"><i class="fa fa-bell"></i>Thông báo<span style="margin-left: 1rem;" class="badge badge-danger">@numThongBao</span></a>
+                        </li>
+                    }
+
+                    @if (role == 3 || role == 4 || role == 5) {
+                        <li>
+                            <a href="#"><i class="fa fa-male "></i>Quản lý con người<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a asp-controller="Teacher" asp-action="Index"><i class="fa fa-coffee"></i>Quản lý giáo viên</a>
+                                </li>
+                                <li>
+                                    <a asp-controller="Student" asp-action="Index"><i class="fa fa-key "></i>Quản lý học sinh</a>
+                                </li>
+                            </ul>
+                        </li>
+                    }
+
+                    @if (role == 2)
+                    {
+                        <li>
+                            <a asp-controller="Teacher" asp-action="Details" asp-route-id="@id"><i class="fa fa-coffee"></i>Thông tin giáo viên</a>
+                        </li>
+                        <li>
+                            <a asp-controller="Student" asp-action="IndexChuNhiem"><i class="fa fa-file-text-o "></i>Quản lý lớp chủ nhiệm</a>
+                        </li>
+                        <li>
+                            <a asp-controller="KiThi" asp-action="Index"><i class="fa fa-file-text-o "></i>Quản lý đầu điểm</a>
+                        </li>
+                        <li>
+                            <a asp-controller="KiThi" asp-action="ChamDiem" asp-route-id="@id"><i class="fa fa-key "></i>Nhập/sửa điểm</a>
+                        </li>
+                        <li>
+                            <a asp-controller="Note" asp-action="IndexThongBao" asp-route-id="@id"><i class="fa fa-bell"></i>Thông báo<span style="margin-left: 1rem;" class="badge badge-danger">@numThongBao</span></a>
+                        </li>
+                        <li>
+                            <a asp-controller="Note" asp-action="Index" asp-route-id="@id"><i class="fa fa-comment"></i>Ghi chú</a>
+                        </li>
+                    }
+
+                    @if (role == 3 || role == 4 || role == 5)
+                    {
+                        <li>
+                            <a href="#"><i class="fa fa-paper-plane"></i>Quản lý nghiệp vụ<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a asp-controller="TKB" asp-action="Index"><i class="fa fa-calendar"></i>Quản lý thời khóa biểu</a>
+                                </li>
+                                <li>
+                                    <a asp-controller="KiThi" asp-action="Index"><i class="fa fa-file-text-o "></i>Quản lý kì thi</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-bars "></i>Quản lý danh mục<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a asp-controller="MonHoc" asp-action="Index"><i class="fa fa-book"></i>Quản lý môn học</a>
+                                </li>
+                                <li>
+                                    <a asp-controller="Class" asp-action="Index"><i class="fa fa-users "></i>Quản lý lớp học</a>
+                                </li>
+                            </ul>
+                        </li>
+                    }
+
+                    @if (role == 5) {
+                        <li>
+                            <a href="#"><i class="fa fa-bars "></i>Quản lý danh mục<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a asp-controller="MonHoc" asp-action="Index"><i class="fa fa-book"></i>Quản lý môn học</a>
+                                </li>
+                                <li>
+                                    <a asp-controller="Class" asp-action="Index"><i class="fa fa-users "></i>Quản lý lớp học</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-print  "></i>Cơ sở vật chất<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a asp-controller="Device" asp-action="Index"><i class="fa fa-cogs"></i>Quản lý thiết bị</a>
+                                </li>
+                                <li>
+                                    <a asp-controller="Device" asp-action="DeviceChoMuon"><i class="fa fa-reply"></i>Lịch sử mượn trả</a>
+                                </li>
+                            </ul>
+                        </li>
+                    }              
+
+                    <li>
+                        <a asp-controller="Home" asp-action="Index"><i class="fa fa-dashboard "></i>About us</a>
+                    </li>
+                </ul>
+
+            </div>
+
+        </nav>
+        <!-- /. NAV SIDE  -->
+        <div id="page-wrapper">
+            <div id="page-inner">
+                <!-- /. ROW  -->
+                <div class="row" style="margin-left:0px;margin-right:0px;">
+                    @RenderBody()
+
+                </div>
+                <!-- /. ROW  -->
+
+
+                <hr />
+                <!-- /. PAGE INNER  -->
+            </div>
+            <!-- /. PAGE WRAPPER  -->
+        </div>
+        <!-- /. WRAPPER  -->
+        <div id="footer-sec">
+            "Điều không tưởng được tạo ra bởi người có thể tưởng tượng những điều không thể." -Alan Turing-
+        </div>
+        <!-- /. FOOTER  -->
+        <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
+        <!-- JQUERY SCRIPTS -->
+        <script src="~/js/jquery-1.10.2.js"></script>
+        <!-- BOOTSTRAP SCRIPTS -->
+        <script src="~/js/bootstrap.js"></script>
+        <!-- METISMENU SCRIPTS -->
+        <script src="~/js/jquery.metisMenu.js"></script>
+        <!-- CUSTOM SCRIPTS -->
+        <script src="~/js/custom.js"></script>
+        
+
+
+
+</body>
+</html>

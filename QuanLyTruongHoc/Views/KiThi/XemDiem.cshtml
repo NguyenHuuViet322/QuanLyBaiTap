@@ -1,0 +1,76 @@
+﻿@using QuanLyTruongHoc.Models.QuanLyNghiepVu
+@using QuanLyTruongHoc.Models
+@model KiThi
+@inject QuanLyTruongHocConText _context
+
+@{
+    ViewData["Title"] = "Xem chi tiết kì thi";
+    ViewData["Desc"] = "Thông tin kì thi " + Model.name;
+    Layout = "~/Views/Shared/_InnerLayout.cshtml";
+    int stt = 0;
+
+    var lstTKB = _context.tKBs.Where(p => p.status == true).ToList();
+    var lstGiangDay = _context.tKBItems.Where(p => _context.tKBs.Any(t => t.Id == p.IdTKB) && p.IdGiaoVien == 1).ToList();
+    var lstMonHoc = lstGiangDay.Select(p => p.IdMonHoc).Distinct().ToList();
+    var lstLopHoc = lstGiangDay.Select(p => p.IdLop).Distinct().ToList();
+    var lstKiThi = _context.kiThis.Where(p => lstMonHoc.Any(t => t == p.IdMonHoc)).ToList();
+    var lstGradeProfile = _context.gradeProfiles.ToList();
+    var lstHocSinh = _context.Students.ToList();
+}
+
+<div class="col-md-12">
+    <div class="row" style="margin-left:0px;margin-right:0px;">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <strong>Danh sách điểm</strong>
+            </div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <form asp-action="updateGrade" asp-controller="KiThi" method="post">
+                    <table class="table">
+                        <thead>
+                            <tr class="info">
+                                <th style="width: 10%;">STT</th>
+                                <th style="width: 30%;">Họ tên</th>
+                                <th style="width: 20%;">Lớp</th>
+                                <th style="width: 20%;">Ngày sinh</th>
+                                <th style="width: 20%;" class="wx-10">Điểm</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                                @{
+                                    var lstGradeTmp = lstGradeProfile.Where(p => p.IdKiThi == Model.Id).OrderByDescending(p => p.createTime).ToList();
+                                    @foreach (var diem in lstGradeTmp)
+                                    {
+                                        var hs = lstHocSinh.FirstOrDefault(p => p.Id == diem.IdHocSinh);
+                                        var lop = _context.classes.FirstOrDefault(p => p.Id == hs.IdLop);
+                                        stt++;
+                                        if (lstLopHoc.Any(t => t == hs.IdLop))
+                                        {
+                                            <tr>
+                                                <td>@stt</td>
+                                                <td>@hs.name</td>
+                                                <td>@lop.Name</td>
+                                                <td>@Utils.TimeToString(hs.ngaySinh)</td>
+                                                <td>
+                                                    @if (diem.Diem == -1)
+                                                    {
+                                                        <input type="text" class="form-control" name="diem" value="Chưa có" disabled/>
+                                                    }
+                                                    else
+                                                    {
+                                                        <input type="number" class="form-control" name="diem" value="@diem.Diem" disabled />
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                }
+                        </tbody>
+                    </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

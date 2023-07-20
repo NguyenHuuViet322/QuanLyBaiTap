@@ -1,0 +1,28 @@
+﻿@model IEnumerable<QuanLyTruongHoc.Models.QuanLyNghiepVu.ThongBao>
+@inject IHttpContextAccessor _accessor
+@using QuanLyTruongHoc.Models
+@using QuanLyTruongHoc.Models.QuanLyNghiepVu;
+@inject QuanLyTruongHocConText _context
+
+@{
+    Layout = "~/Views/Shared/_InnerLayout.cshtml";
+    ViewData["Title"] = "Danh sách thông báo";
+    ViewData["Desc"] = "Kiểm tra các thông báo";
+}
+
+<div class="row">
+    @foreach (var thongbao in Model)
+    {
+                <div class="col-xs-18 col-sm-6 col-md-3" style="background: #f5f5f5;">
+                    <div class="thumbnail">
+                        <div class="caption">
+                            <h4><a href=""><strong>@thongbao.title</strong></a></h4>
+                            <div><p>@thongbao.content</p></div>
+                            <span style="float: right; position: absolute; top: -8px; right: 8px;" class="label label-default">@Utils.TimeToString(thongbao.dateCreated)</span>
+                        </div>
+                    </div>
+                </div>
+    }
+</div>
+
+@Html.Partial("Create.cshtml", new Note())

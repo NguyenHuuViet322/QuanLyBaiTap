@@ -1,0 +1,87 @@
+﻿@using QuanLyTruongHoc.Models
+@using QuanLyTruongHoc.Models.QuanLyConNguoi
+@model TeacherInfo
+
+<div class="modal fade" id="deleteFormModal_@Model.Id" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel"><strong>Bạn có chắc muốn xóa?</strong></h4>
+            </div>
+            <div class="modal-body m-2" style="background:aliceblue;">
+                <div class="row">
+                    <div class="col-md-12">
+                        <dl class="dl-horizontal">
+                            <dt>
+                                @Html.DisplayNameFor(model => model.bangCap)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.bangCap)
+                            </dd>
+                            <dt>
+                                @Html.DisplayNameFor(model => model.chuyenMon)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.chuyenMon)
+                            </dd>
+                            <dt>
+                                @Html.DisplayNameFor(model => model.name)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.name)
+                            </dd>
+                            <dt>
+                                @Html.DisplayNameFor(model => model.ngaySinh)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.ngaySinh)
+                            </dd>
+                            <dt>
+                                @Html.DisplayNameFor(model => model.gioiTinh)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.gioiTinh)
+                            </dd>
+                            <dt>
+                                @Html.DisplayNameFor(model => model.noiSinh)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.noiSinh)
+                            </dd>
+                            <dt>
+                                @Html.DisplayNameFor(model => model.danToc)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.danToc)
+                            </dd>
+                            <dt>
+                                @Html.DisplayNameFor(model => model.diaChiThuongTru)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.diaChiThuongTru)
+                            </dd>
+                            <dt>
+                                @Html.DisplayNameFor(model => model.ngheNghiep)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.ngheNghiep)
+                            </dd>
+                            <dt>
+                                @Html.DisplayNameFor(model => model.CMND)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.CMND)
+                            </dd>
+                        </dl>
+
+                        <form asp-action="Delete">
+                            <input type="hidden" asp-for="Id" />
+                            <input style="float: right" type="submit" value="Delete" class="btn btn-danger" /> |
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

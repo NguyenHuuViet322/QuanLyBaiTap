@@ -1,0 +1,115 @@
+﻿@using QuanLyTruongHoc.Models.QuanLyNghiepVu
+@using QuanLyTruongHoc.Models
+@model IEnumerable<TKB>
+@inject QuanLyTruongHocConText _context
+
+@{
+    ViewData["Title"] = "Quản lý thời khóa biểu";
+    ViewData["Desc"] = "Tìm kiếm thao tác với các thời khóa biểu";
+    Layout = "~/Views/Shared/_InnerLayout.cshtml";
+    int stt = 0;
+}
+
+<div class="panel">
+    <a data-toggle="collapse" data-target="#chonKhoi">
+        <button class="btn btn-primary">
+            <i class="fa fa-plus"></i>
+            Tạo mới
+        </button>
+    </a>
+    
+    <button class="btn btn-warning" data-toggle="modal" data-target="#searchFormModal">
+        <i class="fa fa-search"></i>
+        Tìm kiếm
+    </button>
+</div>
+
+<div id="chonKhoi" class="panel collapse multi-collapse">
+    <a asp-controller="TKB" asp-action="edit" asp-route-id="0" asp-route-khoi="10">
+        <button class="btn btn-info">
+            Khối 10
+        </button>
+    </a>
+    <a asp-controller="TKB" asp-action="edit" asp-route-id="0" asp-route-khoi="11">
+        <button class="btn btn-info">
+            Khối 11
+        </button>
+    </a>
+    <a asp-controller="TKB" asp-action="edit" asp-route-id="0" asp-route-khoi="12">
+        <button class="btn btn-info">
+            Khối 12
+        </button>
+    </a>
+</div>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>
+                STT
+            </th>
+            <th>
+                Kì tạo
+            </th>
+            <th>
+                Khối
+            </th>
+            <th>
+                Trạng thái
+            </th>
+            <th>
+                Thao tác
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.ToList())
+        {
+            stt++;
+            <tr>
+                <td>@stt</td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.KiHoc)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.KhoiHoc)
+                </td>
+                <td>
+                    @if (item.status)
+                    {
+                        <a href="#" class="badge badge-success">Hiệu lực</a>
+                    }else
+                    {
+                        <a href="#" class="badge badge-secondary">Không hiệu lực</a>
+                    }
+                </td>
+                <td>
+                    <a asp-controller="TKB" asp-action="edit" asp-route-id="@item.Id"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                    <a asp-controller="TKB" asp-action="details" asp-route-id="@item.Id"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                    <a data-toggle="modal" data-target="#deleteFormModal_@item.Id"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                </td>
+            </tr>
+            @*@Html.Partial("Edit.cshtml", item)
+            @Html.Partial("Delete.cshtml", item)
+            @Html.Partial("Details.cshtml", item)*@
+        }
+    </tbody>
+</table>
+
+<div class="modal fade" id="searchFormModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel"><strong>Tìm kiếm</strong></h4>
+            </div>
+            <div class="modal-body m-2" style="background:aliceblue;">
+                <form method="post">
+                    <input name="keyword" class="form-control" placeholder="Từ khóa tìm kiếm" type="text">
+                    <br />
+                    <button class="btn btn-info" type="submit" action="Index_HoKhau" asp-action-route-id="1">Tìm kiếm</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

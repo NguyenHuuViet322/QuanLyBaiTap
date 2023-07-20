@@ -1,0 +1,75 @@
+﻿@model QuanLyTruongHoc.Models.QuanLyNghiepVu.Class
+@using QuanLyTruongHoc.Models
+@inject QuanLyTruongHocConText _context
+
+@{
+    ViewData["Title"] = ((Model.Id==0)?"Thêm mới":"Sửa đổi") + " lớp học";
+
+    var lstGiaoVien = _context.Teachers.ToList();
+}
+
+<div class="modal fade" id="createFormModal_@Model.Id" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel"><strong>@ViewData["Title"]</strong></h4>
+            </div>
+            <div class="modal-body m-2" style="background:aliceblue;">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form asp-action="Edit">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input type="hidden" asp-for="Id" />
+                            <div class="form-group">
+                                <label asp-for="Name" class="control-label"></label>
+                                <input asp-for="Name" class="form-control" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Khoi" class="control-label"></label>
+                                <select asp-for="Khoi" class="form-control">
+                                    <option value="0">Chọn khối</option>
+                                    <option value="10">Khối 10</option>
+                                    <option value="11">Khối 11</option>
+                                    <option value="12">Khối 12</option>
+                                </select>
+                                <span asp-validation-for="Khoi" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="IdGiaoVien" class="control-label"></label>
+                                <select asp-for="IdGiaoVien" class="form-control">
+                                    <option value="0">Chọn giáo viên</option>
+                                    @foreach(var gv in lstGiaoVien)
+                                    {
+                                        <option value="@gv.Id">@gv.name</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="IdGiaoVien" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="namVaoTruong" class="control-label"></label>
+                                @if (Model.Id == 0)
+                                {
+                                    <input asp-for="namVaoTruong" value="@DateTime.Now.Year" class="form-control" />
+                                } else 
+                                {
+                                    <input asp-for="namVaoTruong" class="form-control" />
+                                }
+                                <span asp-validation-for="namVaoTruong" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="namRaTruong" class="control-label"></label>
+                                <input asp-for="namRaTruong" class="form-control" />
+                                <span asp-validation-for="namRaTruong" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <input style="float:right" type="submit" value="Save" class="btn btn-success" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

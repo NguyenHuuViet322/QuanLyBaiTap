@@ -1,0 +1,92 @@
+﻿@model QuanLyTruongHoc.Models.QuanLyConNguoi.TeacherInfo
+@using QuanLyTruongHoc.Models
+@inject QuanLyTruongHocConText _context
+
+@{
+    ViewData["Title"] = "Thông tin chi tiết giáo viên";
+
+    var lstMonHoc = _context.giaoVienMonHocs.Where(p => p.IdGiaoVien == Model.Id).ToList();
+    var lstDetailMonHoc = _context.monHocs.ToList();
+}
+
+<div class="modal fade" id="detailsFormModal_@Model.Id" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel"><strong>@ViewData["Title"]</strong></h4>
+            </div>
+            <div class="modal-body m-2" style="background:aliceblue;">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form asp-action="Edit">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="form-group">
+                                <label asp-for="bangCap" class="control-label"></label>
+                                <input asp-for="bangCap" class="form-control" disabled/>
+                                <span asp-validation-for="bangCap" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="chuyenMon" class="control-label"></label>
+                                <input asp-for="chuyenMon" class="form-control" disabled />
+                                <span asp-validation-for="chuyenMon" class="text-danger"></span>
+                            </div>
+                            <input type="hidden" asp-for="Id" />
+                            <div class="form-group">
+                                <label asp-for="name" class="control-label"></label>
+                                <input asp-for="name" class="form-control" disabled />
+                                <span asp-validation-for="name" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="ngaySinh" class="control-label"></label>
+                                <input type ="date" asp-for="ngaySinh" class="form-control" disabled />
+                                <span asp-validation-for="ngaySinh" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="gioiTinh" class="control-label"></label>
+                                <input asp-for="gioiTinh" class="form-control" disabled />
+                                <span asp-validation-for="gioiTinh" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="noiSinh" class="control-label"></label>
+                                <input asp-for="noiSinh" class="form-control" disabled />
+                                <span asp-validation-for="noiSinh" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="danToc" class="control-label"></label>
+                                <input asp-for="danToc" class="form-control" disabled />
+                                <span asp-validation-for="danToc" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="diaChiThuongTru" class="control-label"></label>
+                                <input asp-for="diaChiThuongTru" class="form-control" disabled />
+                                <span asp-validation-for="diaChiThuongTru" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="ngheNghiep" class="control-label"></label>
+                                <input asp-for="ngheNghiep" class="form-control" disabled />
+                                <span asp-validation-for="ngheNghiep" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="CMND" class="control-label"></label>
+                                <input asp-for="CMND" class="form-control" disabled />
+                                <span asp-validation-for="CMND" class="text-danger"></span>
+                            </div>
+                            <ul class="list-group">
+                                <label class="control-label">Môn giảng dạy</label>
+                                @foreach(var item in lstMonHoc)
+                                {
+                                    var mon = lstDetailMonHoc.FirstOrDefault(p => p.Id == item.IdMonHoc);
+                                    <li class="list-group-item">@mon.Name</li>
+                                }
+                            </ul>
+                            <div class="form-group">
+                                <button class="btn btn-default" data-dismiss="modal">Đóng</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,70 @@
+﻿@using QuanLyTruongHoc.Models.Utils;
+@using QuanLyTruongHoc.Models.QuanLyConNguoi;
+@using QuanLyTruongHoc.Models
+@using QuanLyTruongHoc.Models.QuanLyNghiepVu
+@model TeacherInfo
+@inject QuanLyTruongHocConText _context
+
+@{
+    ViewData["Title"] = "Thông tin thời khóa biểu";
+
+    var lstTKBList = _context.tKBItems.Where(p => p.IdGiaoVien == Model.Id).ToList();
+    var lstMonHoc = _context.monHocs.ToList();
+    var lstGiaoVien = _context.Teachers.ToList();
+    var lstClass = _context.classes.ToList();
+}
+
+<div class="modal fade" id="tkbFormModal_@Model.Id" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width: 75%;">
+        <div class="modal-content">
+            <div class="modal-body m-2" style="background:aliceblue;">
+                <div class="row">
+                    <div class="col-md-12 schedule-table">
+                        <table class="table bg-white">
+                            <thead>
+                                <tr>
+                                    <th style="width: 20%">@Model.name</th>
+                                    <th style="width: 16%">Tiết 1</th>
+                                    <th style="width: 16%">Tiết 2</th>
+                                    <th style="width: 16%">Tiết 3</th>
+                                    <th style="width: 16%">Tiết 4</th>
+                                    <th style="width: 16%" class="last">Tiết 5</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (var i = 2; i <= 7; i++)
+                                {
+                                    <tr>
+                                        <td class="day">Thứ @i</td>
+                                        @for (int j = 1; j <= 5; j++)
+                                        {
+                                            var tkbItem = lstTKBList.FirstOrDefault(p => p.day == i.ToString() && p.tietHoc == j && p.IdLop == Model.Id);
+                                            if (tkbItem is null)
+                                            {
+                                                <td></td>
+                                            }
+                                            else
+                                            {
+                                                var monHoc = lstMonHoc.FirstOrDefault(p => p.Id == tkbItem.IdMonHoc);
+                                                var lopHoc = lstClass.FirstOrDefault(p => p.Id == tkbItem.IdLop);
+                                                <td class="active">
+                                                    <h4>@monHoc.Name</h4>
+                                                    <p>@lopHoc.Name</p>
+                                                    <div class="hover">
+                                                        <h4>@monHoc.Name</h4>
+                                                        <p>@lopHoc.Name</p>
+                                                        <span>Tiết @j</span>
+                                                    </div>
+                                                </td>
+                                            }
+                                        }
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

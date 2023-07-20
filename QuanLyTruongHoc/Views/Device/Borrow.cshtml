@@ -1,0 +1,93 @@
+﻿@using QuanLyTruongHoc.Models.QuanLyCSVC
+@using QuanLyTruongHoc.Models
+@using QuanLyTruongHoc.Models.Utils;
+@model Device
+@inject QuanLyTruongHocConText _context
+
+@{
+    ViewData["Title"] = "Cho mượn cơ sở vật chất";
+}
+
+<div class="modal fade" id="borrowFormModal_@Model.Id" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel"><strong>@ViewData["Title"]</strong></h4>
+            </div>
+            <div class="modal-body m-2" style="background:aliceblue;">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form asp-action="choMuon">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input type="hidden" asp-for="Id" />
+                            <div class="form-group">
+                                <label asp-for="tenCoSoVatChat" class="control-label"></label>
+                                <input asp-for="tenCoSoVatChat" class="form-control" readonly/>
+                                <span asp-validation-for="tenCoSoVatChat" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="soLuong" class="control-label"></label>
+                                <input asp-for="soLuong" class="form-control" readonly/>
+                                <span asp-validation-for="soLuong" class="text-danger"></span>
+                            </div>
+
+                            @{
+                                var soLuongConLai = 0;
+                                try
+                                {
+                                    var soLuongDaMuon_tmp = _context.deviceBorrows.Where(p => p.IdDevice == Model.Id && p.Status == (int)TrangThaiMuon.DangMuon).Sum(p => p.SoLuong);
+                                    soLuongConLai = Model.soLuong - soLuongDaMuon_tmp;
+                                } catch(Exception ex)
+                                {
+                                    soLuongConLai = Model.soLuong;
+                                }
+                            }
+
+                            <div class="form-group">
+                                <label class="control-label">Số lượng mượn: (Tối đa: @soLuongConLai)</label>
+                                <input type="number" class="form-control" name="ammount" min="1" max="@soLuongConLai"/>
+                                <span asp-validation-for="soLuong" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label">Đối tượng mượn</label>
+                                <input type="radio" value="1" class="form-check-input" name="doiTuong" id="doiTuongMuon1"/>
+                                <label class="form-check-label" for="#doiTuongMuon1">Học sinh</label>
+                                <input type="radio" value="2" class="form-check-input" name="doiTuong" id="doiTuongMuon2" />
+                                <label class="form-check-label" for="#doiTuongMuon2">Giáo viên</label>
+                                <span asp-validation-for="soLuong" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label" id="class_select">Lớp người mượn</label>
+                                <select class="form-control" name="classMuon" id="class" disabled>
+                                    <option>Chọn lớp</option>
+                                </select>
+                                <span asp-validation-for="soLuong" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label" id="class_select">Người mượn</label>
+                                <select class="form-control" name="person" id="person" disabled>
+                                    <option>Chọn người mượn</option>
+                                </select>
+                                <span asp-validation-for="soLuong" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <input style="float:right" type="submit" value="Mượn" class="btn btn-success" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

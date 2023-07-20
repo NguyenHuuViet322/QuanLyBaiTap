@@ -1,0 +1,77 @@
+﻿@using QuanLyTruongHoc.Models.QuanLyCSVC
+@using QuanLyTruongHoc.Models.QuanLyConNguoi
+@using QuanLyTruongHoc.Models.Utils
+@using QuanLyTruongHoc.Models
+@model DeviceBorrow
+@inject QuanLyTruongHocConText _context
+
+@{
+    var obj = _context.devices.FirstOrDefault(p => p.Id == Model.IdDevice);
+    var hocSinh = new StudentInfo() { Id = 0 };
+    var giaoVien = new TeacherInfo() { Id = 0 };
+    var tenNguoiMuon = "";
+    var lop = "";
+    var phanQuyen = "";
+
+    if (Model.IdDoiTuong == (int)HSGV.HocSinh)
+    {
+        hocSinh = _context.Students.FirstOrDefault(p => p.Id == Model.IdUser);
+        lop = _context.classes.FirstOrDefault(p => p.Id == hocSinh.IdLop).Name.ToString();
+        phanQuyen = "Học sinh";
+        tenNguoiMuon = hocSinh.name;
+    }
+    else
+    {
+        giaoVien = _context.Teachers.FirstOrDefault(p => p.Id == Model.IdUser);
+        tenNguoiMuon = giaoVien.name;
+        phanQuyen = Utils.GetEnumDescription((Role)giaoVien.phanQuyen);
+    }
+}
+
+<div class="modal fade" id="returnFormModal_@Model.Id" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel"><strong>Đánh dấu trả thiết bị</strong></h4>
+            </div>
+            <div class="modal-body m-2" style="background:aliceblue;">
+                <div class="row">
+                    <div class="col-md-12">
+                        <dl class="dl-horizontal">
+                            <dt>
+                                Tên thiết bị
+                            </dt>
+                            <dd>
+                                @obj.tenCoSoVatChat
+                            </dd>
+                            <dt>
+                                Số lượng mượn
+                            </dt>
+                            <dd>
+                                @Model.SoLuong
+                            </dd>
+                            <dt>
+                                Người mượn
+                            </dt>
+                            <dd>
+                                @tenNguoiMuon
+                            </dd>
+                            <dt>
+                                Ngày mượn
+                            </dt>
+                            <dd>
+                                @Model.ngayMuon
+                            </dd>
+                        </dl>
+
+                        <form asp-action="Return">
+                            <input type="hidden" asp-for="Id" />
+                            <input style="float: right" type="submit" value="Trả đồ" class="btn btn-success" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

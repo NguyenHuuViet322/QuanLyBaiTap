@@ -1,0 +1,63 @@
+﻿@using QuanLyTruongHoc.Models.QuanLyNghiepVu
+@using QuanLyTruongHoc.Models
+@model KiThi
+@inject QuanLyTruongHocConText _context
+
+@{
+    ViewData["Title"] = ((Model.Id==0)?"Thêm mới":"Sửa đổi") + " lớp học";
+
+    var lstGiaoVien = _context.Teachers.ToList();
+}
+
+<div class="modal fade" id="createFormModal_@Model.Id" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel"><strong>@ViewData["Title"]</strong></h4>
+            </div>
+            <div class="modal-body m-2" style="background:aliceblue;">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form asp-action="Create">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="form-group">
+                                <label asp-for="name" class="control-label"></label>
+                                <input asp-for="name" class="form-control" />
+                                <span asp-validation-for="name" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="heSo" class="control-label"></label>
+                                <input asp-for="heSo" min="1" class="form-control" />
+                                <span asp-validation-for="heSo" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="khoi" class="control-label"></label>
+                                <input asp-for="khoi" class="form-control" />
+                                <span asp-validation-for="khoi" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="namHoc" class="control-label"></label>
+                                <input asp-for="namHoc" class="form-control" />
+                                <span asp-validation-for="namHoc" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="ghiChu" class="control-label"></label>
+                                <input asp-for="ghiChu" class="form-control" />
+                                <span asp-validation-for="ghiChu" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="IdMonHoc" class="control-label"></label>
+                                <input asp-for="IdMonHoc" class="form-control" />
+                                <span asp-validation-for="IdMonHoc" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="Create" class="btn btn-default" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

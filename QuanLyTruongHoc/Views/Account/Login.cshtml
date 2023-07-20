@@ -1,0 +1,46 @@
+﻿@using QuanLyTruongHoc.Models.QuanLyNghiepVu
+@model Account
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+	Layout = null;
+}
+
+<head>
+	<title>Đăng nhập</title>
+    <!-- BOOTSTRAP STYLES-->
+
+    <!-- FONTAWESOME STYLES-->
+    <link href="~/css/font-awesome.css" rel="stylesheet" />
+    <link href="~/css/style.css" rel="stylesheet"/>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+
+
+<style>
+    body {
+        background-image: url(../img/login1.jpg);
+        background-size: cover;
+    }
+</style>
+<!------ Include the above in your HEAD tag ---------->
+
+<div class="wrapper fadeInDown">
+    <div id="formContent">
+        <!-- Tabs Titles -->
+        <!-- Icon -->
+        <div class="fadeIn first" style="padding: 1em">
+            <i class="fa fa-user fa-5x" aria-hidden="true" style="color: deepskyblue"></i>
+        </div>
+
+        <!-- Login Form -->
+        <form asp-action="Login">
+            <input type="text" id="login" class="fadeIn second" asp-for="username" placeholder="Tên đăng nhập" required>
+            <input type="password" id="password" class="fadeIn third" asp-for="password" placeholder="Mật khẩu" required>
+            <input type="submit" class="fadeIn fourth" value="Đăng nhập">
+        </form>
+
+    </div>
+</div>

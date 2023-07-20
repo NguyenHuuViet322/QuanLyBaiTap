@@ -1,0 +1,100 @@
+﻿@model QuanLyTruongHoc.Models.QuanLyConNguoi.TeacherInfo
+@using QuanLyTruongHoc.Models
+@using QuanLyTruongHoc.Models.QuanLyNghiepVu;
+@using QuanLyTruongHoc.Models.Utils;
+@inject QuanLyTruongHocConText _context
+
+@{
+    ViewData["Title"] = "Hồ sơ giáo viên";
+    Layout = "~/Views/Shared/_InnerLayout.cshtml";
+
+    var lstMonHoc = _context.giaoVienMonHocs.Where(p => p.IdGiaoVien == Model.Id).ToList();
+    var lstDetailMonHoc = _context.monHocs.ToList();
+}
+
+<div class="col-md-4">
+    <div class="row" style="margin-left:0px;margin-right:0px;">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <strong>Thông tin giáo viên</strong>
+                <a style="float:right;padding-left:1em"><i data-toggle="modal" data-target="#detailsFormModal_@Model.Id" class="fa fa-eye fa-2x" style="color:#625b96" aria-hidden="true"></i></a>
+            </div>
+
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <tbody>
+                            <tr class="info">
+                                <td><strong>Họ tên:</strong></td>
+                                <td>@Model.name</td>
+                            </tr>
+                            <tr class="info">
+                                <td><strong>Chuyên môn:</strong></td>
+                                @if (Model.chuyenMon == 0.ToString())
+                                {
+                                    <td>Chưa rõ</td>
+                                }
+                                else
+                                {
+                                    var chuyenMon = _context.monHocs.FirstOrDefault(p => p.Id.ToString() == Model.chuyenMon).Name;
+                                    <td>@chuyenMon</td>
+                                }
+                            </tr>
+                            <tr class="info">
+                                <td><strong>Ngày sinh:</strong></td>
+                                <td>@Utils.TimeToString(Model.ngaySinh)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" style="margin-left:0px;margin-right:0px;">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <strong>Thao tác</strong>
+            </div>
+            <div class="panel-body">
+                <form class="form-group">
+                    <div class="col-md-6">
+                        <button type="button" class="btn btn-success form-control" data-toggle="modal" data-target="#tkbFormModal_@Model.Id"><strong>Lịch giảng dạy</strong></button>
+                    </div>
+                    <div class="col-md-6">
+                        <button type="button" class="btn btn-success form-control" data-toggle="modal" data-target="#createFormModal"><strong>Tạo thông báo</strong></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-md-8">
+    <div class="row" style="margin-left:0px;margin-right:0px;">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <strong>Các kì thi đang chấm</strong>
+            </div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr class="info">
+                                <th>STT</th>
+                                <th>Tên kì thi</th>
+                                <th>Kì học</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.Partial("TKB_Details.cshtml", Model);
+@Html.Partial("Details.cshtml", Model)
+@Html.Partial("ThongBao.cshtml", new ThongBao())

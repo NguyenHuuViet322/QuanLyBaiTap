@@ -1,0 +1,150 @@
+﻿@using QuanLyTruongHoc.Models.Utils;
+@using QuanLyTruongHoc.Models
+@model QuanLyTruongHoc.Models.QuanLyConNguoi.TeacherInfo
+@inject QuanLyTruongHocConText _context
+
+@{
+    ViewData["Title"] = ((Model.Id == 0) ? "Thêm mới" : "Sửa đổi") + " giáo viên";
+
+    var lstMonHoc = _context.monHocs.ToList();
+}
+
+<div class="modal fade" id="createFormModal_@Model.Id" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel"><strong>@ViewData["Title"]</strong></h4>
+            </div>
+            <div class="modal-body m-2" style="background:aliceblue;">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form asp-action="Edit">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input type="hidden" asp-for="Id" />
+                            <div class="form-group">
+                                <label asp-for="name" class="control-label"></label>
+                                <input asp-for="name" class="form-control" />
+                                <span asp-validation-for="name" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="gioiTinh" class="control-label"></label>
+                                <select asp-for="gioiTinh" class="form-control">
+                                    <option value="0">Chọn giới tính</option>
+                                    @{
+                                        var values = Enum.GetValues(typeof(EnumGender));
+                                        foreach (var value in values)
+                                        {
+                                            <option value="@((int)value)"> @Utils.GetEnumDescription((EnumGender)value)</option>
+                                        }
+                                    }
+                                </select>
+                                <span asp-validation-for="gioiTinh" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="ngaySinh" class="control-label"></label>
+                                <input type="date" max="@DateTime.Now.AddYears(-20)" asp-for="ngaySinh" class="form-control" />
+                                <span asp-validation-for="ngaySinh" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="phanQuyen" class="control-label"></label>
+                                <select asp-for="phanQuyen" class="form-control">
+                                    @try
+                                    {
+                                        @if (Model.phanQuyen == 0)
+                                        {
+                                            <option value="">Chọn chức vụ</option>
+                                            <option value="2">Giáo viên</option>
+                                            <option value="3">Giáo vụ</option>
+                                            <option value="4">Ban giám hiệu</option>
+                                        } else
+                                        {
+                                            <option value="@Model.phanQuyen">@Utils.GetEnumDescription((Role)Model.phanQuyen)</option>
+                                        }
+                                    } catch(Exception e)
+                                    {
+                                        <option value="@Model.phanQuyen">@Utils.GetEnumDescription((Role)Model.phanQuyen)</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="phanQuyen" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="CMND" class="control-label"></label>
+                                <input  asp-for="CMND" class="form-control" />
+                                <span asp-validation-for="CMND" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="noiSinh" class="control-label"></label>
+                                <input asp-for="noiSinh" class="form-control" />
+                                <span asp-validation-for="noiSinh" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="danToc" class="control-label"></label>
+                                <input asp-for="danToc" class="form-control" />
+                                <span asp-validation-for="danToc" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="diaChiThuongTru" class="control-label"></label>
+                                <input asp-for="diaChiThuongTru" class="form-control" />
+                                <span asp-validation-for="diaChiThuongTru" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="ngheNghiep" class="control-label"></label>
+                                <input asp-for="ngheNghiep" class="form-control" />
+                                <span asp-validation-for="ngheNghiep" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="bangCap" class="control-label"></label>
+                                <input asp-for="bangCap" class="form-control" />
+                                <span asp-validation-for="bangCap" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="chuyenMon" class="control-label"></label>
+                                <select asp-for="chuyenMon" class="form-control">
+                                    <option value="0">Chọn chuyên môn</option>
+                                    @{
+                                        foreach (var value in lstMonHoc)
+                                        {
+                                            <option value="@value.Id"> @value.Name</option>
+                                        }
+                                    }
+                                </select>
+                                <span asp-validation-for="chuyenMon" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Môn giảng dạy</label>
+                                @{
+                                    var lstGiangDay = _context.giaoVienMonHocs.Where(p => p.IdGiaoVien == Model.Id).ToList();
+                                    foreach (var value in lstMonHoc)
+                                    {
+                                        if (lstGiangDay.Any(p => p.IdMonHoc == value.Id))
+                                        {
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="@value.Id" id="flexCheckIndeterminate" name="giangDay" checked>
+                                                <label class="form-check-label" for="flexCheckIndeterminate">
+                                                    @value.Name
+                                                </label>
+                                            </div>
+                                        } else
+                                        {
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="@value.Id" id="flexCheckIndeterminate" name="giangDay">
+                                                <label class="form-check-label" for="flexCheckIndeterminate">
+                                                    @value.Name
+                                                </label>
+                                            </div>
+                                        }
+
+                                    }
+                                }
+                            </div>
+                            <div class="form-group">
+                                <input style="float:right" type="submit" value="Save" class="btn btn-success" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

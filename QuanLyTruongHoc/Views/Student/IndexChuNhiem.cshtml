@@ -1,0 +1,80 @@
+﻿@using QuanLyTruongHoc.Models.QuanLyConNguoi
+@using QuanLyTruongHoc.Models.QuanLyNghiepVu;
+@using QuanLyTruongHoc.Models.Utils
+@using QuanLyTruongHoc.Models
+@model Class
+@inject QuanLyTruongHocConText _context
+
+@{
+    ViewData["Title"] = "Quản lý lớp chủ nhiệm";
+    ViewData["Desc"] = "Lớp chủ nhiệm";
+    Layout = "~/Views/Shared/_InnerLayout.cshtml";
+    int stt = 0;
+
+    var lstHocSinh = _context.Students.Where(p => p.IdLop == Model.Id).ToList();
+}
+
+<div class="panel">
+    <button class="btn btn-primary" data-toggle="modal" data-target="#createFormModal_0">
+        <i class="fa fa-plus"></i>
+        Tạo thông báo
+    </button>
+</div>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>
+                STT
+            </th>
+            <th>
+                Tên học sinh
+            </th>
+            <th>
+                Ngày sinh
+            </th>
+            <th>
+                Thao tác
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in lstHocSinh)
+        {
+            var lopHoc = _context.classes.FirstOrDefault(p => p.Id == item.IdLop);
+            stt++;
+            <tr>
+                <td>@stt</td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.name)
+                </td>
+                <td>
+                    @Utils.TimeToString(item.ngaySinh)
+                </td>
+                <td>
+                    <a href="Details?Id=@item.Id"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@Html.Partial("Edit.cshtml", new StudentInfo() {Id = 0})
+
+<div class="modal fade" id="searchFormModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel"><strong>Tìm kiếm</strong></h4>
+            </div>
+            <div class="modal-body m-2" style="background:aliceblue;">
+                <form method="get">
+                    <input name="keyword" class="form-control" placeholder="Từ khóa tìm kiếm" type="text">
+                    <br />
+                    <button class="btn btn-info" type="submit" action="Index" asp-action-route-id="1">Tìm kiếm</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

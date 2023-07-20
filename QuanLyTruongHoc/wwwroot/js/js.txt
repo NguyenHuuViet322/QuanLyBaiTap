@@ -1,0 +1,6 @@
+function displayForm() {
+	if (document.getElementById("search-form").style.display = "none") 
+		document.getElementById("search-form").style.display = "block";
+	else
+		document.getElementById("search-form").style.display = "none";
+}
