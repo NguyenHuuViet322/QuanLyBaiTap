@@ -44,6 +44,26 @@ Note: Admin có quyền truy cập vào tất cả các page.
 Hãy bắt đầu sử dụng Account ADMIN để có toàn quyền truy cập các chức năng. Sau đó mới tiếp tục sử dụng các Account khác.
 Do phần phân quyền và đăng nhập bị Rush vội nên sẽ có "rất" nhiều bug xuất hiện thêm. Xin vui lòng báo lại cho người viết nếu gặp phải.
 
+#Luồng dữ liệu
+
+Kịch bản bình thường (Nên làm theo thứ tự này do vài object tạo sau cần thông tin của object tạo trước. VÍ DỤ: Không tạo giáo viên thì lúc tạo lớp sẽ không có giáo viên chủ nhiệm để chọnn)
+
+=> Tạo môn học
+=> Tạo giáo viên (Chuyên môn của giáo viên không ảnh hưởng đến môn dạy, một giáo viên có thể dạy nhiều môn)
+=> Tạo lớp học
+=> Tạo học sinh
+=> Tạo thời khóa biểu
+
+Trong phần tạo giáo viên có 3 phần quyền: 
+Giáo viên giảng dạy bình thường
+Giáo vụ quản lý các lớp và nghiệp vụ
+Hiệu trưởng làm bố
+
+Tài khoản của giáo viên học sinh sẽ đc tự tạo theo thứ tự tạo của người đó
+Học sinh 1 thì tài khoản là HS1 pass 123
+GIáo viên 1 thì là GV1 pass 123
+Tương tự với hiệu trưởng và giáo vụ
+
 #END
 
 Chúc các bạn một ngày tốt lành và thuận lợi trong quá trình cài đặt.
